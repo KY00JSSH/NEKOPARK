@@ -7,9 +7,9 @@ public class PlayerMove : NetworkBehaviour
     private bool isMovingRight;
 
     private float JumpForce = 400f;
-    private int JumpCount = 1;
-
+   
     private Rigidbody2D PlayerRigidbody;
+    private Collider2D PlayerCollider;
 
     private Animator PlayerAnimator;
 
@@ -17,11 +17,18 @@ public class PlayerMove : NetworkBehaviour
     {
         PlayerRigidbody = GetComponent<Rigidbody2D>();
         PlayerAnimator = GetComponent<Animator>();
+        PlayerCollider = GetComponent<Collider2D>();
+    }
+
+    private void Update()
+    {
+        Jump();        
+        
     }
 
     private void FixedUpdate() {
         Move();
-        Jump();        
+        Jump_Limit();
     }
 
     private void Move() {
@@ -56,29 +63,30 @@ public class PlayerMove : NetworkBehaviour
     }
 
     private void Jump()
-    {
-        if (JumpCount == 0) return;
-
-        if (Input.GetKey(KeyCode.Space) && JumpCount != 0)
-        {
-            JumpCount--;
+    {        
+        if (Input.GetKey(KeyCode.Space) && !PlayerAnimator.GetBool("isJumping"))
+        {            
             PlayerRigidbody.AddForce(new Vector2(0, JumpForce));            
             PlayerAnimator.SetBool("isJumping", true);
-        }
+        }       
+    }
 
-        if(PlayerRigidbody.velocity.y < 0)
-        { 
-            Debug.DrawRay(PlayerRigidbody.position, Vector3.down, Color.red);
-            RaycastHit2D rayHit = Physics2D.Raycast(PlayerRigidbody.position, Vector3.down, 1);
-            if(rayHit.transform.gameObject != null)
+    private void Jump_Limit()
+    {
+        if (PlayerRigidbody.velocity.y < 0)
+        {
+            Vector2 feetPosition = 
+                new Vector2(PlayerRigidbody.position.x, PlayerRigidbody.position.y - PlayerCollider.bounds.extents.y - 0.3f);
+
+            Debug.DrawRay(feetPosition, Vector3.down * 0.1f, new Color(0, 1, 0));
+            RaycastHit2D rayHit = Physics2D.Raycast(feetPosition, Vector2.down, 1f);
+            if (rayHit.collider != null)
             {
-                if(rayHit.distance < 0.5f)
+                if (rayHit.distance <= 0.1f)
                 {
                     PlayerAnimator.SetBool("isJumping", false);
-                    JumpCount = 1;
                 }
             }
         }
-
     }
 }
