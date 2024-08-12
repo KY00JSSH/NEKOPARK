@@ -2,11 +2,7 @@ using UnityEngine;
 using Mirror;
 
 public class PlayerMove : NetworkBehaviour {
-    private float MoveSpeed = 5f;
-
-    private void Awake() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+    [SyncVar] private float MoveSpeed = 5f;
 
     private void FixedUpdate() {
         Move();
