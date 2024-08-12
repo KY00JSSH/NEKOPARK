@@ -3,33 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpringPrefabController : MonoBehaviour {
-     // 1. 목적 : 스프링 프리펩 오브젝트 기능 구현 -> 다른 오브젝트를 날려버리기 
+    // 1. 목적 : 스프링 프리펩 오브젝트 기능 구현 -> 다른 오브젝트를 날려버리기 
 
     public float addForce = 10f; // Addforce 값 (레벨 별로 수정가능해야함)
     private Vector2 addForceVector; // 충돌 물체 방향 확인
+    private Vector2 saveDirectionVector; // 충돌 물체 방향 저장
 
     private Animator spriteAnimator; // spring image animation
 
+    private FindCollisionObjectsNum findCollisionObjectsNum;
+
     private void Awake() {
-        Debug.Log("SpringPrefabController Awake");
         spriteAnimator = GetComponent<Animator>();
+
+        findCollisionObjectsNum = GetComponent<FindCollisionObjectsNum>();
+    }
+    // enter에서 방향 저장
+    private void OnCollisionEnter2D(Collision2D collision) {
+        saveDirectionVector.x = collision.transform.position.x - transform.position.x;
     }
 
-
     // 충돌한 물체의 진입방향을 확인하여 addforce
-    //TODO: 1개 이상 막아야함
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnCollisionStay2D(Collision2D collision) {
+        Debug.Log("SpringPrefabController : " + findCollisionObjectsNum.GetCollObjectsNum());
 
-        Rigidbody2D collRigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (collRigidbody2D != null) {
+        if (findCollisionObjectsNum.GetCollObjectsNum()==1) {
+            Rigidbody2D collRigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (collRigidbody2D != null) {
 
-            Vector2 directionToCollider = collision.transform.position - transform.position;  // 충돌 방향 확인
-            Debug.Log(directionToCollider);
-            addForceVector = new Vector2(directionToCollider.x, addForce);
-            Debug.Log(addForceVector);
-            addForceVector.x = directionToCollider.x;
-            collRigidbody2D.AddForce(collRigidbody2D.transform.up * addForce, ForceMode2D.Impulse);
-
+                addForceVector = new Vector2(saveDirectionVector.x, addForce);
+                collRigidbody2D.AddForce(collRigidbody2D.transform.up * addForce, ForceMode2D.Impulse);
+            }
         }
     }
 
