@@ -1,16 +1,19 @@
 fileFormatVersion: 2
-guid: 417f64391b68e174b9f384d89a800da1
+guid: 141ffd61d1676b243a06d887a2cb26b1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4516667511759703105
-    second: playerPush_0
+      213: -8392225855553177403
+    second: PlayerOriginal_0
   - first:
-      213: -4958012923744034423
-    second: playerPush_1
+      213: -2397222970729905265
+    second: PlayerOriginal_1
   - first:
-      213: -2555476863747364976
-    second: playerPush_2
+      213: 7366791263278928389
+    second: PlayerOriginal_2
+  - first:
+      213: 7103036766193019452
+    second: PlayerOriginal_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -124,13 +127,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: playerPush_0
+      name: PlayerOriginal_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 62
-        height: 72
+        width: 100
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,20 +141,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14c0cfeeb2d6eae30800000000000000
-      internalID: 4516667511759703105
+      spriteID: 5c877ec5c03d88b80800000000000000
+      internalID: -8392225855553177403
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPush_1
+      name: PlayerOriginal_1
       rect:
         serializedVersion: 2
-        x: 65
+        x: 100
         y: 0
-        width: 62
-        height: 72
+        width: 100
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +162,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 981e078b389913bb0800000000000000
-      internalID: -4958012923744034423
+      spriteID: f83cc3eb86a5bbed0800000000000000
+      internalID: -2397222970729905265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerPush_2
+      name: PlayerOriginal_2
       rect:
         serializedVersion: 2
-        x: 130
+        x: 200
         y: 0
-        width: 62
-        height: 72
+        width: 100
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,8 +183,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 097eb98f45f198cd0800000000000000
-      internalID: -2555476863747364976
+      spriteID: 502113e7f991c3660800000000000000
+      internalID: 7366791263278928389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerOriginal_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3a697b2e4e039260800000000000000
+      internalID: 7103036766193019452
       vertices: []
       indices: 
       edges: []
