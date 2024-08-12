@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 3764689683011247215}
   - component: {fileID: -7847590929114673007}
   - component: {fileID: 8845828724243681469}
+  - component: {fileID: -1875871364781778288}
+  - component: {fileID: -1177224528735570470}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -245,7 +247,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2666667, y: 1.4666667}
+    oldSize: {x: 0.95, y: 1.1}
     newSize: {x: 0.95, y: 1.1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -271,7 +273,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2666667, y: 1.4666667}
+    oldSize: {x: 0.95, y: 1.1}
     newSize: {x: 0.95, y: 1.1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -299,3 +301,36 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1875871364781778288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860769993297117655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  animator: {fileID: 8845828724243681469}
+--- !u!114 &-1177224528735570470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860769993297117655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47eb5d8b68bca28469b62f27c0aee188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  playerColor: 5
