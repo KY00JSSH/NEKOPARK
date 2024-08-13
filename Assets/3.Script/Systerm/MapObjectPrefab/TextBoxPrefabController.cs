@@ -113,7 +113,7 @@ public class TextBoxPrefabController : MonoBehaviour {
 
             if (followingObject.CompareTag("Player")) { // 플레이어 일경우
                 PlayerMove playerMove = followingObject.GetComponent<PlayerMove>();
-                if (playerMove.isMoving) {
+                if (playerMove.IsMoving) {
                     FollowObjectAmount(followingObject);
                 }
                 else {
@@ -187,7 +187,7 @@ public class TextBoxPrefabController : MonoBehaviour {
     private bool CheckCollisionPushSameDirection() {
         PlayerMove _playerMove = setCollisionObjectList[0].GetComponent<PlayerMove>();
         float deltaYPosition = Mathf.Abs(transform.position.y - setCollisionObjectList[0].transform.position.y);
-        if (_playerMove.isMoving && deltaYPosition <= 1) return true;
+        if (_playerMove.IsMoving && deltaYPosition <= 1) return true;
         return false;
     }
     //전체 인원이 같은 방향으로 밀고 있는지 확인
@@ -196,7 +196,7 @@ public class TextBoxPrefabController : MonoBehaviour {
             PlayerMove _playerMove = setCollisionObjectList[i].GetComponent<PlayerMove>();
             PlayerMove playerMove = setCollisionObjectList[i + 1].GetComponent<PlayerMove>();
 
-            if (_playerMove.isMoving != playerMove.isMoving) return false;
+            if (_playerMove.IsMoving != playerMove.IsMoving) return false;
         }
         return true;
     }
