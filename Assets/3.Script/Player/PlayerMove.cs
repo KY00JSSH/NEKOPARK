@@ -16,12 +16,17 @@ public class PlayerMove : NetworkBehaviour
 
     private Text textNickname;
 
+
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
         playerCollider = GetComponent<Collider2D>();
         textNickname = GetComponentInChildren<Text>();
+    }
+
+    private void Start() {
+        textNickname.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
     }
 
     private void Update()
@@ -35,7 +40,7 @@ public class PlayerMove : NetworkBehaviour
     }
 
     private void Move() {
-        //if (!isOwned) return;
+        if (!isOwned) return;
 
         if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
