@@ -13,13 +13,22 @@ public class PlayerNickname : NetworkBehaviour {
     [SyncVar(hook =nameof(SetNickname_Hook))] public string Nickname;
     private Text textNickname;
 
+    private void Awake() {
+        textNickname = GetComponentInChildren<Text>();
+    }
+
     public void SetNickname_Hook(string _, string value) {
         textNickname.text = value;
     }
 
     private void Start() {
         // Player가 생성될 때 닉네임을 설정, 서버와 동기화합니다.
-        if (isLocalPlayer) CmdSetNickname("김수주");
+        if (isOwned) CmdSetNickname("김수주");
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.F1))
+            CmdSetNickname("박지훈");
     }
 
     [Command]

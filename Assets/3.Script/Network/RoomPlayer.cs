@@ -26,8 +26,6 @@ public class RoomPlayer : NetworkRoomPlayer {
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
         player.GetComponent<PlayerColor>().playerColor = GetSpawnColor();
-        var clickEffect = player.GetComponentInChildren<PlayerMouseCommunication>();
-        clickEffect.transform.SetParent(transform, false);
 
         NetworkServer.Spawn(player, connectionToClient);
     }
