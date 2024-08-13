@@ -2,29 +2,31 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 
-public class PlayerMove : NetworkBehaviour {
-    private float MoveSpeed = 5f;
-    public bool isMoving { get; private set; }
+public class PlayerMove : NetworkBehaviour 
+{
+    private float moveSpeed = 5f;
+    public bool IsMovingRight { get; private set; }
 
-    private float JumpForce = 400f;
+    private float jumpForce = 400f;
+   
+    private Rigidbody2D playerRigidbody;
+    private Collider2D playerCollider;
 
-    private Rigidbody2D PlayerRigidbody;
-    private Collider2D PlayerCollider;
-
-    private Animator PlayerAnimator;
+    private Animator playerAnimator;
 
     private Text textNickname;
 
-    private void Awake() {
-        PlayerRigidbody = GetComponent<Rigidbody2D>();
-        PlayerAnimator = GetComponent<Animator>();
-        PlayerCollider = GetComponent<Collider2D>();
+    private void Awake()
+    {
+        playerRigidbody = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
+        playerCollider = GetComponent<Collider2D>();
         textNickname = GetComponentInChildren<Text>();
     }
 
-    private void Update() {
-        Jump();
-
+    private void Update()
+    {
+        Jump();        
     }
 
     private void FixedUpdate() {
@@ -35,21 +37,23 @@ public class PlayerMove : NetworkBehaviour {
     private void Move() {
         //if (!isOwned) return;
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-            isMoving = true;
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            IsMovingRight = true;
             transform.localScale = new Vector3(-1f, 1f, 1f);
-            transform.position += Vector3.right * MoveSpeed * Time.deltaTime;
-            PlayerAnimator.SetBool("isMoving", true);
+            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            playerAnimator.SetBool("isMoving", true);
         }
-        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-            isMoving = true;
+        else if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            IsMovingRight = false;
             transform.localScale = new Vector3(1f, 1f, 1f);
-            transform.position += Vector3.left * MoveSpeed * Time.deltaTime;
-            PlayerAnimator.SetBool("isMoving", true);
+            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            playerAnimator.SetBool("isMoving", true);
         }
-        else {
-            isMoving = false;
-            PlayerAnimator.SetBool("isMoving", false);
+        else
+        {
+            playerAnimator.SetBool("isMoving", false);
         }
 
         Vector3 textScale = new Vector3(0.02f, 0.02f, 0.02f);
@@ -61,28 +65,33 @@ public class PlayerMove : NetworkBehaviour {
             textNickname.transform.localScale = textScale;
     }
 
-    private void Jump() {
-
+    private void Jump()
+    {
         //if (!isOwned) return;
 
-        if (Input.GetKey(KeyCode.Space) && !PlayerAnimator.GetBool("isJumping")) {
-            PlayerRigidbody.AddForce(new Vector2(0, JumpForce));
-            PlayerAnimator.SetBool("isJumping", true);
-        }
+        if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping"))
+        {            
+            playerRigidbody.AddForce(new Vector2(0, jumpForce));            
+            playerAnimator.SetBool("isJumping", true);
+            AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
+        }       
     }
 
     private void Jump_Limit() {
         //if (!isOwned) return;
 
-        if (PlayerRigidbody.velocity.y < 0) {
-            Vector2 feetPosition =
-                new Vector2(PlayerRigidbody.position.x, PlayerRigidbody.position.y - PlayerCollider.bounds.extents.y - 0.3f);
+        if (playerRigidbody.velocity.y < 0)
+        {
+            Vector2 feetPosition = 
+                new Vector2(playerRigidbody.position.x, playerRigidbody.position.y - playerCollider.bounds.extents.y - 0.3f);
 
             Debug.DrawRay(feetPosition, Vector3.down * 0.1f, new Color(0, 1, 0));
             RaycastHit2D rayHit = Physics2D.Raycast(feetPosition, Vector2.down, 1f);
-            if (rayHit.collider != null) {
-                if (rayHit.distance <= 0.1f) {
-                    PlayerAnimator.SetBool("isJumping", false);
+            if (rayHit.collider != null)
+            {
+                if (rayHit.distance <= 0.1f)
+                {
+                    playerAnimator.SetBool("isJumping", false);
                 }
             }
         }
