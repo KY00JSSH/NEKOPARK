@@ -57,6 +57,6 @@ Material:
     - Color_09d5d385e0354cc38676b9711e2a34ae: {r: 0, g: 0.38835526, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _PlayerColor: {r: 1, g: 0.4, b: 0.4, a: 1}
+    - _PlayerColor: {r: 0.39999998, g: 1, b: 0.4604893, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

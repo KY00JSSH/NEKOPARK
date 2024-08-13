@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
@@ -13,17 +11,24 @@ public class tempNetworkUI : MonoBehaviour {
     }
 
     private void CreateHostRoom() {
-        var roomManager = RoomManager.singleton;
-        //TODO: 방 설정 메서드 처리 필요
+        // 호스트가 방을 만드는 메서드입니다.
+        var roomManager = NetworkManager.singleton as RoomManager;
 
+        roomManager.minPlayers = 2;
+        roomManager.maxConnections = 5; //TODO: 최대인원 설정 값 필요
+        roomManager.SetRoomPassword();  //TODO: 방 비밀번호 설정 값 필요
+
+        //TODO: 방 설정 메서드 처리 필요
         roomManager.StartHost();
     }
 
     public void OnJoinButtonClicked() {
+        // 게임 방 들어가기 버튼에 할당되는 메서드
         JoinRoom();
     }
 
     private void JoinRoom() {
+        // 클라이언트가 방에 들어가는 메서드입니다.
         var roomManager = RoomManager.singleton;
         roomManager.StartClient();
     }
