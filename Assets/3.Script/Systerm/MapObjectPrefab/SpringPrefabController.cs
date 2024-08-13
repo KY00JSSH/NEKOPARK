@@ -31,7 +31,7 @@ public class SpringPrefabController : MonoBehaviour {
             Rigidbody2D collRigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
             if (collRigidbody2D != null) {
 
-                addForceVector = new Vector2(saveDirectionVector.x, addForce);
+                //addForceVector = new Vector2(saveDirectionVector.x, addForce);
                 collRigidbody2D.AddForce(collRigidbody2D.transform.up * addForce, ForceMode2D.Impulse);
             }
         }
