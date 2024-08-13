@@ -3592,7 +3592,7 @@ Transform:
   - {fileID: 1935834753}
   - {fileID: 1711879938}
   - {fileID: 1031448052}
-  - {fileID: 2017117448}
+  - {fileID: 1576047925}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4279,8 +4279,9 @@ GameObject:
   - component: {fileID: 1576047928}
   - component: {fileID: 1576047927}
   - component: {fileID: 1576047926}
+  - component: {fileID: 1576047929}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: JoinHintCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4300,8 +4301,8 @@ RectTransform:
   - {fileID: 1995957301}
   - {fileID: 994683573}
   - {fileID: 2106649145}
-  m_Father: {fileID: 2017117448}
-  m_RootOrder: 0
+  m_Father: {fileID: 1368551786}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4369,6 +4370,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1576047929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576047924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ecc0b987e3f83f469d11920e75f2740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1601237670
 GameObject:
   m_ObjectHideFlags: 0
@@ -6317,50 +6330,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012132230}
   m_CullTransparentMesh: 1
---- !u!1 &2017117447
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2017117448}
-  - component: {fileID: 2017117449}
-  m_Layer: 0
-  m_Name: JoinHintCanvas
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2017117448
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017117447}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1576047925}
-  m_Father: {fileID: 1368551786}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2017117449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017117447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ecc0b987e3f83f469d11920e75f2740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2064345945
 GameObject:
   m_ObjectHideFlags: 0
@@ -6727,7 +6696,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2017117449}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: JoinHintController, Assembly-CSharp
         m_MethodName: clickOkButton
         m_Mode: 1
