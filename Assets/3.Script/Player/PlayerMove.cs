@@ -32,7 +32,7 @@ public class PlayerMove : NetworkBehaviour
     }
 
     private void Move() {
-        if (!isOwned) return;
+        //if (!isOwned) return;
 
         if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -72,7 +72,7 @@ public class PlayerMove : NetworkBehaviour
     }
 
     private void Jump_Limit() {
-        if (!isOwned) return;
+        //if (!isOwned) return;
 
         if (PlayerRigidbody.velocity.y < 0)
         {
