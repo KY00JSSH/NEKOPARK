@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public enum PlayerColorType {
     red, orange, yellow, 
@@ -9,17 +10,43 @@ public enum PlayerColorType {
     pink, gray
 }
 
-// 플레이어가 spawn 될 때 색상을 지정하는 스크립트입니다.
+// 플레이어 색상을 지정하는 스크립트입니다.
 public class PlayerColor : NetworkBehaviour {
     [SyncVar(hook = nameof(SetPlayerColor_Hook))]
     public PlayerColorType playerColor = PlayerColorType.gray;
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer playerRenderer;
+    private SpriteRenderer clickEffectRenderer;
 
     public void SetPlayerColor_Hook(PlayerColorType oldColor, PlayerColorType newColor) {
         // Server에서 playerColor 변수의 값이 바뀐 걸 감지하면 Hook 메서드를 호출합니다.
         // 이 메서드는 플레이어 Material의 색깔을 바뀐 색으로 새롭게 설정합니다.
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+        if (playerRenderer == null) 
+            playerRenderer = GetComponentsInChildren<SpriteRenderer>()[0];
+        if (clickEffectRenderer == null) 
+            clickEffectRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
+
+        playerRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+        clickEffectRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+    }
+
+    public List<PlayerColorType> GetAvailableColor() {
+        // 플레이어가 선택하지 않은, 사용가능한 색상의 리스트를 return 합니다.
+        //TODO: UI에서 이 List를 return 받은 뒤, length에 맞게 색상을 출력
+
+        List<PlayerColorType> colors = new List<PlayerColorType>(
+                (PlayerColorType[])Enum.GetValues(typeof(PlayerColorType)));
+        var roomSlots = (NetworkRoomManager.singleton as RoomManager).roomSlots;
+
+        foreach (PlayerColorType spawnColor in Enum.GetValues(typeof(PlayerColorType))) {
+            foreach (var roomPlayer in roomSlots) {
+                var player = roomPlayer as RoomPlayer;
+                if (player.playerColor == spawnColor) {
+                    colors.Remove(spawnColor);
+                    break;
+                }
+            }
+        }
+        return colors;
     }
 
     // 아래는 Color Const 설정 값입니다. 수정 금지.
