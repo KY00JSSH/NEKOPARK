@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 3764689683011247215}
   - component: {fileID: -7847590929114673007}
   - component: {fileID: 8845828724243681469}
+  - component: {fileID: -1875871364781778288}
+  - component: {fileID: -1177224528735570470}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -58,7 +60,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: aad9caeba7e9f4744ba898ffc0f60ff0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d14463afd3b1cb24593584a826ccac7b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b32b79f02d48c649851beb53fbbbd01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -198,34 +200,34 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: -7847590929114673007}
     m_ColliderPaths:
-    - - X: 4649707
-        Y: -1775000
-      - X: 4649707
-        Y: 4475000
-      - X: -4650000
-        Y: 4474707
-      - X: -4649707
-        Y: -1775000
+    - - X: 6254804
+        Y: -2382333
+      - X: 6254804
+        Y: 5949954
+      - X: -6168334
+        Y: 5949661
+      - X: -6168041
+        Y: -2382333
   - m_Collider: {fileID: 3764689683011247215}
     m_ColliderPaths:
-    - - X: 2349707
-        Y: -5375000
-      - X: 2349707
-        Y: -1825000
-      - X: -1849999
-        Y: -1825293
-      - X: -1849706
-        Y: -5375000
+    - - X: 2393088
+        Y: -7197002
+      - X: 2393088
+        Y: -2432333
+      - X: -3108049
+        Y: -2432626
+      - X: -3107756
+        Y: -7197002
   m_CompositePaths:
     m_Paths:
-    - - {x: 0.4649414, y: -0.1775}
-      - {x: 0.4649414, y: 0.4475}
-      - {x: -0.465, y: 0.4474414}
-      - {x: -0.4649414, y: -0.1775}
-    - - {x: 0.23494141, y: -0.5375}
-      - {x: 0.23494141, y: -0.1825}
-      - {x: -0.1849999, y: -0.1825586}
-      - {x: -0.1849413, y: -0.5375}
+    - - {x: 0.6254511, y: -0.2382333}
+      - {x: 0.6254511, y: 0.5949954}
+      - {x: -0.6168334, y: 0.5949368}
+      - {x: -0.6167748, y: -0.2382333}
+    - - {x: 0.23927951, y: -0.7197002}
+      - {x: 0.23927951, y: -0.24323331}
+      - {x: -0.3108049, y: -0.2432919}
+      - {x: -0.3107463, y: -0.7197002}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!61 &3764689683011247215
@@ -241,7 +243,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0.025, y: -0.36}
+  m_Offset: {x: -0.0357334, y: -0.4814668}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -252,7 +254,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.42, y: 0.355}
+  m_Size: {x: 0.550143, y: 0.47646683}
   m_EdgeRadius: 0
 --- !u!61 &-7847590929114673007
 BoxCollider2D:
@@ -267,7 +269,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0.135}
+  m_Offset: {x: 0.0043381453, y: 0.17838103}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -278,7 +280,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.93, y: 0.625}
+  m_Size: {x: 1.2423432, y: 0.8332288}
   m_EdgeRadius: 0
 --- !u!95 &8845828724243681469
 Animator:
@@ -299,3 +301,36 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1875871364781778288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860769993297117655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  animator: {fileID: 8845828724243681469}
+--- !u!114 &-1177224528735570470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860769993297117655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47eb5d8b68bca28469b62f27c0aee188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0.1
+  playerColor: 2

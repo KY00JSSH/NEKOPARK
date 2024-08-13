@@ -1,13 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public enum PlayerColorType {
     red, orange, yellow, 
     green, blue, purple,
     pink, gray
 }
-public class PlayerColor : MonoBehaviour {
+
+// 플레이어가 spawn 될 때 색상을 지정하는 스크립트입니다.
+public class PlayerColor : NetworkBehaviour {
+    [SyncVar(hook = nameof(SetPlayerColor_Hook))]
+    public PlayerColorType playerColor = PlayerColorType.gray;
+    private SpriteRenderer spriteRenderer;
+
+    public void SetPlayerColor_Hook(PlayerColorType oldColor, PlayerColorType newColor) {
+        // Server에서 playerColor 변수의 값이 바뀐 걸 감지하면 Hook 메서드를 호출합니다.
+        // 이 메서드는 플레이어 Material의 색깔을 바뀐 색으로 새롭게 설정합니다.
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+    }
+
+    // 아래는 Color Const 설정 값입니다. 수정 금지.
     private static Color[] colors = new Color[] {
         new Color(1f, 0.4f, 0.44f),
         new Color(1f, 0.6f, 0.4f),
