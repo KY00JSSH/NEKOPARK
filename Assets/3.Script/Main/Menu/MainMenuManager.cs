@@ -21,12 +21,18 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     private void Update() {
+        if (!isConfirm && isSelectMenu && Input.GetButtonDown("Cancel")) {
+            CloseMenu();
+            return;
+        }
+
         if (
             (!isSelectMenu && Input.GetButtonDown("menu"))
                 || (!isSelectMenu && Input.GetButtonDown("Select"))
                 || (!isSelectMenu && Input.GetMouseButtonDown(0))
             ) {
             ShowMenu();
+            return;
         }
 
         if (!isConfirm && isSelectMenu && Input.GetButtonDown("Horizontal")) {
@@ -37,6 +43,12 @@ public class MainMenuManager : MonoBehaviour {
             else {
                 mainMenuController.PrevButtonClick();
             }
+            return;
+        }
+
+        if(isConfirm && Input.GetButtonDown("Cancel")) {
+            CloseConfirm();
+            return;
         }
 
         if ((isConfirm && Input.GetButtonDown("Select")) || (isConfirm && Input.GetButtonDown("menu"))) {
@@ -66,6 +78,7 @@ public class MainMenuManager : MonoBehaviour {
                     confirmManager.ConfirmTextChage(mainMenuController.GetSelectMenu());
                     break;
             }
+            return;
         }
     }
 
