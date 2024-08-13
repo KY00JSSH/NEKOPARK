@@ -6,17 +6,17 @@ using UnityEngine.UI;
 public enum MenuType {
     PLAY_LOCAL = 0,
     PLAY_ONLINE,
-    OPTION ,
+    OPTION,
     EXIT
 }
 
-public class MenuTextController : MonoBehaviour
+public class MainMenuController : MonoBehaviour
 {
     private Text menuText;
     private MenuType menuType = MenuType.PLAY_LOCAL;
 
     private void Start() {
-        menuText = gameObject.GetComponent<Text>();
+        menuText = gameObject.GetComponentInChildren<Text>();
     }
 
     private void Update() {
@@ -40,12 +40,12 @@ public class MenuTextController : MonoBehaviour
         }
     }
 
-    public MenuType getSelectMenu() {
+    public MenuType GetSelectMenu() {
         return menuType;
     }
 
     public void NextButtonClick() {
-        if((int)menuType == 3) {
+        if ((int)menuType == 3) {
             menuType = MenuType.PLAY_LOCAL;
         }
         else {
