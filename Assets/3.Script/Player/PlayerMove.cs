@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PlayerMove : NetworkBehaviour {
     private float moveSpeed = 5f;
     public bool IsMoving { get; private set; }
+    public bool IsMovingRight { get; private set; }     // 2024 08 14 김수주 테스트용 추가
 
     private float jumpForce = 400f;
 
@@ -36,12 +37,14 @@ public class PlayerMove : NetworkBehaviour {
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
             IsMoving = true;
+            IsMovingRight = true;
             transform.localScale = new Vector3(-1f, 1f, 1f);
             transform.position += Vector3.right * moveSpeed * Time.deltaTime;
             playerAnimator.SetBool("isMoving", true);
         }
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
             IsMoving = true;
+            IsMovingRight = false;
             transform.localScale = new Vector3(1f, 1f, 1f);
             transform.position += Vector3.left * moveSpeed * Time.deltaTime;
             playerAnimator.SetBool("isMoving", true);
@@ -66,7 +69,7 @@ public class PlayerMove : NetworkBehaviour {
         if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping")) {
             playerRigidbody.AddForce(new Vector2(0, jumpForce));
             playerAnimator.SetBool("isJumping", true);
-            AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
+            //AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }
     }
 

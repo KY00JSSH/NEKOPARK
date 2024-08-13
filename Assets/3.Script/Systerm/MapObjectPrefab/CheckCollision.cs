@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum HasCollDirection {
-    Left, Right, Top, Bottom
+    left, right, up, down, defaultD
 }
 
 public class CheckCollision : MonoBehaviour {
@@ -13,28 +13,51 @@ public class CheckCollision : MonoBehaviour {
     public bool SetObjectHasDirection(HasCollDirection collDirection) { return checkCollBool[(int)collDirection] = true; }
     public bool ResetObjectHasDirection(HasCollDirection collDirection) { return checkCollBool[(int)collDirection] = false; }
 
+
+    private bool checkCollisionIsPlayer;
+    public bool GetCollisionIsPlayer() { return checkCollisionIsPlayer; }
+
     private void Awake() {
         checkCollBool = new bool[Enum.GetValues(typeof(HasCollDirection)).Length];
     }
+    /*
+    private void Update() {
+        SettingTransformIsPushing();
+    }
+    private void SettingTransformIsPushing() {
+        if (transform.CompareTag("Player")) {
+            PlayerMove playerMove = GetComponent<PlayerMove>();
+            if (playerMove.IsMoving) checkTransformIsPushing= true;
+            else checkTransformIsPushing= false;
+        }
+        else {
+            checkTransformIsPushing = false;
+        }
+    }
+    */
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
+
+            if (collision.transform.CompareTag("Player")) checkCollisionIsPlayer = true;
+            else checkCollisionIsPlayer = false;
+
             Vector3 collDirection = (transform.position - collision.transform.position);
 
             if (Mathf.Abs(collDirection.y) > Mathf.Abs(collDirection.x)) {
                 if (collDirection.y > 0) {
-                    SetObjectHasDirection(HasCollDirection.Bottom);
+                    SetObjectHasDirection(HasCollDirection.down);
                 }
                 else {
-                    SetObjectHasDirection(HasCollDirection.Top);
+                    SetObjectHasDirection(HasCollDirection.up);
                 }
             }
             else {
                 if (collDirection.x > 0) {
-                    SetObjectHasDirection(HasCollDirection.Left);
+                    SetObjectHasDirection(HasCollDirection.left);
                 }
                 else {
-                    SetObjectHasDirection(HasCollDirection.Right);
+                    SetObjectHasDirection(HasCollDirection.right);
                 }
             }
 
@@ -48,18 +71,18 @@ public class CheckCollision : MonoBehaviour {
 
             if (Mathf.Abs(collDirection.y) > Mathf.Abs(collDirection.x)) {
                 if (collDirection.y > 0) {
-                    ResetObjectHasDirection(HasCollDirection.Bottom);
+                    ResetObjectHasDirection(HasCollDirection.down);
                 }
                 else {
-                    ResetObjectHasDirection(HasCollDirection.Top);
+                    ResetObjectHasDirection(HasCollDirection.up);
                 }
             }
             else {
                 if (collDirection.x > 0) {
-                    ResetObjectHasDirection(HasCollDirection.Left);
+                    ResetObjectHasDirection(HasCollDirection.left);
                 }
                 else {
-                    ResetObjectHasDirection(HasCollDirection.Right);
+                    ResetObjectHasDirection(HasCollDirection.right);
                 }
             }
         }
