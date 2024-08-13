@@ -6,6 +6,7 @@ using System;
 // 멀티플레이 로비 (Game Room Scene) 에서 플레이어를 생성, 제어하기 위한 스크립트입니다.
 
 public class RoomPlayer : NetworkRoomPlayer {
+    [SyncVar] public string Nickname;
     public PlayerColorType playerColor { get; private set; }
 
     public override void Start() {
