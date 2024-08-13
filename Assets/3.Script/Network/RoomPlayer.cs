@@ -6,24 +6,21 @@ using System;
 // 멀티플레이 로비 (Game Room Scene) 에서 플레이어를 생성하기 위한 스크립트입니다.
 
 public class RoomPlayer : NetworkRoomPlayer {
-    [SyncVar (hook = nameof(SetPlayerColor_Hook))] 
-    public PlayerColorType playerColor;
-    private SpriteRenderer spriteRenderer;
+    private PlayerColorType playerColor;
 
-    public void SetPlayerColor_Hook(PlayerColorType oldColor, PlayerColorType newColor) {
-        // Server에서 playerColor 변수의 값이 바뀐 걸 감지하면 Hook 메서드를 호출합니다.
-        // 이 메서드는 플레이어 Material의 색깔을 바뀐 색으로 새롭게 설정합니다.
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+    public override void Start() {
+        base.Start();
+        if(isServer) SpawnRoomPlayer();
     }
 
     private void SpawnRoomPlayer() {
         // 게임 로비에서 플레이어가 사용할 플레이어 캐릭터를 설정 및 Instantiate 합니다.
 
-        playerColor = GetSpawnColor();
         Vector3 spawnPosition = GetSpawnPosition();
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
+        player.GetComponent<PlayerColor>().playerColor = GetSpawnColor();
+
         NetworkServer.Spawn(player, connectionToClient);
     }
 
@@ -31,14 +28,30 @@ public class RoomPlayer : NetworkRoomPlayer {
         // 게임 로비에 참여한 각 플레이어마다 다른 색깔을 배정합니다.
 
         var roomSlots = (NetworkManager.singleton as RoomManager).roomSlots;
-        PlayerColorType playerColor = PlayerColorType.red;
 
+        foreach (PlayerColorType spawnColor in Enum.GetValues(typeof(PlayerColorType))) {
+            bool isUsedColor = false;
+            foreach (var roomPlayer in roomSlots) {
+            var player = roomPlayer as RoomPlayer;
+                if (player.playerColor == spawnColor &&
+                    roomPlayer.netId != netId) {
+                    isUsedColor = true;
+                    break;
+                }
+            }
+            if(!isUsedColor) {
+                playerColor = spawnColor;
+                break;
+            }
+        }
+
+        /*
         for (int i = 0; i < Enum.GetValues(typeof(PlayerColorType)).Length; i++) {
             bool isSameColor = false;
             foreach(var roomplayer in roomSlots) {
                 var player = roomplayer as RoomPlayer;
                 if (player.playerColor == (PlayerColorType)i &&
-                    roomplayer.netId != netId) {
+                    roomplayer.netId != netId) {                    // 내가 아닌 다른 플레이어가 
                     isSameColor = true;
                     break;
                 }
@@ -49,6 +62,8 @@ public class RoomPlayer : NetworkRoomPlayer {
                 break;
             }
         }
+        */
+
         return playerColor;
     }
 
