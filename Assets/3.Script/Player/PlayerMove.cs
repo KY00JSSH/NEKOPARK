@@ -2,13 +2,12 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 
-public class PlayerMove : NetworkBehaviour 
-{
+public class PlayerMove : NetworkBehaviour {
     private float MoveSpeed = 5f;
-    public bool isMovingRight { get; private set; }
+    public bool isMoving { get; private set; }
 
     private float JumpForce = 400f;
-   
+
     private Rigidbody2D PlayerRigidbody;
     private Collider2D PlayerCollider;
 
@@ -16,18 +15,16 @@ public class PlayerMove : NetworkBehaviour
 
     private Text textNickname;
 
-    private void Awake()
-    {
+    private void Awake() {
         PlayerRigidbody = GetComponent<Rigidbody2D>();
         PlayerAnimator = GetComponent<Animator>();
         PlayerCollider = GetComponent<Collider2D>();
         textNickname = GetComponentInChildren<Text>();
     }
 
-    private void Update()
-    {
-        Jump();        
-        
+    private void Update() {
+        Jump();
+
     }
 
     private void FixedUpdate() {
@@ -38,22 +35,20 @@ public class PlayerMove : NetworkBehaviour
     private void Move() {
         //if (!isOwned) return;
 
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            isMovingRight = true;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+            isMoving = true;
             transform.localScale = new Vector3(-1f, 1f, 1f);
             transform.position += Vector3.right * MoveSpeed * Time.deltaTime;
             PlayerAnimator.SetBool("isMoving", true);
         }
-        else if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            isMovingRight = false;
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+            isMoving = true;
             transform.localScale = new Vector3(1f, 1f, 1f);
             transform.position += Vector3.left * MoveSpeed * Time.deltaTime;
             PlayerAnimator.SetBool("isMoving", true);
         }
-        else
-        {
+        else {
+            isMoving = false;
             PlayerAnimator.SetBool("isMoving", false);
         }
 
@@ -66,31 +61,27 @@ public class PlayerMove : NetworkBehaviour
             textNickname.transform.localScale = textScale;
     }
 
-    private void Jump()
-    {
-        if (!isOwned) return;
+    private void Jump() {
 
-        if (Input.GetKey(KeyCode.Space) && !PlayerAnimator.GetBool("isJumping"))
-        {            
-            PlayerRigidbody.AddForce(new Vector2(0, JumpForce));            
+        //if (!isOwned) return;
+
+        if (Input.GetKey(KeyCode.Space) && !PlayerAnimator.GetBool("isJumping")) {
+            PlayerRigidbody.AddForce(new Vector2(0, JumpForce));
             PlayerAnimator.SetBool("isJumping", true);
-        }       
+        }
     }
 
     private void Jump_Limit() {
         //if (!isOwned) return;
 
-        if (PlayerRigidbody.velocity.y < 0)
-        {
-            Vector2 feetPosition = 
+        if (PlayerRigidbody.velocity.y < 0) {
+            Vector2 feetPosition =
                 new Vector2(PlayerRigidbody.position.x, PlayerRigidbody.position.y - PlayerCollider.bounds.extents.y - 0.3f);
 
             Debug.DrawRay(feetPosition, Vector3.down * 0.1f, new Color(0, 1, 0));
             RaycastHit2D rayHit = Physics2D.Raycast(feetPosition, Vector2.down, 1f);
-            if (rayHit.collider != null)
-            {
-                if (rayHit.distance <= 0.1f)
-                {
+            if (rayHit.collider != null) {
+                if (rayHit.distance <= 0.1f) {
                     PlayerAnimator.SetBool("isJumping", false);
                 }
             }

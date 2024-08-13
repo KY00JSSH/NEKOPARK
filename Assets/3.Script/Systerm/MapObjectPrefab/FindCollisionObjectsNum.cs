@@ -65,7 +65,7 @@ public class FindCollisionObjectsNum : MonoBehaviour {
             collObjectsList.Add(collision.gameObject);
             collObjectsNum = 1;
         }
-        Debug.LogWarning("collObjectsNum 검출갯수 확인 : " + collObjectsNum);
+        //Debug.LogWarning("collObjectsNum 검출갯수 확인 : " + collObjectsNum);
     }
 
     /*     
