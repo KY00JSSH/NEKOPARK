@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
 
 public class PlayerMove : NetworkBehaviour 
 {
@@ -13,11 +14,14 @@ public class PlayerMove : NetworkBehaviour
 
     private Animator PlayerAnimator;
 
+    private Text textNickname;
+
     private void Awake()
     {
         PlayerRigidbody = GetComponent<Rigidbody2D>();
         PlayerAnimator = GetComponent<Animator>();
         PlayerCollider = GetComponent<Collider2D>();
+        textNickname = GetComponentInChildren<Text>();
     }
 
     private void Update()
@@ -52,18 +56,20 @@ public class PlayerMove : NetworkBehaviour
         {
             PlayerAnimator.SetBool("isMoving", false);
         }
-                
-        //float inputX = Input.GetAxisRaw("Horizontal");
-        //Vector3 moveDirection = Vector3.ClampMagnitude(new Vector3(inputX, 0, 0), 1f);
-        //
-        //if (moveDirection.x < 0f) transform.localScale = new Vector3(-1f, 1f, 1f);
-        //else if (moveDirection.x > 0f) transform.localScale = new Vector3(1f, 1f, 1f);
-        //
-        //transform.position += moveDirection * MoveSpeed * Time.deltaTime;
+
+        Vector3 textScale = new Vector3(0.02f, 0.02f, 0.02f);
+        if (transform.localScale.x < 0) {
+            textScale.x *= -1;
+            textNickname.transform.localScale = textScale;
+        }
+        else if (transform.localScale.x > 0)
+            textNickname.transform.localScale = textScale;
     }
 
     private void Jump()
-    {        
+    {
+        if (!isOwned) return;
+
         if (Input.GetKey(KeyCode.Space) && !PlayerAnimator.GetBool("isJumping"))
         {            
             PlayerRigidbody.AddForce(new Vector2(0, JumpForce));            
