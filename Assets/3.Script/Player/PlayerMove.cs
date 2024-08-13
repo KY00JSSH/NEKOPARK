@@ -86,4 +86,14 @@ public class PlayerMove : NetworkBehaviour {
             }
         }
     }
+
+    private void Die()      //플레이어 사망
+    {
+
+    }
+    
+    private void OpeningDoor()      //문 열기
+    {
+
+    }
 }
