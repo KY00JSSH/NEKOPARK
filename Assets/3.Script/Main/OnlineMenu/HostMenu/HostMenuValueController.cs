@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
     private HostMenuController hostMenuController;
@@ -13,6 +14,7 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
     }
 
     public void changeValueText(bool isRight) {
+        Debug.Log(gameObject.name);
         if (gameObject.name.Equals("TypeValue")) {
             if (isRight) {
                 if (valueNum == 1) {
@@ -37,6 +39,7 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
         }
         else if (gameObject.name.Equals("CountValue")) {
             if (isRight) {
+                Debug.Log(valueNum);
                 if (valueNum == 6) {
                     valueNum = 0;
                     valueText.text = $"{valueNum + 2}";
@@ -56,7 +59,6 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
                     valueText.text = $"{valueNum + 2}";
                 }
             }
-
         }
     }
 

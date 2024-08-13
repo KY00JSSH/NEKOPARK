@@ -13,10 +13,12 @@ public class HostMenuController : MonoBehaviour {
 
     [SerializeField] private Image[] hoverImage;
     private HostMenuValueController[] hostMenuValueControllers;
+    private HostCreateController hostCreateController;
 
     private void Awake() {
         SetSelectHostMenu(HostMenuType.TYPE);
         hostMenuValueControllers = FindObjectsOfType<HostMenuValueController>();
+        hostCreateController = FindObjectOfType<HostCreateController>();
     }
 
     private void Update() {
@@ -26,7 +28,6 @@ public class HostMenuController : MonoBehaviour {
             }
             else {
                 float horizontalInput = Input.GetAxis("Horizontal");
-
                 switch (selectHostMenu) {
                     case HostMenuType.TYPE:
                         hostMenuValueControllers[0].changeValueText(horizontalInput > 0 ? true : false);
@@ -124,6 +125,6 @@ public class HostMenuController : MonoBehaviour {
     }
 
     private void startHost() {
-        FindObjectOfType<HostCreateController>().OpenCreateLoading();
+        hostCreateController.OpenCreateLoading();
     }
 }
