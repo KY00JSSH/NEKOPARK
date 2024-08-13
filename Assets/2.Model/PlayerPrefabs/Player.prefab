@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47eb5d8b68bca28469b62f27c0aee188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
-  syncInterval: 0
-  playerColor: 5
+  syncInterval: 0.1
+  playerColor: 2

@@ -562,7 +562,7 @@
     },
     "m_Name": "_PlayerColor",
     "m_DefaultReferenceName": "Color_09d5d385e0354cc38676b9711e2a34ae",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "_PlayerColor",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,

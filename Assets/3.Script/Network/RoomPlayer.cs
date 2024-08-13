@@ -28,14 +28,30 @@ public class RoomPlayer : NetworkRoomPlayer {
         // 게임 로비에 참여한 각 플레이어마다 다른 색깔을 배정합니다.
 
         var roomSlots = (NetworkManager.singleton as RoomManager).roomSlots;
-        PlayerColorType playerColor = PlayerColorType.red;
 
+        foreach (PlayerColorType spawnColor in Enum.GetValues(typeof(PlayerColorType))) {
+            bool isUsedColor = false;
+            foreach (var roomPlayer in roomSlots) {
+            var player = roomPlayer as RoomPlayer;
+                if (player.playerColor == spawnColor &&
+                    roomPlayer.netId != netId) {
+                    isUsedColor = true;
+                    break;
+                }
+            }
+            if(!isUsedColor) {
+                playerColor = spawnColor;
+                break;
+            }
+        }
+
+        /*
         for (int i = 0; i < Enum.GetValues(typeof(PlayerColorType)).Length; i++) {
             bool isSameColor = false;
             foreach(var roomplayer in roomSlots) {
                 var player = roomplayer as RoomPlayer;
                 if (player.playerColor == (PlayerColorType)i &&
-                    roomplayer.netId != netId) {
+                    roomplayer.netId != netId) {                    // 내가 아닌 다른 플레이어가 
                     isSameColor = true;
                     break;
                 }
@@ -46,6 +62,8 @@ public class RoomPlayer : NetworkRoomPlayer {
                 break;
             }
         }
+        */
+
         return playerColor;
     }
 

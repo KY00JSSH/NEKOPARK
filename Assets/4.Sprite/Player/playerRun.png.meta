@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: efba2ca97c940a140a3240294b23cc7d
+guid: 2cde020243b877f4c97da0bca96778af
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8392225855553177403
-    second: PlayerOriginal_0
+      213: -4535197531673927575
+    second: playerRun_0
   - first:
-      213: -2397222970729905265
-    second: PlayerOriginal_1
+      213: 4930014388355629251
+    second: playerRun_1
   - first:
-      213: 7366791263278928389
-    second: PlayerOriginal_2
+      213: -8762322290987676394
+    second: playerRun_2
   - first:
-      213: 7103036766193019452
-    second: PlayerOriginal_3
+      213: -4488786312590717477
+    second: playerRun_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -127,7 +127,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlayerOriginal_0
+      name: playerRun_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,14 +141,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c877ec5c03d88b80800000000000000
-      internalID: -8392225855553177403
+      spriteID: 960e85a9fddbf01c0800000000000000
+      internalID: -4535197531673927575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerOriginal_1
+      name: playerRun_1
       rect:
         serializedVersion: 2
         x: 100
@@ -162,14 +162,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f83cc3eb86a5bbed0800000000000000
-      internalID: -2397222970729905265
+      spriteID: 3c0808347fdea6440800000000000000
+      internalID: 4930014388355629251
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerOriginal_2
+      name: playerRun_2
       rect:
         serializedVersion: 2
         x: 200
@@ -183,14 +183,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 502113e7f991c3660800000000000000
-      internalID: 7366791263278928389
+      spriteID: 61d41361d4af56680800000000000000
+      internalID: -8762322290987676394
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PlayerOriginal_3
+      name: playerRun_3
       rect:
         serializedVersion: 2
         x: 300
@@ -204,8 +204,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c3a697b2e4e039260800000000000000
-      internalID: 7103036766193019452
+      spriteID: bdd056d91a0a4b1c0800000000000000
+      internalID: -4488786312590717477
       vertices: []
       indices: 
       edges: []
