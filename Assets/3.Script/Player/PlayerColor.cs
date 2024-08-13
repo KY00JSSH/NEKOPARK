@@ -7,26 +7,22 @@ using System;
 public enum PlayerColorType {
     red, orange, yellow, 
     green, blue, purple,
-    pink, gray
+    pink, gray, nullColor
 }
 
 // 플레이어 색상을 지정하는 스크립트입니다.
 public class PlayerColor : NetworkBehaviour {
     [SyncVar(hook = nameof(SetPlayerColor_Hook))]
-    public PlayerColorType playerColor = PlayerColorType.gray;
-    private SpriteRenderer playerRenderer;
-    private SpriteRenderer clickEffectRenderer;
+    public PlayerColorType playerColor = PlayerColorType.nullColor;
+    private SpriteRenderer spriteRenderer;
 
     public void SetPlayerColor_Hook(PlayerColorType oldColor, PlayerColorType newColor) {
         // Server에서 playerColor 변수의 값이 바뀐 걸 감지하면 Hook 메서드를 호출합니다.
         // 이 메서드는 플레이어 Material의 색깔을 바뀐 색으로 새롭게 설정합니다.
-        if (playerRenderer == null) 
-            playerRenderer = GetComponentsInChildren<SpriteRenderer>()[0];
-        if (clickEffectRenderer == null) 
-            clickEffectRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
+        if (spriteRenderer == null) 
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
-        playerRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
-        clickEffectRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+        spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
     }
 
     public List<PlayerColorType> GetAvailableColor() {
