@@ -18,9 +18,9 @@ public class PlayerMove : NetworkBehaviour
 
     private void Awake()
     {
-        PlayerRigidbody = GetComponent<Rigidbody2D>();
-        PlayerAnimator = GetComponent<Animator>();
-        PlayerCollider = GetComponent<Collider2D>();
+        playerRigidbody = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
+        playerCollider = GetComponent<Collider2D>();
         textNickname = GetComponentInChildren<Text>();
     }
 
@@ -67,9 +67,9 @@ public class PlayerMove : NetworkBehaviour
 
     private void Jump()
     {
-        if (!isOwned) return;
+        //if (!isOwned) return;
 
-        if (Input.GetKey(KeyCode.Space) && !PlayerAnimator.GetBool("isJumping"))
+        if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping"))
         {            
             playerRigidbody.AddForce(new Vector2(0, jumpForce));            
             playerAnimator.SetBool("isJumping", true);

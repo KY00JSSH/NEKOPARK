@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     public AudioMixer audioMixer;
 
-    public static AudioManager instance;        //ΩÃ±€≈Ê
+    public static AudioManager instance = null;        //ΩÃ±€≈Ê
 
     private void Awake()
     {
