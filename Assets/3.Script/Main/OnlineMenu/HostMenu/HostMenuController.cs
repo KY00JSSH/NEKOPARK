@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,35 +12,74 @@ public class HostMenuController : MonoBehaviour {
     private HostMenuType selectHostMenu;
 
     [SerializeField] private Image[] hoverImage;
+    private HostMenuValueController[] hostMenuValueControllers;
 
     private void Awake() {
         SetSelectHostMenu(HostMenuType.TYPE);
+        hostMenuValueControllers = FindObjectsOfType<HostMenuValueController>();
     }
 
     private void Update() {
-
-
         if (Input.GetButtonDown("Horizontal")) {
             if ((int)selectHostMenu > 2) {
                 SetSelectHostMenu((int)selectHostMenu == 3 ? HostMenuType.CANCEL : HostMenuType.CREATE);
             }
             else {
+                float horizontalInput = Input.GetAxis("Horizontal");
 
+                switch (selectHostMenu) {
+                    case HostMenuType.TYPE:
+                        hostMenuValueControllers[0].changeValueText(horizontalInput > 0 ? true : false);
+                        break;
+                    case HostMenuType.COLOR:
+                        break;
+                    case HostMenuType.COUNT:
+                        hostMenuValueControllers[2].changeValueText(horizontalInput > 0 ? true : false);
+                        break;
+                }
             }
             return;
         }
-        if (Input.GetButton("Vertical")) {
+
+        if (Input.GetButtonDown("Vertical")) {
+            float verticalInput = Input.GetAxis("Vertical");
             if ((int)selectHostMenu > 2) {
-                float verticalInput = Input.GetAxis("Vertical");
                 if (verticalInput > 0) {
                     SetSelectHostMenu(HostMenuType.COUNT);
+                    return;
                 }
                 else {
                     SetSelectHostMenu(HostMenuType.TYPE);
+                    return;
                 }
             }
             else {
+                if (verticalInput > 0) {
+                    int menuNum = (int)selectHostMenu;
+                    if (menuNum == 0) {
+                        menuNum = 4;
+                    }
+                    else {
+                        menuNum -= 1;
+                    }
+                    SetSelectHostMenu((HostMenuType)menuNum);
+                    return;
+                }
+                else {
+                    int menuNum = (int)selectHostMenu;
+                    menuNum += 1;
+                    SetSelectHostMenu((HostMenuType)menuNum);
+                    return;
+                }
+            }
+        }
 
+        if (Input.GetButtonDown("Select") || Input.GetButtonDown("menu")) {
+            if ((int)selectHostMenu == 3) {
+                startHost();
+            }
+            else if((int)selectHostMenu == 4) {
+                FindObjectOfType<OnlineMenuManager>().CloseHostMenu();
             }
             return;
         }
@@ -52,6 +89,7 @@ public class HostMenuController : MonoBehaviour {
 
     public void SetSelectHostMenu(HostMenuType type) {
         selectHostMenu = type;
+        CheckHoverImage();
     }
 
     public void CheckHoverImage() {
@@ -83,5 +121,9 @@ public class HostMenuController : MonoBehaviour {
                 hoverImage[i].enabled = false;
             }
         }
+    }
+
+    private void startHost() {
+        FindObjectOfType<HostCreateController>().OpenCreateLoading();
     }
 }
