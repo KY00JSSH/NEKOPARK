@@ -24,11 +24,8 @@ public class PlayerNickname : NetworkBehaviour {
     private void Start() {
         // Player가 생성될 때 닉네임을 설정, 서버와 동기화합니다.
         if (isOwned) CmdSetNickname("김수주");
-    }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.F1))
-            CmdSetNickname("박지훈");
+        //TODO: 방 입장시 UI에서 (DB에서) 닉네임을 받아와서,
+        //TODO: RoomPlayer에 저장해뒀다가 가져와야 합니다.
     }
 
     [Command]

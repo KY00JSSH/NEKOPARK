@@ -14,7 +14,7 @@ public class tempNetworkUI : MonoBehaviour {
         // 호스트가 방을 만드는 메서드입니다.
         var roomManager = NetworkManager.singleton as RoomManager;
 
-        roomManager.minPlayers = 2;
+        roomManager.minPlayers = NetworkManager.singleton.DebuggingOverride ? 1 : 2;
         roomManager.maxConnections = 5; //TODO: 최대인원 설정 값 필요
         roomManager.SetRoomPassword();  //TODO: 방 비밀번호 설정 값 필요
 

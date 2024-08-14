@@ -706,6 +706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67aca6915bd2cf54d838329a806f8239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebuggingOverride: 1
   dontDestroyOnLoad: 1
   runInBackground: 1
   headlessStartMode: 1
@@ -721,7 +722,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 8390812917741026082, guid: ac7c854ae947c574992486cd4f301ddb, type: 3}
+  playerPrefab: {fileID: 8023733475220816051, guid: 1ad38f79558f4d642af87544f8e53f5c, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
