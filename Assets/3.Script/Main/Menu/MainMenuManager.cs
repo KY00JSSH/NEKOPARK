@@ -16,7 +16,6 @@ public class MainMenuManager : MonoBehaviour {
 
     private void Start() {
         mainMenuController.gameObject.SetActive(false);
-        confirmManager.gameObject.SetActive(false);
     }
 
     private void Update() {
@@ -72,14 +71,14 @@ public class MainMenuManager : MonoBehaviour {
                     break;
                 case MenuType.PLAY_ONLINE:
                     ShowConfirm();
-                    confirmManager.ConfirmTextChage(mainMenuController.GetSelectMenu());
+                    confirmManager.ConfirmMainTextChage(mainMenuController.GetSelectMenu());
                     break;
                 case MenuType.OPTION:
                     //TODO: (수진) OPTION 추가하기
                     break;
                 case MenuType.EXIT:
                     ShowConfirm();
-                    confirmManager.ConfirmTextChage(mainMenuController.GetSelectMenu());
+                    confirmManager.ConfirmMainTextChage(mainMenuController.GetSelectMenu());
                     break;
             }
             return;

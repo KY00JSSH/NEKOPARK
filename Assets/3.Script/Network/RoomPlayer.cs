@@ -4,17 +4,34 @@ using System;
 
 // 이 스크립트는 Mirror Network의 Room Manager를 설정하고,
 // 멀티플레이 로비 (Game Room Scene) 에서 플레이어를 생성, 제어하기 위한 스크립트입니다.
+// 플레이어 캐릭터의 네트워크 설정 및 기본 값을 저장합니다.
 
 public class RoomPlayer : NetworkRoomPlayer {
+    private static RoomPlayer myRoomPlayer;
+    public static RoomPlayer MyRoomPlayer {
+        get {
+            if(myRoomPlayer == null) {
+                var players = FindObjectsOfType<RoomPlayer>();
+                foreach(var player in players) 
+                    if(player.isOwned) {
+                        myRoomPlayer = player;
+                        break;
+                    }
+            }
+            return myRoomPlayer;
+        }
+    }
+
     [SyncVar] public string Nickname;
     public PlayerColorType playerColor { get; private set; }
+
     public override void Start() {
         base.Start();
 
         if(isServer) SpawnRoomPlayer();
         RoomManager.UpdateConnenctedPlayerCount();
     }
-
+    
     private void OnDestroy() {
         RoomManager.UpdateConnenctedPlayerCount();
     }

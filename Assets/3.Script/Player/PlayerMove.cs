@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public class PlayerMove : NetworkBehaviour {
     private float moveSpeed = 5f;
     public bool IsMoving { get; private set; }
-    public bool IsMovingRight { get; private set; }     // 2024 08 14 ±è¼öÁÖ Å×½ºÆ®¿ë Ãß°¡
+    public bool IsMovingRight { get; private set; }     // 2024 08 14 ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
+
+    public bool Haskey { get; private set; }
 
     private float jumpForce = 400f;
 
@@ -14,15 +16,17 @@ public class PlayerMove : NetworkBehaviour {
 
     private Animator playerAnimator;
 
+
     private Text textNickname;
 
 
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponent<Animator>();
-        playerCollider = GetComponent<Collider2D>();
-        textNickname = GetComponentInChildren<Text>();
+        playerCollider  = GetComponent<Collider2D>();
+        playerAnimator  = GetComponent<Animator>();
+
+        textNickname    = GetComponentInChildren<Text>();
     }
 
     private void Start() {
@@ -40,7 +44,7 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        if (!isOwned) return;
+        if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
             IsMoving = true;
@@ -71,18 +75,19 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump() {
-        //if (!isOwned) return;
+        if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
 
         if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping"))
         {            
             playerRigidbody.AddForce(new Vector2(0, jumpForce));            
             playerAnimator.SetBool("isJumping", true);
-            //AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
+
+            AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }
     }
 
     private void Jump_Limit() {
-        //if (!isOwned) return;
+        if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
 
         if (playerRigidbody.velocity.y < 0) {
             Vector2 feetPosition =
@@ -96,6 +101,11 @@ public class PlayerMove : NetworkBehaviour {
                 }
             }
         }
+    }
+
+    public void SetHasKey(bool hasKey)
+    {
+        Haskey = hasKey;
     }
 
     private void Die()      //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½

@@ -17,6 +17,10 @@ public class PlayerMouseCommunication : NetworkBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Start() {
+        transform.SetParent(RoomPlayer.MyRoomPlayer.transform);   
+    }
+
     public void SetClickEffectColor_Hook(PlayerColorType oldColor, PlayerColorType newColor) {
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
