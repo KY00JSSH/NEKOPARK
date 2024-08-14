@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +8,9 @@ public enum MenuType {
     EXIT
 }
 
-public class MainMenuController : MonoBehaviour
-{
+public class MainMenuController : MonoBehaviour{
+    //메인 메뉴 선택 관련 Controller
+
     private Text menuText;
     private MenuType menuType = MenuType.PLAY_LOCAL;
 

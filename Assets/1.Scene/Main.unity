@@ -204,7 +204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 31252047}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1412422364}
+        m_TargetAssemblyTypeName: HostMenuValueController, Assembly-CSharp
+        m_MethodName: ChangeValueText
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &31252047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +502,7 @@ GameObject:
   - component: {fileID: 117458794}
   - component: {fileID: 117458793}
   - component: {fileID: 117458792}
+  - component: {fileID: 117458795}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -562,6 +575,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &117458795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117458791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &271338942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,7 +2014,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 733838488}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1412422364}
+        m_TargetAssemblyTypeName: HostMenuValueController, Assembly-CSharp
+        m_MethodName: ChangeValueText
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &733838488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2395,7 +2453,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 870716319}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367533090}
+        m_TargetAssemblyTypeName: HostMenuValueController, Assembly-CSharp
+        m_MethodName: ChangeValueText
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &870716319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3064,6 +3134,10 @@ MonoBehaviour:
   - {fileID: 1647424698}
   - {fileID: 1616567761}
   - {fileID: 1357820248}
+  valueObjects:
+  - {fileID: 1921050613}
+  - {fileID: 1412422362}
+  - {fileID: 1194033274}
 --- !u!1 &1303648247
 GameObject:
   m_ObjectHideFlags: 0
@@ -4677,9 +4751,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935834754}
-        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: GoToMenu
+      - m_Target: {fileID: 1277411558}
+        m_TargetAssemblyTypeName: HostMenuController, Assembly-CSharp
+        m_MethodName: StartHost
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5251,7 +5325,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1731004172}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1194033276}
+        m_TargetAssemblyTypeName: HostMenuValueController, Assembly-CSharp
+        m_MethodName: ChangeValueText
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1731004172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6196,7 +6282,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007785016}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6291,7 +6377,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2012132233}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1194033276}
+        m_TargetAssemblyTypeName: HostMenuValueController, Assembly-CSharp
+        m_MethodName: ChangeValueText
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2012132233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6612,7 +6710,6 @@ GameObject:
   - component: {fileID: 2106649149}
   - component: {fileID: 2106649148}
   - component: {fileID: 2106649147}
-  - component: {fileID: 2106649146}
   m_Layer: 5
   m_Name: Ok
   m_TagString: Untagged
@@ -6640,18 +6737,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -456}
   m_SizeDelta: {x: 170, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2106649146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106649144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c927ff2ef04cc6b43ad8958364b95fde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2106649147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6696,7 +6781,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1576047929}
         m_TargetAssemblyTypeName: JoinHintController, Assembly-CSharp
         m_MethodName: clickOkButton
         m_Mode: 1
@@ -6827,7 +6912,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2114595868}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 367533090}
+        m_TargetAssemblyTypeName: HostMenuValueController, Assembly-CSharp
+        m_MethodName: ChangeValueText
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2114595868
 MonoBehaviour:
   m_ObjectHideFlags: 0

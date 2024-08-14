@@ -14,39 +14,39 @@ public class KeyTest : MonoBehaviour
     }
 
     void PrintInputMappings(string actionName) {
-        // InputManager 클래스의 private 필드에 접근하기 위한 Reflection 사용
-        var inputManagerType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.InputManager");
-        if (inputManagerType == null) {
-            Debug.LogError("InputManager type not found!");
-            return;
-        }
+        //// InputManager 클래스의 private 필드에 접근하기 위한 Reflection 사용
+        //var inputManagerType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.InputManager");
+        //if (inputManagerType == null) {
+        //    Debug.LogError("InputManager type not found!");
+        //    return;
+        //}
 
-        var inputManagerInstance = GetInputManagerInstance(inputManagerType);
-        if (inputManagerInstance == null) {
-            Debug.LogError("InputManager instance not found!");
-            return;
-        }
+        //var inputManagerInstance = GetInputManagerInstance(inputManagerType);
+        //if (inputManagerInstance == null) {
+        //    Debug.LogError("InputManager instance not found!");
+        //    return;
+        //}
 
-        var axes = GetAxes(inputManagerInstance);
-        if (axes == null) {
-            Debug.LogError("Axes array not found!");
-            return;
-        }
+        //var axes = GetAxes(inputManagerInstance);
+        //if (axes == null) {
+        //    Debug.LogError("Axes array not found!");
+        //    return;
+        //}
 
-        foreach (var axis in axes) {
-            var axisName = (string)axis.GetType().GetField("name", BindingFlags.Public | BindingFlags.Instance).GetValue(axis);
-            if (axisName == actionName) {
-                var positiveButton = (string)axis.GetType().GetField("positiveButton", BindingFlags.Public | BindingFlags.Instance).GetValue(axis);
-                var negativeButton = (string)axis.GetType().GetField("negativeButton", BindingFlags.Public | BindingFlags.Instance).GetValue(axis);
+        //foreach (var axis in axes) {
+        //    var axisName = (string)axis.GetType().GetField("name", BindingFlags.Public | BindingFlags.Instance).GetValue(axis);
+        //    if (axisName == actionName) {
+        //        var positiveButton = (string)axis.GetType().GetField("positiveButton", BindingFlags.Public | BindingFlags.Instance).GetValue(axis);
+        //        var negativeButton = (string)axis.GetType().GetField("negativeButton", BindingFlags.Public | BindingFlags.Instance).GetValue(axis);
 
-                Debug.Log($"Action Name: {actionName}");
-                Debug.Log($"Positive Button: {positiveButton}");
-                Debug.Log($"Negative Button: {negativeButton}");
-                return;
-            }
-        }
+        //        Debug.Log($"Action Name: {actionName}");
+        //        Debug.Log($"Positive Button: {positiveButton}");
+        //        Debug.Log($"Negative Button: {negativeButton}");
+        //        return;
+        //    }
+        //}
 
-        Debug.LogWarning($"Action '{actionName}' not found in InputManager.");
+        //Debug.LogWarning($"Action '{actionName}' not found in InputManager.");
     }
 
     private object GetInputManagerInstance(System.Type inputManagerType) {

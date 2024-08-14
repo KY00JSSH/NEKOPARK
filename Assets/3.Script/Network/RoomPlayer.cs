@@ -6,10 +6,11 @@ using System;
 // 멀티플레이 로비 (Game Room Scene) 에서 플레이어를 생성, 제어하기 위한 스크립트입니다.
 
 public class RoomPlayer : NetworkRoomPlayer {
+    [SyncVar] public string Nickname;
     public PlayerColorType playerColor { get; private set; }
-
     public override void Start() {
         base.Start();
+
         if(isServer) SpawnRoomPlayer();
         RoomManager.UpdateConnenctedPlayerCount();
     }
@@ -24,11 +25,14 @@ public class RoomPlayer : NetworkRoomPlayer {
         Vector3 spawnPosition = GetSpawnPosition();
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
-        player.GetComponent<PlayerColor>().playerColor = GetSpawnColor();
-        var clickEffect = player.GetComponentInChildren<PlayerMouseCommunication>();
-        clickEffect.transform.SetParent(transform, false);
+        var playerColor = GetSpawnColor();
+        player.GetComponent<PlayerColor>().playerColor = playerColor;
+
+        var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
+        clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = playerColor;
 
         NetworkServer.Spawn(player, connectionToClient);
+        NetworkServer.Spawn(clickEffect, connectionToClient);
     }
 
     private PlayerColorType GetSpawnColor() {

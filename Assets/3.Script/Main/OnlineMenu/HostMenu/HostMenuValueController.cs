@@ -12,8 +12,9 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
         valueText = gameObject.GetComponentInChildren<Text>();
     }
 
-    public void changeValueText(bool isRight) {
-        if (gameObject.name.Equals("TypeValue")) {
+    public void ChangeValueText(bool isRight) {
+        string name = gameObject.name;
+        if (name.Equals("TypeValue")) {
             if (isRight) {
                 if (valueNum == 1) {
                     valueNum = 0;
@@ -25,17 +26,17 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
                 }
             }
             else {
-                valueNum--;
                 if (valueNum == 0) {
                     valueNum = 1;
                     valueText.text = "FRIEND";
                 }
                 else {
+                    valueNum--;
                     valueText.text = "PUBLIC";
                 }
             }
         }
-        else if (gameObject.name.Equals("CountValue")) {
+        else if (name.Equals("CountValue")) {
             if (isRight) {
                 if (valueNum == 6) {
                     valueNum = 0;
@@ -56,12 +57,7 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
                     valueText.text = $"{valueNum + 2}";
                 }
             }
-
         }
-    }
-
-    private void checkPlayType() {
-
     }
 
     public void OnPointerEnter(PointerEventData eventData) {

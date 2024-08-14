@@ -1,9 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BlinkText : MonoBehaviour {
+    //∏ﬁ¿Œ ≈ÿΩ∫∆Æ ±Ù∫˝¿”
+
     private Text blinkText;
 
     private void Start() {
@@ -11,7 +12,7 @@ public class BlinkText : MonoBehaviour {
         StartCoroutine(BlinkTextCo());
     }
 
-    public IEnumerator BlinkTextCo() {
+    private IEnumerator BlinkTextCo() {
         while (true) {
             blinkText.text = "";
             yield return new WaitForSeconds(.5f);

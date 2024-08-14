@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour {
@@ -15,6 +13,7 @@ public class MainMenuManager : MonoBehaviour {
         mainManager = FindObjectOfType<MainManager>();
         confirmManager = FindObjectOfType<ConfirmManager>();
     }
+
     private void Start() {
         mainMenuController.gameObject.SetActive(false);
         confirmManager.gameObject.SetActive(false);
@@ -26,15 +25,17 @@ public class MainMenuManager : MonoBehaviour {
             return;
         }
 
+        //¸ÞÀÎ ¸Þ´º OPEN
         if (
             (!isSelectMenu && Input.GetButtonDown("menu"))
                 || (!isSelectMenu && Input.GetButtonDown("Select"))
                 || (!isSelectMenu && Input.GetMouseButtonDown(0))
             ) {
-            ShowMenu();
+            ShowMenu(); 
             return;
         }
 
+        //¸ÞÀÎ ¸Þ´º ÀÌµ¿
         if (!isConfirm && isSelectMenu && Input.GetButtonDown("Horizontal")) {
             float horizontalInput = Input.GetAxis("Horizontal");
             if (horizontalInput > 0) {
@@ -46,11 +47,13 @@ public class MainMenuManager : MonoBehaviour {
             return;
         }
 
-        if(isConfirm && Input.GetButtonDown("Cancel")) {
+        //ÄÁÆß Ã¢ CLOSE
+        if (isConfirm && Input.GetButtonDown("Cancel")) {
             CloseConfirm();
             return;
         }
 
+        //ÄÁÆß Ã¢ ¼±ÅÃ ¡æ ¸Þ´º ÀÌµ¿ / ÄÁÆßÃ¢ ´Ý±â
         if ((isConfirm && Input.GetButtonDown("Select")) || (isConfirm && Input.GetButtonDown("menu"))) {
             if (confirmManager.GetIsHoverYes()) {
                 GoToMenu();
@@ -61,6 +64,7 @@ public class MainMenuManager : MonoBehaviour {
             }
         }
 
+        //ÄÁÆß Ã¢ OPEN OR MENU ÀÌµ¿
         if ((!isConfirm && isSelectMenu && Input.GetButtonDown("Select")) || (!isConfirm && isSelectMenu && Input.GetButtonDown("menu"))) {
             switch (mainMenuController.GetSelectMenu()) {
                 case MenuType.PLAY_LOCAL:
@@ -82,6 +86,7 @@ public class MainMenuManager : MonoBehaviour {
         }
     }
 
+    #region ¸ÞÀÎ ¸Þ´º
     private void ShowMenu() {
         mainMenuController.gameObject.SetActive(true);
         isSelectMenu = true;
@@ -91,7 +96,9 @@ public class MainMenuManager : MonoBehaviour {
         mainMenuController.gameObject.SetActive(false);
         isSelectMenu = false;
     }
+    #endregion
 
+    #region ÄÁÆßÃ¢
     public void ShowConfirm() {
         confirmManager.gameObject.SetActive(true);
         isConfirm = true;
@@ -101,6 +108,7 @@ public class MainMenuManager : MonoBehaviour {
         confirmManager.gameObject.SetActive(false);
         isConfirm = false;
     }
+    #endregion
 
     public void GoToMenu() {
         switch (mainMenuController.GetSelectMenu()) {
@@ -115,5 +123,4 @@ public class MainMenuManager : MonoBehaviour {
                 break;
         }
     }
-
 }
