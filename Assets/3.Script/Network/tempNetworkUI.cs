@@ -33,4 +33,11 @@ public class tempNetworkUI : MonoBehaviour {
         roomManager.StartClient();
     }
 
+    public void OnExitRoomButtonClicked() {
+        // 로비에서 방 나가기 버튼에 할당되는 메서드
+        var roomManager = RoomManager.singleton;
+        if (NetworkServer.active) roomManager.StopHost();
+        else roomManager.StopHost();
+    }
+
 }
