@@ -6,6 +6,8 @@ public class PlayerMove : NetworkBehaviour {
     private float moveSpeed = 5f;
     public bool IsMoving { get; private set; }
 
+    public bool Haskey { get; private set; }
+
     private float jumpForce = 400f;
 
     private Rigidbody2D playerRigidbody;
