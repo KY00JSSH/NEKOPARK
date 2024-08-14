@@ -14,7 +14,6 @@ public class LobbyUIController : MonoBehaviour {
     }
 
     private void Start() {
-        Debug.Log(maxPlayerCount);
         maxCountText.text = ""+maxPlayerCount;
         lobbyMenuController.gameObject.SetActive(false);
     }
@@ -22,7 +21,6 @@ public class LobbyUIController : MonoBehaviour {
     private void Update() {
         if (
             (!isSelectMenu && Input.GetButtonDown("menu"))
-                || (!isSelectMenu && Input.GetButtonDown("Select"))
                 || (!isSelectMenu && Input.GetMouseButtonDown(0))
             ) {
             ShowMenu();
