@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HostCreateController : MonoBehaviour
 {
-    private void Awake() {
+    private void Start() {
         CloseCreateLoading();
     }
 

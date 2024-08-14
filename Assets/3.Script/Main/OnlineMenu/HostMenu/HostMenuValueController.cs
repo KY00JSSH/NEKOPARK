@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
     private HostMenuController hostMenuController;
@@ -56,7 +57,6 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
                     valueText.text = $"{valueNum + 2}";
                 }
             }
-
         }
     }
 
