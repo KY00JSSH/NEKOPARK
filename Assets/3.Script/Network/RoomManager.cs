@@ -17,7 +17,7 @@ public class RoomManager : NetworkRoomManager {
         var networkManager = NetworkManager.singleton as RoomManager;
         int currentConnected = networkManager.roomSlots.Count;
         int maxConnected = networkManager.maxConnections;
-
+        
         //TODO: UI TEXT를 연동해주세요
         //[CONNECTION_TEXT].text = $"{currentConnected} / {maxConnected}";
     }
