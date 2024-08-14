@@ -13,15 +13,17 @@ public class PlayerMove : NetworkBehaviour {
 
     private Animator playerAnimator;
 
+
     private Text textNickname;
 
 
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponent<Animator>();
-        playerCollider = GetComponent<Collider2D>();
-        textNickname = GetComponentInChildren<Text>();
+        playerCollider  = GetComponent<Collider2D>();
+        playerAnimator  = GetComponent<Animator>();
+
+        textNickname    = GetComponentInChildren<Text>();
     }
 
     private void Start() {
@@ -74,6 +76,7 @@ public class PlayerMove : NetworkBehaviour {
         {            
             playerRigidbody.AddForce(new Vector2(0, jumpForce));            
             playerAnimator.SetBool("isJumping", true);
+
             AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }
     }
@@ -93,6 +96,11 @@ public class PlayerMove : NetworkBehaviour {
                 }
             }
         }
+    }
+
+    public void SetHasKey(bool hasKey)
+    {
+        Haskey = hasKey;
     }
 
     private void Die()      //�÷��̾� ���
