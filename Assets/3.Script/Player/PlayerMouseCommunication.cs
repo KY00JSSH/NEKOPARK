@@ -18,7 +18,7 @@ public class PlayerMouseCommunication : NetworkBehaviour {
     }
 
     private void Start() {
-        transform.SetParent(RoomPlayer.MyRoomPlayer.transform);   
+        //transform.SetParent(RoomPlayer.MyRoomPlayer.transform);   
     }
 
     public void SetClickEffectColor_Hook(PlayerColorType oldColor, PlayerColorType newColor) {

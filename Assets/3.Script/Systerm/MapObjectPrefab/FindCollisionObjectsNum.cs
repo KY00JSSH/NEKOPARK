@@ -24,15 +24,17 @@ public class FindCollisionObjectsNum : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
             isStartCollision = true;
-            saveDirectionVector = (collision.transform.position - transform.position); // collision과 충돌된 방향 저장
+            saveDirectionVector = (collision.transform.position - transform.position);// collision과 충돌된 방향 저장
+
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
+
             isStartCollision = true;
             InitCollisionObjectsNum();
-            GetRaycastArray(saveDirectionVector, collision); ;
+            GetRaycastArray(saveDirectionVector, collision);
         }
     }
 
@@ -48,10 +50,10 @@ public class FindCollisionObjectsNum : MonoBehaviour {
     }
 
     // Raycast로 오브젝트 전체 배열에 담음
-    private void GetRaycastArray(Vector2 collDirection, Collision2D collision) {
+    private void GetRaycastArray(Vector2 collDirection, Collision2D collidedObjects) {
         Vector3 rayOrigin = transform.position;
 
-        Vector3 rayDirection = (collision.transform.position - rayOrigin).normalized;
+        Vector3 rayDirection = (collidedObjects.transform.position - rayOrigin).normalized;
         RaycastHit2D[] hits = Physics2D.RaycastAll(rayOrigin, rayDirection, raycastCheckDistance, layerMask);
         //Debug.LogWarning("hits.Length 1 ???? " + hits.Length);
         if (hits[0].collider.gameObject == transform.gameObject) {
@@ -62,7 +64,7 @@ public class FindCollisionObjectsNum : MonoBehaviour {
             CoundtColliderObjectsNum(hits, collDirection);
         }
         else {
-            collObjectsList.Add(collision.gameObject);
+            collObjectsList.Add(collidedObjects.gameObject);
             collObjectsNum = 1;
         }
         //Debug.LogWarning("collObjectsNum 검출갯수 확인 : " + collObjectsNum);
@@ -81,8 +83,10 @@ public class FindCollisionObjectsNum : MonoBehaviour {
     private void CoundtColliderObjectsNum(RaycastHit2D[] hits, Vector2 collDirection) {
         for (int i = 0; i < hits.Length; i++) {
             if (i == 0) {
-                collObjectsNum++;
-                collObjectsList.Add(hits[i].collider.gameObject);
+                if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
+                    collObjectsNum++;
+                    collObjectsList.Add(hits[i].collider.gameObject);
+                }
                 continue;
             }
 
@@ -92,7 +96,9 @@ public class FindCollisionObjectsNum : MonoBehaviour {
                 if (collDirection.y > 0) { // 위로 탑쌓기
                     if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {
                         collObjectsNum++;
-                        collObjectsList.Add(hits[i].collider.gameObject);
+                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
+                            collObjectsList.Add(hits[i].collider.gameObject);
+                        }
                         if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) { break; }
                     }
                     else {
@@ -103,7 +109,9 @@ public class FindCollisionObjectsNum : MonoBehaviour {
                     //Debug.Log("bottom side collided");
                     if (checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
                         collObjectsNum++;
-                        collObjectsList.Add(hits[i].collider.gameObject);
+                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
+                            collObjectsList.Add(hits[i].collider.gameObject);
+                        }
                         if (!checkCollision.GetObjectHasDirection(HasCollDirection.down)) { break; }
                     }
                     else {
@@ -116,7 +124,9 @@ public class FindCollisionObjectsNum : MonoBehaviour {
                     //Debug.Log("Left side collided");
                     if (checkCollision.GetObjectHasDirection(HasCollDirection.left)) {
                         collObjectsNum++;
-                        collObjectsList.Add(hits[i].collider.gameObject);
+                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
+                            collObjectsList.Add(hits[i].collider.gameObject);
+                        }
                         if (!checkCollision.GetObjectHasDirection(HasCollDirection.right)) { break; }
                     }
                     else {
@@ -127,7 +137,9 @@ public class FindCollisionObjectsNum : MonoBehaviour {
                     //Debug.Log("Right side collided");
                     if (checkCollision.GetObjectHasDirection(HasCollDirection.right)) {
                         collObjectsNum++;
-                        collObjectsList.Add(hits[i].collider.gameObject);
+                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
+                            collObjectsList.Add(hits[i].collider.gameObject);
+                        }
                         if (!checkCollision.GetObjectHasDirection(HasCollDirection.left)) { break; }
                     }
                     else {
