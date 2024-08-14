@@ -58,5 +58,4 @@ public class tempNetworkUI : MonoBehaviour {
 
         roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
-
 }

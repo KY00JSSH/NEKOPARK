@@ -18,6 +18,13 @@ public class RoomData {
     public string hostName;
     public string hostIP;
     public int hostPort;
+    
+    public PlayerColorType hostColor;
+    public PlayerColorType[] availableColor;
+    public string gameMode;
+    public bool isStart;
+    public int currentConnected;
+    public int maxConnected;
 }
 
 [System.Serializable]

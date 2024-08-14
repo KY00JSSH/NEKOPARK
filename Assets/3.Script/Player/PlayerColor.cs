@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 
+[System.Serializable]
 public enum PlayerColorType {
     red, orange, yellow, 
     green, blue, purple,
