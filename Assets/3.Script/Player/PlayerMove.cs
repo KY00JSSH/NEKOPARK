@@ -16,7 +16,6 @@ public class PlayerMove : NetworkBehaviour {
 
     private Animator playerAnimator;
 
-
     private Text textNickname;
 
 
@@ -106,6 +105,7 @@ public class PlayerMove : NetworkBehaviour {
     public void SetHasKey(bool hasKey)
     {
         Haskey = hasKey;
+        AudioManager.instance.PlaySFX(AudioManager.Sfx.getKeyDoorOpen);
     }
 
     private void Die()      //�÷��̾� ���
@@ -117,4 +117,38 @@ public class PlayerMove : NetworkBehaviour {
     {
 
     }
+
+    /* 충돌 테스트
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 충돌 디버그 메시지
+        Debug.Log($"OnCollisionEnter2D: {collision.gameObject.name} with {gameObject.name}");
+
+        // 충돌 처리 예시
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Collided with another player!");
+        }
+        else if (collision.gameObject.CompareTag("Box"))
+        {
+            Debug.Log("Collided with a box!");
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // 충돌 종료 디버그 메시지
+        Debug.Log($"OnCollisionExit2D: {collision.gameObject.name} with {gameObject.name}");
+
+        // 충돌 종료 처리 예시
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("No longer colliding with another player!");
+        }
+        else if (collision.gameObject.CompareTag("Box"))
+        {
+            Debug.Log("No longer colliding with a box!");
+        }
+    }
+    */
 }
