@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class HostCreateController : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class HostCreateController : MonoBehaviour
 
     public void OpenCreateLoading() {
         gameObject.SetActive(true);
+        StartCoroutine(delayStart());
     }
 
     public void CloseCreateLoading() {
@@ -16,5 +18,10 @@ public class HostCreateController : MonoBehaviour
 
     private void compeleteCreate() {
         FindObjectOfType<MainManager>().OpenJoinHintCanvas();
+    }
+
+    private IEnumerator delayStart() {
+        yield return new WaitForSeconds(1f);
+        compeleteCreate();
     }
 }
