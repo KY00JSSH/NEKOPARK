@@ -40,4 +40,15 @@ public class tempNetworkUI : MonoBehaviour {
         else roomManager.StopHost();
     }
 
+    public void OnStartGameButtonClicked() {
+        // 로비에서 게임 시작 버튼에 할당되는 메서드
+        var roomManager = NetworkManager.singleton as RoomManager;
+        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
+
+        foreach (RoomPlayer player in roomManager.roomSlots)
+            player.ReadyStateChanged(false, true);
+
+        roomManager.ServerChangeScene(roomManager.GameplayScene);
+    }
+
 }
