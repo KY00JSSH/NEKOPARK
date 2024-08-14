@@ -12,12 +12,11 @@ public class HostMenuController : MonoBehaviour {
     private HostMenuType selectHostMenu;
 
     [SerializeField] private Image[] hoverImage;
-    private HostMenuValueController[] hostMenuValueControllers;
+    [SerializeField] private GameObject[] valueObjects;
     private HostCreateController hostCreateController;
 
     private void Awake() {
         SetSelectHostMenu(HostMenuType.TYPE);
-        hostMenuValueControllers = FindObjectsOfType<HostMenuValueController>();
         hostCreateController = FindObjectOfType<HostCreateController>();
     }
 
@@ -30,12 +29,12 @@ public class HostMenuController : MonoBehaviour {
                 float horizontalInput = Input.GetAxis("Horizontal");
                 switch (selectHostMenu) {
                     case HostMenuType.TYPE:
-                        hostMenuValueControllers[0].changeValueText(horizontalInput > 0 ? true : false);
+                        valueObjects[0]?.GetComponent<HostMenuValueController>().changeValueText(horizontalInput > 0 ? true : false);
                         break;
                     case HostMenuType.COLOR:
                         break;
                     case HostMenuType.COUNT:
-                        hostMenuValueControllers[2].changeValueText(horizontalInput > 0 ? true : false);
+                        valueObjects[2]?.GetComponent<HostMenuValueController>().changeValueText(horizontalInput > 0 ? true : false);
                         break;
                 }
             }
@@ -79,7 +78,7 @@ public class HostMenuController : MonoBehaviour {
             if ((int)selectHostMenu == 3) {
                 startHost();
             }
-            else if((int)selectHostMenu == 4) {
+            else if ((int)selectHostMenu == 4) {
                 FindObjectOfType<OnlineMenuManager>().CloseHostMenu();
             }
             return;
