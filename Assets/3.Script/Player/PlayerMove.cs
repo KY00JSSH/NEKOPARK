@@ -39,18 +39,21 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        if (!isOwned) return;
+       // if (!isOwned) return;
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
             IsMoving = true;
             transform.localScale = new Vector3(-1f, 1f, 1f);
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            Vector3 targetPosition = playerRigidbody.position + (Vector2.right * moveSpeed * Time.deltaTime);
+            playerRigidbody.MovePosition(targetPosition);
+            // transform.position += Vector3.right * moveSpeed * Time.deltaTime;
             playerAnimator.SetBool("isMoving", true);
         }
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
             IsMoving = true;
             transform.localScale = new Vector3(1f, 1f, 1f);
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            Vector3 targetPosition = playerRigidbody.position + (Vector2.left * moveSpeed * Time.deltaTime);
+            playerRigidbody.MovePosition(targetPosition); 
             playerAnimator.SetBool("isMoving", true);
         }
         else {

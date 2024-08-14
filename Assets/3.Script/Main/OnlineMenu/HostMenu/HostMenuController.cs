@@ -128,6 +128,8 @@ public class HostMenuController : MonoBehaviour {
     }
 
     public void StartHost() {
+        int countValue = valueObjects[2].GetComponent<HostMenuValueController>().GetValueNum();
+        PlayerPrefs.SetInt("MaxPlayer", countValue+2);
         hostCreateController.OpenCreateLoading();
     }
 }
