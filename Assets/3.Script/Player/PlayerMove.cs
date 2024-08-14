@@ -5,23 +5,26 @@ using UnityEngine.UI;
 public class PlayerMove : NetworkBehaviour 
 {
     private float moveSpeed = 5f;
-    public bool IsMovingRight { get; private set; }
-
     private float jumpForce = 400f;
-   
+    public bool IsMovingRight { get; private set; }
+          
+    public bool Haskey { get; private set; }
+
     private Rigidbody2D playerRigidbody;
     private Collider2D playerCollider;
 
     private Animator playerAnimator;
+
 
     private Text textNickname;
 
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponent<Animator>();
-        playerCollider = GetComponent<Collider2D>();
-        textNickname = GetComponentInChildren<Text>();
+        playerCollider  = GetComponent<Collider2D>();
+        playerAnimator  = GetComponent<Animator>();
+
+        textNickname    = GetComponentInChildren<Text>();
     }
 
     private void Update()
@@ -73,6 +76,7 @@ public class PlayerMove : NetworkBehaviour
         {            
             playerRigidbody.AddForce(new Vector2(0, jumpForce));            
             playerAnimator.SetBool("isJumping", true);
+
             AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }       
     }
@@ -95,6 +99,11 @@ public class PlayerMove : NetworkBehaviour
                 }
             }
         }
+    }
+
+    public void SetHasKey(bool hasKey)
+    {
+        Haskey = hasKey;
     }
 
     private void Die()      //플레이어 사망
