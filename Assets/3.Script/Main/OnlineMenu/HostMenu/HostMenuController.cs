@@ -21,6 +21,7 @@ public class HostMenuController : MonoBehaviour {
     }
 
     private void Update() {
+        //가로 이동
         if (Input.GetButtonDown("Horizontal")) {
             if ((int)selectHostMenu > 2) {
                 SetSelectHostMenu((int)selectHostMenu == 3 ? HostMenuType.CANCEL : HostMenuType.CREATE);
@@ -29,18 +30,19 @@ public class HostMenuController : MonoBehaviour {
                 float horizontalInput = Input.GetAxis("Horizontal");
                 switch (selectHostMenu) {
                     case HostMenuType.TYPE:
-                        valueObjects[0]?.GetComponent<HostMenuValueController>().changeValueText(horizontalInput > 0 ? true : false);
+                        valueObjects[0]?.GetComponent<HostMenuValueController>().ChangeValueText(horizontalInput > 0 ? true : false);
                         break;
                     case HostMenuType.COLOR:
                         break;
                     case HostMenuType.COUNT:
-                        valueObjects[2]?.GetComponent<HostMenuValueController>().changeValueText(horizontalInput > 0 ? true : false);
+                        valueObjects[2]?.GetComponent<HostMenuValueController>().ChangeValueText(horizontalInput > 0 ? true : false);
                         break;
                 }
             }
             return;
         }
 
+        //세로 이동
         if (Input.GetButtonDown("Vertical")) {
             float verticalInput = Input.GetAxis("Vertical");
             if ((int)selectHostMenu > 2) {
@@ -74,9 +76,10 @@ public class HostMenuController : MonoBehaviour {
             }
         }
 
+        //메뉴 선택
         if (Input.GetButtonDown("Select") || Input.GetButtonDown("menu")) {
             if ((int)selectHostMenu == 3) {
-                startHost();
+                StartHost();
             }
             else if ((int)selectHostMenu == 4) {
                 FindObjectOfType<OnlineMenuManager>().CloseHostMenu();
@@ -84,6 +87,7 @@ public class HostMenuController : MonoBehaviour {
             return;
         }
 
+        //마우스 오버 체크
         CheckHoverImage();
     }
 
@@ -123,7 +127,7 @@ public class HostMenuController : MonoBehaviour {
         }
     }
 
-    private void startHost() {
+    public void StartHost() {
         hostCreateController.OpenCreateLoading();
     }
 }
