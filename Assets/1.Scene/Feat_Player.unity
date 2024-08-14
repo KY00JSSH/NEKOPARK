@@ -132,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 271572590}
-  - component: {fileID: 271572591}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -156,18 +155,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &271572591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 271572589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aba7636b9169abe40be1a32d5d61284f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,9 +284,10 @@ GameObject:
   - component: {fileID: 651599380}
   - component: {fileID: 651599382}
   - component: {fileID: 651599383}
+  - component: {fileID: 651599384}
   m_Layer: 0
   m_Name: Key
-  m_TagString: Untagged
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -408,6 +396,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followingSpeed: 2
+--- !u!50 &651599384
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651599379}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &795478664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -479,9 +488,21 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2445888733384195179, guid: 6b97e69cae689f24597381238b959466, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4753397139760323301, guid: 6b97e69cae689f24597381238b959466, type: 3}
       propertyPath: sceneId
       value: 2240240512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5968003099281790441, guid: 6b97e69cae689f24597381238b959466, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5968003099281790441, guid: 6b97e69cae689f24597381238b959466, type: 3}
+      propertyPath: m_CompositePaths.m_Paths.Array.size
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b97e69cae689f24597381238b959466, type: 3}
@@ -733,6 +754,7 @@ GameObject:
   - component: {fileID: 1692248465}
   - component: {fileID: 1692248466}
   - component: {fileID: 1692248467}
+  - component: {fileID: 1692248468}
   m_Layer: 0
   m_Name: Door_outer
   m_TagString: Untagged
@@ -831,6 +853,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.6, y: 1.55}
   m_EdgeRadius: 0
+--- !u!114 &1692248468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692248464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba7636b9169abe40be1a32d5d61284f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Door_outer: {fileID: 0}
+  Door_inner: {fileID: 0}
 --- !u!1 &1908851866
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +878,7 @@ GameObject:
   - component: {fileID: 1908851868}
   - component: {fileID: 1908851867}
   - component: {fileID: 1908851869}
+  - component: {fileID: 1908851870}
   m_Layer: 0
   m_Name: Door_inner
   m_TagString: Untagged
@@ -940,3 +977,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.6, y: 1.55}
   m_EdgeRadius: 0
+--- !u!114 &1908851870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908851866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e49ed8731d7aea40a04a5f12b0e62e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
