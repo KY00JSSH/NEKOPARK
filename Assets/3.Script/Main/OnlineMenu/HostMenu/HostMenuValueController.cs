@@ -60,6 +60,10 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
         }
     }
 
+    public int GetValueNum() {
+        return valueNum;
+    }
+
     public void OnPointerEnter(PointerEventData eventData) {
         if (gameObject.name.Equals("TypeValue")) {
             hostMenuController.SetSelectHostMenu(HostMenuType.TYPE);

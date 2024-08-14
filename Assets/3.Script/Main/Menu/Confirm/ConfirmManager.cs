@@ -13,7 +13,11 @@ public class ConfirmManager : MonoBehaviour {
         confirmText = gameObject.GetComponentInChildren<Text>();
     }
 
-    public void ConfirmTextChage(MenuType type) {
+    private void Start() {
+        gameObject.SetActive(false);
+    }
+
+    public void ConfirmMainTextChage(MenuType type) {
         switch (type) {
             case MenuType.PLAY_LOCAL:
                 confirmText.text = $"{playerCount}PLAYERS GAME ?";
@@ -26,6 +30,19 @@ public class ConfirmManager : MonoBehaviour {
                 break;
             case MenuType.EXIT:
                 confirmText.text = "EXIT GAME ?";
+                break;
+        }
+    }
+
+    public void ConfirmLobbyTextChage(LobbyMenuType type) {
+        switch (type) {
+            case LobbyMenuType.START:
+                confirmText.text = "GAME START?";
+                break;
+            case LobbyMenuType.RETURN:
+                break;
+            case LobbyMenuType.EXIT:
+                confirmText.text = "FINISH?";
                 break;
         }
     }
