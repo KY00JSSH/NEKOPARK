@@ -15,15 +15,22 @@ public class PlayerMove : NetworkBehaviour {
 
     private Text textNickname;
 
-    private void Awake() {
+
+    private void Awake()
+    {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
         playerCollider = GetComponent<Collider2D>();
         textNickname = GetComponentInChildren<Text>();
     }
 
-    private void Update() {
-        Jump();
+    private void Start() {
+        textNickname.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
+    }
+
+    private void Update()
+    {
+        Jump();        
     }
 
     private void FixedUpdate() {
@@ -32,7 +39,7 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        //if (!isOwned) return;
+        if (!isOwned) return;
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
             IsMoving = true;
@@ -63,8 +70,9 @@ public class PlayerMove : NetworkBehaviour {
     private void Jump() {
         //if (!isOwned) return;
 
-        if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping")) {
-            playerRigidbody.AddForce(new Vector2(0, jumpForce));
+        if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping"))
+        {            
+            playerRigidbody.AddForce(new Vector2(0, jumpForce));            
             playerAnimator.SetBool("isJumping", true);
             AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }
@@ -87,12 +95,12 @@ public class PlayerMove : NetworkBehaviour {
         }
     }
 
-    private void Die()      //ÇÃ·¹ÀÌ¾î »ç¸Á
+    private void Die()      //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½
     {
 
     }
     
-    private void OpeningDoor()      //¹® ¿­±â
+    private void OpeningDoor()      //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
 
     }
