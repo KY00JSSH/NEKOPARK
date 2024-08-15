@@ -27,7 +27,7 @@ public class JoinRoomManager : MonoBehaviour {
             statusText.gameObject.SetActive(false);
             for (int i = 0; i < data.Count; i++) {
                 roomButtons[i].gameObject.SetActive(true);
-                roomButtons[i].gameObject.GetComponent<JoinRoomController>().RoomTextSetting(data[i]);
+                roomButtons[i].gameObject.GetComponent<JoinRoomController>().SetRoomData(data[i]);
             }
         }
     }
