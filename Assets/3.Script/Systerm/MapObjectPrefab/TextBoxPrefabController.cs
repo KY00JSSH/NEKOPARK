@@ -62,7 +62,11 @@ public class TextBoxPrefabController : MonoBehaviour {
             isFisrtCollBoxWithPlayer = true;
         }
         else {
+
             for (int i = 0; i < hitCollisionAll.Length; i++) {
+
+                if (hitCollisionAll[i].gameObject.CompareTag("Player")) return;
+
                 TextBoxPrefabController textBox = hitCollisionAll[i].GetComponent<TextBoxPrefabController>();
                 if (textBox.GetCollObject_Player()) {
                     findPlayerBoxObject = textBox.GetFindPlayerBoxObject();
@@ -75,7 +79,13 @@ public class TextBoxPrefabController : MonoBehaviour {
     private bool IsRayCastHavePlayer() {
         if (hitCollisionAll != null) {
             for (int i = 0; i < hitCollisionAll.Length; i++) {
-                if (hitCollisionAll[i].gameObject.CompareTag("Player")) { return true; }
+                if (hitCollisionAll[i].gameObject.CompareTag("Player")) {
+
+                    float transformYdelta = Mathf.Abs(hitCollisionAll[i].transform.position.y - transformRigidbody.position.y);  // 위아래에 있으면 배열에서 제거
+
+                    if (transformYdelta <= 0.3) return true;
+                    else return false;
+                }
             }
             return false;
         }
@@ -157,15 +167,18 @@ public class TextBoxPrefabController : MonoBehaviour {
 
     // 해당 박스의 아래면에 collision가 플레이어라면 객체 저장 
     private void OnCollisionStay2D(Collision2D collision) {
-        if (collision.transform.position.y <= (transformRigidbody.position.y - 1f)) {
+
+        if (collision.transform.position.y <= (transformRigidbody.position.y - 0.8f)) {
             if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
                 followingObject = collision.gameObject;
+                Debug.Log(followingObject.name);
             }
+
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
             canMove = false;
             followingObject = null;
             isGetCollObject_Player = false;
