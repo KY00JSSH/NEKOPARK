@@ -3,154 +3,89 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class FindCollisionObjects: MonoBehaviour {
+public class FindCollisionObjects : MonoBehaviour {
     // 1. 목적 : objectPrefab들 => 해당 오브젝트와 충돌된 오브젝트가 몇 개인지 return
     // 검출하는 레이어 : 8번 레이어 붙어있는지 검출함
 
-    private int collObjectsNum; // 검출된 오브젝트 개수
     private int layerMask = (1 << 8);
-    private float raycastCheckDistance = 500f; // raycast를 확인할 거리
-    public bool isStartCollision { get; private set; }
+    private int collObjectsNumLeft;                                             // 왼쪽 검출된 오브젝트 개수
+    private int collObjectsNumRight;                                            // 오른족 검출된 오브젝트 개수
+    private float raycastCheckDistance = 500f;                                  // raycast를 확인할 거리
+    private float objectWidth;                                                  // 오브젝트의 가로 반쪽 길이(raycast를 2개로 나눔)        
 
-    private List<GameObject> collObjectsList = new List<GameObject>(); // 검출된 오브젝트 List
+    private List<GameObject> collObjectsList = new List<GameObject>();          // 검출된 오브젝트 List
 
-    public int GetCollObjectsNum() { return collObjectsNum; }
-    public List<GameObject> GetCollObjectsList() { return collObjectsList; }
-
+    public List<GameObject> GetCollObjectsList() { return collObjectsList; }    // 검출된 오브젝트 List 전달
 
 
-    private Vector2 saveDirectionVector; // 충돌 물체 방향 저장
+    Vector2 transformPosition;                                                  // 스프링 위치 저장
+    Vector2 leftOrigin;                                                         // 스프링 왼쪽 위치
+    Vector2 rightOrigin;                                                        // 스프링 오른쪽 위치
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
-            isStartCollision = true;
-            saveDirectionVector = (collision.transform.position - transform.position);// collision과 충돌된 방향 저장
+    RaycastHit2D[] hitsLeft;
+    RaycastHit2D[] hitsRight;
 
-        }
+    private void Awake() {
+        transformPosition = transform.position;
+
+        objectWidth = GetComponent<Collider2D>().bounds.extents.x;
+        // 왼쪽과 오른쪽에서 오프셋된 위치 계산
+        leftOrigin = transformPosition - new Vector2(objectWidth, 0);
+        rightOrigin = transformPosition + new Vector2(objectWidth, 0);
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
-
-            isStartCollision = true;
             InitCollisionObjectsNum();
-            GetRaycastArray(saveDirectionVector, collision);
+            GetRaycastArray(hitsLeft, leftOrigin);
+            GetRaycastArray(hitsRight, rightOrigin);
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
-        isStartCollision = false;
         InitCollisionObjectsNum();
     }
 
     // 오브젝트 갯수 초기화
     public void InitCollisionObjectsNum() {
-        collObjectsNum = 0;
+        collObjectsNumLeft = 0;
+        collObjectsNumRight = 0;
         collObjectsList.Clear();
     }
 
     // Raycast로 오브젝트 전체 배열에 담음
-    private void GetRaycastArray(Vector2 collDirection, Collision2D collidedObjects) {
-        Vector3 rayOrigin = transform.position;
+    private void GetRaycastArray(RaycastHit2D[] hit, Vector2 vector) {
+        Vector3 rayDirection = Vector3.up; // 스프링 위로 raycast 쏴야함
 
-        Vector3 rayDirection = (collidedObjects.transform.position - rayOrigin).normalized;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(rayOrigin, rayDirection, raycastCheckDistance, layerMask);
+        hit = Physics2D.RaycastAll(vector, rayDirection, raycastCheckDistance, layerMask);
+
+        if (hit[0].collider.gameObject == transform.gameObject) {
+            hit = hit.Where(hit => hit.collider.gameObject != transform.gameObject).ToArray();  // 자기 자신일 경우 제외 (TextBOX)
+        }
         //Debug.LogWarning("hits.Length 1 ???? " + hits.Length);
-        if (hits[0].collider.gameObject == transform.gameObject) {
-            hits = hits.Where(hit => hit.collider.gameObject != transform.gameObject).ToArray();  // 자기 자신일 경우 제외 (TextBOX)
-        }
-
-        if (hits.Length >= 2) {
-            CoundtColliderObjectsNum(hits, collDirection);
-        }
-        else {
-            collObjectsList.Add(collidedObjects.gameObject);
-            collObjectsNum = 1;
-        }
-        //Debug.LogWarning("collObjectsNum 검출갯수 확인 : " + collObjectsNum);
     }
 
-    /*     
-    raycast 배열에 담아져있는 모든 객체 조사
-    정지되어있는 오브젝트의 충돌된 면을 기준 => 움직이려는 오브젝트의 양방향에 물체가 맞닿아있는지 확인
-
-    검사 방향 순서
-    1. 움직이려는 오브젝트를 기준으로 정지되어있는 오브젝트와 충돌한 방향
-    2. 움직이려는 오브젝트를 기준으로 충돌 반대 방향  
-
-    - 1번과 연결된 마지막 오브젝트 보정
-    */
-    private void CoundtColliderObjectsNum(RaycastHit2D[] hits, Vector2 collDirection) {
-        for (int i = 0; i < hits.Length; i++) {
-            if (i == 0) {
-                if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
-                    collObjectsNum++;
-                    collObjectsList.Add(hits[i].collider.gameObject);
-                }
-                continue;
+    // 배열 2개의 길이가 전부 1일 경우 -> 담긴 오브젝트를 비교함
+    private bool CompareRaycastArray() {
+        if (CheckRaycastNum()) {
+            if (CompareRaycastObject() /*배열의 담긴 오브젝트가 같은 오브젝트인지 확인*/) {
+                return true;
             }
-
-            CheckCollision checkCollision = hits[i].collider.GetComponent<CheckCollision>();
-
-            if (Mathf.Abs(collDirection.y) > Mathf.Abs(collDirection.x)) {
-                if (collDirection.y > 0) { // 위로 탑쌓기
-                    if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {
-                        collObjectsNum++;
-                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
-                            collObjectsList.Add(hits[i].collider.gameObject);
-                        }
-                        if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) { break; }
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else { // 아래로 탑쌓기 이럴 일이 있나?
-                    //Debug.Log("bottom side collided");
-                    if (checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
-                        collObjectsNum++;
-                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
-                            collObjectsList.Add(hits[i].collider.gameObject);
-                        }
-                        if (!checkCollision.GetObjectHasDirection(HasCollDirection.down)) { break; }
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
-            else {
-                if (collDirection.x < 0) { // 왼쪽
-                    //Debug.Log("Left side collided");
-                    if (checkCollision.GetObjectHasDirection(HasCollDirection.left)) {
-                        collObjectsNum++;
-                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
-                            collObjectsList.Add(hits[i].collider.gameObject);
-                        }
-                        if (!checkCollision.GetObjectHasDirection(HasCollDirection.right)) { break; }
-                    }
-                    else {
-                        break;
-                    }
-                }
-                else { // 오른쪽
-                    //Debug.Log("Right side collided");
-                    if (checkCollision.GetObjectHasDirection(HasCollDirection.right)) {
-                        collObjectsNum++;
-                        if (!collObjectsList.Contains(hits[i].collider.gameObject)) {
-                            collObjectsList.Add(hits[i].collider.gameObject);
-                        }
-                        if (!checkCollision.GetObjectHasDirection(HasCollDirection.left)) { break; }
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
-
+            else return false;
         }
+        else return false;
+
     }
 
+    // bool 배열의 개수 확인 (배열 2개의 길이가 전부 1개일 경우 true) => 
+    private bool CheckRaycastNum() { 
+        return (hitsLeft.Length == 1 && hitsRight.Length == 1 )? true : false; 
+    }
+
+    //배열의 담긴 오브젝트가 같은 오브젝트인지 확인
+    private bool CompareRaycastObject() {
+        return (hitsLeft[0] == hitsRight[0]) ? true : false;
+    }
 
 }
 
@@ -159,11 +94,12 @@ public class FindCollisionObjects: MonoBehaviour {
  2. 내용
     2-1. 처리 내용
         1) int 값 return : 해당 오브젝트와 충돌된 오브젝트가 몇 개인지
-            => 예상 사용처 : 스프링, 박스, 움직이는 벽
+            => 예상 사용처 : 스프링
     2-2. 처리 방법
-        1) OnCollisionEnter2D -> 충돌이 들어왔을 경우 방향 저장
-        2) OnCollisionStay2D -> 충돌 중 일 경우 Raycast 배열 저장 =>  GetRaycastArray(Vector2 collDirection, Collision2D collision)
-        3) CoundtColliderObjectsNum(hits, collDirection) 
-            -> Raycast 배열에 저장되어있는 오브젝트들의 getcomponent로 CheckCollision의 현재 충돌이 되어있는 면을 확인
-            -> 
+        1) OnCollisionStay2D -> 충돌 중 일 경우 Raycast 2개로 배열 저장
+        2) Raycast 개수 확인
+        3) Raycast의 배열 개수가 전부 1이어야함
+            1-1) 개수가 둘다 1개 임?
+            1-2) 개수가 둘다 1개일 경우 => 0번째가 둘다 같음?
+            1-3) 개수가 둘다 1개가 아니거나 둘다 2개이상 : 대기
  */
