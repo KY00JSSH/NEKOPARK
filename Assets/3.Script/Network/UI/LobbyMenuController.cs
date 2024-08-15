@@ -61,11 +61,11 @@ public class LobbyMenuController : MonoBehaviour {
         // 로비에서 방 나가기 버튼에 할당되는 메서드
         var roomManager = RoomManager.singleton;
         if (NetworkServer.active) {
-            FindObjectOfType<TCPclient>().SendRequest(RequestType.Remove);
+            TCPclient.Instance.SendRequest(RequestType.Remove);
             roomManager.StopHost();
         }
         else {
-            FindObjectOfType<TCPclient>().SendRequest(RequestType.Exit);
+            TCPclient.Instance.SendRequest(RequestType.Exit);
             roomManager.StopHost();
         }
     }
@@ -77,7 +77,7 @@ public class LobbyMenuController : MonoBehaviour {
 
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
-        FindObjectOfType<TCPclient>().SendRequest(RequestType.Start);
+        TCPclient.Instance.SendRequest(RequestType.Start);
         roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
 

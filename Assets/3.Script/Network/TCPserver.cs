@@ -70,6 +70,7 @@ public class TCPserver : MonoBehaviour {
     private int maxLogCount = 100;
 
     public void AddLog(string log) {
+        log = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss] ") + log;
         Debug.Log(log);
         Log.Enqueue(log);
         if (Log.Count > maxLogCount) Log.Dequeue();

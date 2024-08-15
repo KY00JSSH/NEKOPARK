@@ -8,6 +8,7 @@ using System.IO;
 using Mirror;
 using System.Text;
 using UnityEditor;
+using System;
 
 public class TCPclient : MonoBehaviour {
     public static TCPclient Instance = null;
@@ -48,7 +49,15 @@ public class TCPclient : MonoBehaviour {
     }
 
     public string SendRequest(RequestType requestType) {
-        client.Connect(serverIP);
+        try {
+            client.Connect(serverIP);
+        }
+        catch ( Exception e) {
+            if (e is ObjectDisposedException) {
+                StartClient();
+                client.Connect(serverIP);
+            }
+        }
         StreamReader reader = new StreamReader(client.GetStream(), Encoding.UTF8);
         StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.UTF8) { AutoFlush = true };
 
@@ -104,7 +113,20 @@ public class TCPclient : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        client.Connect(serverIP);
+        try {
+            client.Connect(serverIP);
+        }
+        catch (Exception e) {
+            if (e is ObjectDisposedException) {
+                StartClient();
+                client.Connect(serverIP);
+            }
+            else if (e is NullReferenceException) {
+                client = new TcpClient();
+                StartClient();
+                client.Connect(serverIP);
+            }
+        }
         SendRequest(RequestType.Remove);
         client.Close();
     }
