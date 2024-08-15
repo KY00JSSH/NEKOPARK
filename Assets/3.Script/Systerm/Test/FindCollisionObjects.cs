@@ -5,53 +5,53 @@ using System.Linq;
 using UnityEngine;
 
 public class FindCollisionObjects : MonoBehaviour {
-    // 1. ¸ñÀû : ½ºÇÁ¸µ ÇÁ¸®Æé ¿ÀºêÁ§Æ® ±â´É ±¸Çö => ÇØ´ç ¿ÀºêÁ§Æ®¿Í Ãæµ¹µÈ ¿ÀºêÁ§Æ®°¡ ¸î °³ÀÎÁö  / ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ³¯·Á¹ö¸®±â 
-    // °ËÃâÇÏ´Â ·¹ÀÌ¾î : 8¹ø ·¹ÀÌ¾î ºÙ¾îÀÖ´ÂÁö °ËÃâÇÔ
+    // 1. ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  / ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ : 8ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private int layerMask = (1 << 8);
 
-    private float raycastCheckDistance = 500f;                                  // raycast¸¦ È®ÀÎÇÒ °Å¸®
-    [SerializeField] private float objectWidth;                                 // ¿ÀºêÁ§Æ®ÀÇ °¡·Î ¹ÝÂÊ ±æÀÌ(raycast¸¦ 2°³·Î ³ª´®)       
+    private float raycastCheckDistance = 500f;                                  // raycastï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
+    [SerializeField] private float objectWidth;                                 // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(raycastï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)       
 
-    private Vector2 transformPosition;                                           // ½ºÇÁ¸µ À§Ä¡ ÀúÀå
-    private Vector2 leftOrigin;                                                  // ½ºÇÁ¸µ ¿ÞÂÊ À§Ä¡
-    private Vector2 rightOrigin;                                                 // ½ºÇÁ¸µ ¿À¸¥ÂÊ À§Ä¡
+    private Vector2 transformPosition;                                           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+    private Vector2 leftOrigin;                                                  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+    private Vector2 rightOrigin;                                                 // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
 
-    private Vector2 addForceVector;                                              // Ãæµ¹ ¹°Ã¼ ¹æÇâ È®ÀÎ
-    private Vector2 saveDirectionVector;                                         // Ãæµ¹ ¹°Ã¼ ¹æÇâ ÃÊ±â ÀúÀå
+    private Vector2 addForceVector;                                              // ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+    private Vector2 saveDirectionVector;                                         // ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private RaycastHit2D[] hitsRight;
     private RaycastHit2D[] hitsLeft;
 
-    [SerializeField] private List<GameObject> collObjectsListLeft = new List<GameObject>();       // °ËÃâµÈ ¿ÀºêÁ§Æ® Left List
-    [SerializeField] private List<GameObject> collObjectsListRight = new List<GameObject>();       // °ËÃâµÈ ¿ÀºêÁ§Æ® Right List
+    [SerializeField] private List<GameObject> collObjectsListLeft = new List<GameObject>();       // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Left List
+    [SerializeField] private List<GameObject> collObjectsListRight = new List<GameObject>();       // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Right List
 
-    private GameObject collObject;                                                // ¿ÀºêÁ§Æ® 1°³ÀÏ ¶§
-    private GameObject collObjectContact;                                         // ºÙ¾îÀÖ´Â ¿ÀºêÁ§Æ®
-    public GameObject GetCollObject() {return collObject; }                       // ¿ÀºêÁ§Æ® 1°³ÀÏ ¶§ Àü´Þ
+    private GameObject collObject;                                                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    private GameObject collObjectContact;                                         // ï¿½Ù¾ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    public GameObject GetCollObject() {return collObject; }                       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public bool GetIsObjectOnlyOne() {
         if (hitsLeft == null && hitsRight == null) return false;
-        return CompareIsObjectOnlyOne(); }          // Ãæµ¹ ¹°Ã¼°¡ ÇÏ³ªÀÏ °æ¿ì bool°ª Àü´Þ
+        return CompareIsObjectOnlyOne(); }          // ï¿½æµ¹ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ boolï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private void Awake() {
         transformPosition = transform.position;
 
         objectWidth = GetComponent<Collider2D>().bounds.extents.x * 0.5f;
 
-        // ¿ÞÂÊ°ú ¿À¸¥ÂÊ¿¡¼­ ¿ÀÇÁ¼ÂµÈ À§Ä¡ °è»ê
+        // ï¿½ï¿½ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
         leftOrigin = transformPosition - new Vector2(objectWidth, 0);
         rightOrigin = transformPosition + new Vector2(objectWidth, 0);
 
     }
 
 
-    // enter¿¡¼­ Ãæµ¹ ¹°Ã¼ ¹æÇâ ÃÊ±â ÀúÀå
+    // enterï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void OnCollisionEnter2D(Collision2D collision) {
         saveDirectionVector.x = collision.transform.position.x - transform.position.x;
     }
 
-    // Ãæµ¹ÇÑ ¹°Ã¼ÀÇ ÁøÀÔ¹æÇâÀ» È®ÀÎÇÏ¿© addforce
+    // ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¿ï¿½ addforce
     private void OnCollisionStay2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
 
@@ -60,7 +60,7 @@ public class FindCollisionObjects : MonoBehaviour {
             collObjectsListLeft = CheckObjectsConnection(hitsLeft);
             collObjectsListRight = CheckObjectsConnection(hitsRight);
 
-            //TODO:[±è¼öÁÖ] Ãæµ¹Ã¼¿¡ ºÙ¾îÀÖ´ÂÁö ¶³¾îÁ®ÀÖ´ÂÁö È®ÀÎÇØ¾ßÇÔ
+            //TODO:[ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½æµ¹Ã¼ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
             collObjectContact = collision.collider.gameObject;
             if (CompareIsObjectOnlyOne()) {
                 collObject = collObjectsListRight[0];
@@ -77,18 +77,18 @@ public class FindCollisionObjects : MonoBehaviour {
         hitsRight = null;   
     }
 
-    // Raycast·Î ¿ÀºêÁ§Æ® ÀüÃ¼ ¹è¿­¿¡ ´ãÀ½
+    // Raycastï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ã¼ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private RaycastHit2D[] GetRaycastArray(Vector2 vector) {
-        Vector3 rayDirection = Vector3.up; // ½ºÇÁ¸µ À§·Î raycast ½÷¾ßÇÔ
+        Vector3 rayDirection = Vector3.up; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ raycast ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        Debug.DrawRay(vector, rayDirection * raycastCheckDistance, Color.red, 2.0f); //TODO: [±è¼öÁÖ] µð¹ö±ë¿ë ¼±
+        Debug.DrawRay(vector, rayDirection * raycastCheckDistance, Color.red, 2.0f); //TODO: [ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
         RaycastHit2D[] hit = Physics2D.RaycastAll(vector, rayDirection, raycastCheckDistance, layerMask);
         //Debug.Log("length check | " + hit + " | " + hit.Length);
 
         if (hit.Length > 0) {
             if (hit[0].collider.gameObject == transform.gameObject) {
-                hit = hit.Where(hit => hit.collider.gameObject != transform.gameObject).ToArray();  // ÀÚ±â ÀÚ½ÅÀÏ °æ¿ì Á¦¿Ü (TextBOX)
+                hit = hit.Where(hit => hit.collider.gameObject != transform.gameObject).ToArray();  // ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (TextBOX)
             }
         }
 
@@ -96,10 +96,10 @@ public class FindCollisionObjects : MonoBehaviour {
         //Debug.LogWarning("hits.Length 1 ???? " + hits.Length);
     }
 
-    // ¹è¿­ 2°³ÀÇ ±æÀÌ°¡ ÀüºÎ 1ÀÏ °æ¿ì -> ´ã±ä ¿ÀºêÁ§Æ®¸¦ ºñ±³ÇÔ
+    // ï¿½è¿­ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private bool CompareIsObjectOnlyOne() {
         if (CheckRaycastNum()) {
-            if (CompareRaycastObject() /*¹è¿­ÀÇ ´ã±ä ¿ÀºêÁ§Æ®°¡ °°Àº ¿ÀºêÁ§Æ®ÀÎÁö È®ÀÎ*/) {
+            if (CompareRaycastObject() /*ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½*/) {
                 return true;
             }
             else return false;
@@ -107,18 +107,18 @@ public class FindCollisionObjects : MonoBehaviour {
         else return false;
     }
 
-    // bool ¹è¿­ÀÇ °³¼ö È®ÀÎ (¹è¿­ 2°³ÀÇ ±æÀÌ°¡ ÀüºÎ 1°³ÀÏ °æ¿ì true) => 
+    // bool ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ (ï¿½è¿­ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ true) => 
     private bool CheckRaycastNum() {
         return (collObjectsListLeft.Count == 1 && collObjectsListRight.Count == 1) ? true : false;
     }
 
-    //¹è¿­ÀÇ ´ã±ä ¿ÀºêÁ§Æ®°¡ °°Àº ¿ÀºêÁ§Æ®ÀÎÁö È®ÀÎ
+    //ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     private bool CompareRaycastObject() {
         return (collObjectsListLeft[0] == collObjectsListRight[0] == collObjectContact) ? true : false;
     }
 
 
-    //TODO: [±è¼öÁÖ] Ãæµ¹Ã¼¿¡ ºÙ¾îÀÖ´ÂÁö ¶³¾îÁ®ÀÖ´ÂÁö È®ÀÎÇØ¾ßÇÔ
+    //TODO: [ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½æµ¹Ã¼ï¿½ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
     private List<GameObject> CheckObjectsConnection(RaycastHit2D[] hits) {
         List<GameObject> findObjectList = new List<GameObject>();
         for (int i = 0; i < hits.Length; i++) {
@@ -128,10 +128,11 @@ public class FindCollisionObjects : MonoBehaviour {
             }
 
             CheckCollision checkCollision = hits[i].collider.GetComponent<CheckCollision>();
-            if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {  // ½ºÇÁ¸µÀº À§ ¹æÇâÀÏ °æ¿ì¸¸ ÇÊ¿äÇÔ
+            if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¸¸ ï¿½Ê¿ï¿½ï¿½ï¿½
+                Debug.Log("?????????"+ hits[i].collider.name);
                 findObjectList.Add(hits[i].collider.gameObject);
                 if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
-                    Debug.Log("¿ÀºêÁ§Æ®À§¿¡ ´Ù¸¥ °´Ã¼ ¾øÀ½???" + hits[i].collider.name);
+                    Debug.Log("???false" + hits[i].collider.name);
                     break;
                 }
             }
@@ -146,16 +147,16 @@ public class FindCollisionObjects : MonoBehaviour {
 }
 
 /*  
- *   1. ¸ñÀû1 : objectPrefabµé => ÇØ´ç ¿ÀºêÁ§Æ®¿Í Ãæµ¹µÈ ¿ÀºêÁ§Æ®°¡ ¸î °³ÀÎÁö
- 2. ³»¿ë
-    2-1. Ã³¸® ³»¿ë
-        1) int °ª return : ÇØ´ç ¿ÀºêÁ§Æ®¿Í Ãæµ¹µÈ ¿ÀºêÁ§Æ®°¡ ¸î °³ÀÎÁö
-            => ¿¹»ó »ç¿ëÃ³ : ½ºÇÁ¸µ
-    2-2. Ã³¸® ¹æ¹ý
-        1) OnCollisionStay2D -> Ãæµ¹ Áß ÀÏ °æ¿ì Raycast 2°³·Î ¹è¿­ ÀúÀå
-        2) Raycast °³¼ö È®ÀÎ
-        3) RaycastÀÇ ¹è¿­ °³¼ö°¡ ÀüºÎ 1ÀÌ¾î¾ßÇÔ
-            1-1) °³¼ö°¡ µÑ´Ù 1°³ ÀÓ?
-            1-2) °³¼ö°¡ µÑ´Ù 1°³ÀÏ °æ¿ì => 0¹øÂ°°¡ µÑ´Ù °°À½?
-            1-3) °³¼ö°¡ µÑ´Ù 1°³°¡ ¾Æ´Ï°Å³ª µÑ´Ù 2°³ÀÌ»ó : ´ë±â
+ *   1. ï¿½ï¿½ï¿½ï¿½1 : objectPrefabï¿½ï¿½ => ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ 2. ï¿½ï¿½ï¿½ï¿½
+    2-1. Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        1) int ï¿½ï¿½ return : ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            => ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã³ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    2-2. Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½
+        1) OnCollisionStay2D -> ï¿½æµ¹ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ Raycast 2ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½
+        2) Raycast ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+        3) Raycastï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½
+            1-1) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½ 1ï¿½ï¿½ ï¿½ï¿½?
+            1-2) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ => 0ï¿½ï¿½Â°ï¿½ï¿½ ï¿½Ñ´ï¿½ ï¿½ï¿½ï¿½ï¿½?
+            1-3) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï°Å³ï¿½ ï¿½Ñ´ï¿½ 2ï¿½ï¿½ï¿½Ì»ï¿½ : ï¿½ï¿½ï¿½
  */

@@ -4,24 +4,24 @@ using System.Linq;
 using UnityEngine;
 
 public class SpringPrefabController : MonoBehaviour {
-    // 1. ¸ñÀû : ½ºÇÁ¸µ ÇÁ¸®Æé ¿ÀºêÁ§Æ® ±â´É ±¸Çö => ÇØ´ç ¿ÀºêÁ§Æ®¿Í Ãæµ¹µÈ ¿ÀºêÁ§Æ®°¡ ¸î °³ÀÎÁö  / ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ³¯·Á¹ö¸®±â 
-    // °ËÃâÇÏ´Â ·¹ÀÌ¾î : 8¹ø ·¹ÀÌ¾î ºÙ¾îÀÖ´ÂÁö °ËÃâÇÔ
+    // 1. ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  / ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ : 8ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private float moveX;
-    public float addForce;                                                 // Addforce °ª (·¹º§ º°·Î ¼öÁ¤°¡´ÉÇØ¾ßÇÔ)
+    public float addForce;                                                 // Addforce ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½)
 
-    private Vector2 transformPosition;                                           // ½ºÇÁ¸µ À§Ä¡ ÀúÀå
+    private Vector2 transformPosition;                                           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
 
-    private Vector2 addForceVector;                                              // Ãæµ¹ ¹°Ã¼ ¹æÇâ È®ÀÎ
-    private Vector2 saveDirectionVector;                                         // Ãæµ¹ ¹°Ã¼ ¹æÇâ ÃÊ±â ÀúÀå
+    private Vector2 addForceVector;                                              // ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+    private Vector2 saveDirectionVector;                                         // ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    [SerializeField] private GameObject collisionObject;                                          // ³¯¸± ¿ÀºêÁ§Æ®
+    [SerializeField] private GameObject collisionObject;                                          // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
-    private FindCollisionObjects findCollisionObjects;                           // Ãæµ¹ ¹°Ã¼ Ã£´Â ½ºÅ©¸³Æ®
+    private FindCollisionObjects findCollisionObjects;                           // ï¿½æµ¹ ï¿½ï¿½Ã¼ Ã£ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®
 
     private Animator spriteAnimator;                                             // spring image animation
 
-    private void SetCollObject() { collisionObject = findCollisionObjects.GetCollObject(); }  // ³¯¸± ¿ÀºêÁ§Æ® 1°³ÀÏ ¶§ ¹Þ¾Æ¿À±â
+    private void SetCollObject() { collisionObject = findCollisionObjects.GetCollObject(); }  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
 
 
 
@@ -44,7 +44,7 @@ public class SpringPrefabController : MonoBehaviour {
 
     }
 
-    // enter¿¡¼­ Ãæµ¹ ¹°Ã¼ ¹æÇâ ÃÊ±â ÀúÀå
+    // enterï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void OnCollisionEnter2D(Collision2D collision) {
         float topY = transform.position.y + GetComponent<Collider2D>().bounds.extents.y;
 
@@ -73,7 +73,7 @@ public class SpringPrefabController : MonoBehaviour {
         /*
          
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
-            Vector2 relativeVelocity = collision.relativeVelocity; // Ãæµ¹Ã¼°¡ µé¾î¿À´Â ¹æÇâÀÌ ¸Â³ª?
+            Vector2 relativeVelocity = collision.relativeVelocity; // ï¿½æµ¹Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â³ï¿½?
 
             moveX = relativeVelocity.x >= 0f ? 1f : -1f;
 
@@ -86,8 +86,8 @@ public class SpringPrefabController : MonoBehaviour {
     }
 
 
-    // ¹è¿­ÀÇ ¿ÀºêÁ§Æ®°¡ °°´Ù¸é addforce
-    //TODO: [±è¼öÁÖ] »óÀÚ ³¯¸®´Â ¹æÇâ ¾ø¾îÁü, ·£´ýÀ¸·Î ÇÑ ¹ø¾¿ ¼¼°Ô ³¯¶ó°¨
+    // ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ addforce
+    //TODO: [ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void AddforceObject() {
         if (collisionObject != null) {
 
@@ -99,7 +99,7 @@ public class SpringPrefabController : MonoBehaviour {
 
                 if (collisionObject.gameObject.CompareTag("Player")) {
 
-                    //Debug.Log("? x¹æÇâ ¹ºµ¥¿ä ¿Ö ¾ÈµÇ´Â°Çµ¥ ½Ã¹ß°Í " + force.x + " | " + force.y);
+                    //Debug.Log("? xï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ÈµÇ´Â°Çµï¿½ ï¿½Ã¹ß°ï¿½ " + force.x + " | " + force.y);
                     position = collisionObject.transform.position;
                 }
                 else {
@@ -108,8 +108,8 @@ public class SpringPrefabController : MonoBehaviour {
                 }
 
                 force = new Vector2(moveX * addForce * 0.3f, addForce);
-                //Debug.Log("? x¹æÇâ ¹ºµ¥¿ä ¿Ö ¾ÈµÇ´Â°Çµ¥ ½Ã¹ß°Í " + force.x + " | " + force.y);
-                collRigidbody2D.AddForceAtPosition(force, position, ForceMode2D.Impulse); // ¹°Ã¼ ³¯¸®±â
+                //Debug.Log("? xï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ÈµÇ´Â°Çµï¿½ ï¿½Ã¹ß°ï¿½ " + force.x + " | " + force.y);
+                collRigidbody2D.AddForceAtPosition(force, position, ForceMode2D.Impulse); // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 collisionObject = null;
             }
         }
@@ -119,16 +119,16 @@ public class SpringPrefabController : MonoBehaviour {
 }
 
 /*  
- 1. ¸ñÀû2 : ½ºÇÁ¸µ ÇÁ¸®Æé ¿ÀºêÁ§Æ® ±â´É ±¸Çö -> ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ³¯·Á¹ö¸®±â 
- 2. ³»¿ë
-    2-1. º¯¼ö 
-        1) Addforce¸¦ ÇÏ·Á´Â °ª ¼³Á¤ : public float·Î ¿ÜºÎ¿¡¼­ ¼³Á¤ => ·¹º§º° Á¡ÇÁ´ëÀÇ ¼º´ÉÀÌ ´Þ¶óÁö´Â °æ¿ì°¡ ÀÖÀ½
-        2) addForceVector : Ãæµ¹ ¹°Ã¼ ¹æÇâ È®ÀÎ ¿ëµµ
-        3) spriteAnimator : spring ÀÌ¹ÌÁö º¯°æ ¾Ö´Ï¸ÞÀÌ¼Ç
-    2-2. Ã³¸® ³»¿ë 
-        1) FindCollisionObjects¿¡¼­È®ÀÎÇÑ bool°ª »ç¿ë
-        2) ¹°Ã¼°¡ µé¾î¿Â ¹æÇâ È®ÀÎ
-        3) È®ÀÎµÈ objectÀÇ ÁøÀÔ¹æÇâÀ» È®ÀÎÇÏ¿© ÇØ´ç ¹æÇâÀ¸·Î ³¯¸²
-        4) ½ºÇÁ¶óÀÌÆ® º¯°æ 
- 3. ÇØ´ç ½ºÅ©¸³Æ® À§Ä¡ : ½ºÇÁ¸µ ÇÁ¸®Æé
+ 1. ï¿½ï¿½ï¿½ï¿½2 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+ 2. ï¿½ï¿½ï¿½ï¿½
+    2-1. ï¿½ï¿½ï¿½ï¿½ 
+        1) Addforceï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : public floatï¿½ï¿½ ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì°¡ ï¿½ï¿½ï¿½ï¿½
+        2) addForceVector : ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ëµµ
+        3) spriteAnimator : spring ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
+    2-2. Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+        1) FindCollisionObjectsï¿½ï¿½ï¿½ï¿½È®ï¿½ï¿½ï¿½ï¿½ boolï¿½ï¿½ ï¿½ï¿½ï¿½
+        2) ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+        3) È®ï¿½Îµï¿½ objectï¿½ï¿½ ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        4) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ 
+ 3. ï¿½Ø´ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½ï¿½Ä¡ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
