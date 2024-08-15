@@ -58,6 +58,7 @@ public class TCPclient : MonoBehaviour {
                 request.type = "Create";
                 roomData.availableColor.Add(roomData.hostColor);
                 roomData.hostColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
+                FindObjectOfType<RoomManager>().MyPlayerColor = roomData.hostColor;
                 roomData.availableColor.Remove(roomData.hostColor);
                 roomData.gameType = (GameType)PlayerPrefs.GetInt("GameType");
 
@@ -102,7 +103,7 @@ public class TCPclient : MonoBehaviour {
         return response;
     }
 
-    private void OnApplicationQuit() {
+    private void OnDestroy() {
         client.Connect(serverIP);
         SendRequest(RequestType.Remove);
         client.Close();
