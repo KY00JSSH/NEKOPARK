@@ -2,17 +2,35 @@ using UnityEngine;
 using Mirror;
 
 public class tempNetworkUI : MonoBehaviour {
-    // ÀÓ½Ã·Î ³×Æ®¿öÅ© ±â´É Å×½ºÆ®ÇÏ±â À§ÇØ¼­
-    // ¹öÆ° ÇÒ´ç ¸Þ¼­µå¸¦ ÀÛ¼ºÇÑ ½ºÅ©¸³Æ®
+    // ï¿½Ó½Ã·ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½
+    // ï¿½ï¿½Æ° ï¿½Ò´ï¿½ ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®
 
     public void OnJoinButtonClicked() {
-        // °ÔÀÓ ¹æ µé¾î°¡±â ¹öÆ°¿¡ ÇÒ´çµÇ´Â ¸Þ¼­µå
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ò´ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
         JoinRoom();
     }
 
     private void JoinRoom() {
-        // Å¬¶óÀÌ¾ðÆ®°¡ ¹æ¿¡ µé¾î°¡´Â ¸Þ¼­µåÀÔ´Ï´Ù.
+        // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½æ¿¡ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
         var roomManager = RoomManager.singleton;
         roomManager.StartClient();
+    }
+
+    public void OnExitRoomButtonClicked() {
+        // ï¿½Îºñ¿¡¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ò´ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
+        var roomManager = RoomManager.singleton;
+        if (NetworkServer.active) roomManager.StopHost();
+        else roomManager.StopHost();
+    }
+
+    public void OnStartGameButtonClicked() {
+        // ï¿½Îºñ¿¡¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ò´ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
+        var roomManager = NetworkManager.singleton as RoomManager;
+        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
+
+        foreach (RoomPlayer player in roomManager.roomSlots)
+            player.ReadyStateChanged(false, true);
+
+        roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
 }
