@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerMove : NetworkBehaviour {
     private float moveSpeed = 5f;
@@ -8,8 +9,11 @@ public class PlayerMove : NetworkBehaviour {
     public bool IsMovingRight { get; private set; }     // 2024 08 14 ����� �׽�Ʈ�� �߰�
 
     public bool Haskey { get; private set; }
+    private bool IsPushingObject = false;
+    private bool IsDie = false;
 
     private float jumpForce = 400f;
+    private float dieAnimForce = 300f;
 
     private Rigidbody2D playerRigidbody;
     private Collider2D playerCollider;
@@ -34,34 +38,48 @@ public class PlayerMove : NetworkBehaviour {
 
     private void Update()
     {
-        Jump();        
+        if (!IsDie)
+        {
+            Jump();      
+        }
     }
 
     private void FixedUpdate() {
-        Move();
-        Jump_Limit();
+        if (!IsDie)
+        {
+            Move();
+            Jump_Limit();
+        }
     }
 
     private void Move() {
         //if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+        if (horizontalInput != 0) {
             IsMoving = true;
-            IsMovingRight = true;
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            IsMovingRight = horizontalInput > 0;
+
+            float moveDirection = horizontalInput > 0 ? 1f : -1f;
+            transform.localScale = new Vector3(-moveDirection, 1f, 1f);
+            transform.position += Vector3.right * moveSpeed * horizontalInput * Time.deltaTime;
             playerAnimator.SetBool("isMoving", true);
-        }
-        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-            IsMoving = true;
-            IsMovingRight = false;
-            transform.localScale = new Vector3(1f, 1f, 1f);
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-            playerAnimator.SetBool("isMoving", true);
+
+            if(IsPushingObject)
+            {
+                playerAnimator.SetBool("isPushing", true);
+            }
+            else
+            {
+                playerAnimator.SetBool("isPushing", false);
+            }
         }
         else {
             IsMoving = false;
             playerAnimator.SetBool("isMoving", false);
+            playerAnimator.SetBool("isPushing", false);
+            
         }
 
         Vector3 textScale = new Vector3(0.02f, 0.02f, 0.02f);
@@ -108,14 +126,39 @@ public class PlayerMove : NetworkBehaviour {
         AudioManager.instance.PlaySFX(AudioManager.Sfx.getKeyDoorOpen);
     }
 
-    private void Die()      //�÷��̾� ���
+    private void Die()      
     {
-
+        if (!IsDie)
+        {
+            IsDie = true;
+            playerAnimator.SetBool("isDie", true);
+            playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기
+            playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     //위로 튕기기
+            StartCoroutine(PlayerDie_co(0.5f));                         //충돌 무시
+        }
     }
-    
-    private void OpeningDoor()      //�� ����
-    {
 
+    private IEnumerator PlayerDie_co(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        playerCollider.enabled = false;
+        playerRigidbody.isKinematic = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(!collision.collider.isTrigger)
+        {
+            IsPushingObject = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (!collision.collider.isTrigger)
+        {
+            IsPushingObject = false;
+        }
     }
 
     /* 충돌 테스트

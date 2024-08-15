@@ -7,6 +7,7 @@ using LitJson;
 using UnityEngine;
 using System.IO;
 using System.Text;
+using UnityEditor;
 
 [System.Serializable]
 public class RoomList {
@@ -18,6 +19,29 @@ public class RoomData {
     public string hostName;
     public string hostIP;
     public int hostPort;
+
+    public List<PlayerColorType> availableColor;
+    public PlayerColorType hostColor;
+    public GameType gameType;
+    public bool isStart;
+    public int currentConnected;
+    public int maxConnected;
+
+    public RoomData() {
+        hostName = "Default";
+        hostIP = "127.0.0.1";
+        hostPort = 5555;
+
+        hostColor = PlayerColorType.red;
+        availableColor = new List<PlayerColorType>(
+            (PlayerColorType[])Enum.GetValues(typeof(PlayerColorType)));
+        availableColor.Remove(PlayerColorType.red);
+
+        gameType = GameType.Public;
+        isStart = false;
+        currentConnected = 1;
+        maxConnected = 8;
+    }
 }
 
 [System.Serializable]
@@ -27,7 +51,12 @@ public class TCPrequest {
 }
 
 public enum RequestType {
-    Create, Remove, Request
+    Create, Remove, Request,
+    Start, Select, Enter, Exit
+}
+
+public enum GameType {
+    Friend, Public
 }
 
 public class TCPserver : MonoBehaviour {
@@ -48,26 +77,26 @@ public class TCPserver : MonoBehaviour {
         Log = new Queue<string>();
         try {
             StartServer(GetServerIP(), GetServerPort());
-            if(server == null) 
+            if (server == null)
                 AddLog("ERROR : SERVER CONFIG LOADING FALIURE.");
-            
+
         }
-        catch(Exception e) {
+        catch (Exception e) {
             AddLog("ERROR : SERVER CONFIG FALIURE.\n" + e.Message);
         }
     }
 
-    public void StartServer (string serverIP, string PORT) {
+    public void StartServer(string serverIP, string PORT) {
         try {
             server = new TcpListener(IPAddress.Parse(serverIP), int.Parse(PORT));
-            server.Start();  isRun = true;
+            server.Start(); isRun = true;
             AddLog("Server Starting...");
 
             serverThread = new Thread(Run);
             serverThread.IsBackground = true;
             serverThread.Start();
         }
-        catch(Exception e) {
+        catch (Exception e) {
             AddLog("ERROR : SERVER INITIALIZE FALIURE.\n" + e.Message);
         }
     }
@@ -105,35 +134,109 @@ public class TCPserver : MonoBehaviour {
 
     private void ProcessRequest(string req, StreamWriter response) {
         TCPrequest request = JsonUtility.FromJson<TCPrequest>(req);
-        RoomData room;
+        RoomData room = JsonUtility.FromJson<RoomData>(request.data);
+        string json;
+
+        if (room == null) {
+            AddLog($"Room Data Null Exception");
+            response.WriteLine("Status : Room Data Receive Failed.");
+            return;
+        }
+
         switch (request.type) {
             case "Create":
-                room = JsonUtility.FromJson<RoomData>(request.data);
                 roomList.Add(room);
-
                 AddLog($"Room Created : {room.hostName}");
                 response.WriteLine("Status : Room Created Successfully.");
                 break;
 
             case "Remove":
-                room = JsonUtility.FromJson<RoomData>(request.data);
-                roomList.Remove(roomList.Find(r =>
-                r.hostName == room.hostName && r.hostIP == room.hostIP && r.hostPort == room.hostPort));
-
-                AddLog($"Room Removed : {room.hostName}");
-                response.WriteLine("Status : Room Removed Successfully.");
-
+                if (roomList.Remove(FindRoom(room))) {
+                    AddLog($"Room Removed : {room.hostName}");
+                    response.WriteLine("Status : Room Removed Successfully.");
+                }
+                else {
+                    AddLog($"Room Removed Failure : {room.hostName}");
+                    response.WriteLine("Status : Room Removed Failed.");
+                }
                 break;
 
             case "Request":
-                string json = JsonUtility.ToJson(new RoomList { roomList = roomList });
+                json = JsonUtility.ToJson(new RoomList { roomList = roomList });
                 response.WriteLine(json);
                 break;
-            default: break;
+
+            case "Start":
+                if (FindRoom(room) == null) {
+                    AddLog($"Room Start Failure : {room.hostName}");
+                    response.WriteLine("Status : Room Started Failed.");
+                }
+                else {
+                    roomList[roomList.IndexOf(FindRoom(room))].isStart = true;
+                    AddLog($"Room Started : {room.hostName}");
+                    response.WriteLine("Status : Room Started Successfully.");
+                }
+                break;
+
+            case "Select":
+                if (FindRoom(room) == null) {
+                    AddLog($"Client Select Failure : {room.hostName}");
+                    response.WriteLine("Status : Room Select Failed.");
+                }
+                else {
+                    json = JsonUtility.ToJson(roomList[roomList.IndexOf(FindRoom(room))].availableColor);
+                    AddLog($"Client Select Room : {room.hostName}");
+                    response.WriteLine(json);
+                }
+                break;
+
+            case "Enter":
+                if (FindRoom(room) == null) {
+                    AddLog($"Client Enter Failure : {room.hostName}");
+                    response.WriteLine("Failure");
+                }
+                else {
+                    List<PlayerColorType> availableColor = roomList[roomList.IndexOf(FindRoom(room))].availableColor;
+                    if (availableColor.Contains(room.hostColor)) {
+                        availableColor.Remove(room.hostColor);
+                        AddLog($"Client Enter Room : {room.hostName}");
+                        response.WriteLine("Success");
+                    }
+                    else {
+                        AddLog($"Client Color Select Failure : {room.hostName}");
+                        response.WriteLine("Failrue");
+                    }
+                }
+                break;
+            case "Exit":
+                if(FindRoom(room) == null) {
+                    AddLog($"Client Exit Room Failure : {room.hostName}");
+                    response.WriteLine("Status : Room Exit Failed.");
+                }
+                else {
+                    roomList[roomList.IndexOf(FindRoom(room))].currentConnected--;
+                    AddLog($"Client Exit Room : {room.hostName}");
+                    response.WriteLine("Status : Room Exit Successfully.");
+                }
+                break;
+            default:
+                AddLog("ERROR : Unexpected Request Receieved");
+                response.WriteLine("Status : Unexpected Request.");
+                break;
 
         }
     }
-    
+
+    public RoomData FindRoom(RoomData room) {
+        foreach (RoomData eachRoom in roomList) {
+            if (room.hostName == eachRoom.hostName &&
+                room.hostIP == eachRoom.hostIP &&
+                room.hostPort == eachRoom.hostPort)
+                return eachRoom;
+        }
+        return null;
+    }
+
     public static JsonData GetServerConfig() {
         try {
             TextAsset jsonTextAsset = Resources.Load<TextAsset>("Network/serverConfig");
@@ -145,6 +248,7 @@ public class TCPserver : MonoBehaviour {
             return null;
         }
     }
+
     public static string GetServerIP() {
         var config = GetServerConfig();
         return (string)config[0]["ServerIP"];
@@ -155,6 +259,7 @@ public class TCPserver : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
+        isRun = false;
         server.Stop();
     }
 }

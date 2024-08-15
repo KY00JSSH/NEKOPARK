@@ -95,10 +95,10 @@ public class OnlineMenuManager : MonoBehaviour {
         isMenuSelect = true;
         switch (onMenuType) {
             case OnlineMenuType.PUBLIC:
-                mainManager.OpenOnlineCanvas();
+                mainManager.OpenJoinCanvas();
                 break;
             case OnlineMenuType.FREIND:
-                mainManager.OpenOnlineCanvas();
+                mainManager.OpenJoinCanvas();
                 break;
             case OnlineMenuType.HOST:
                 openHostMenu();

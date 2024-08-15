@@ -44,14 +44,14 @@ public class TextBoxPrefabController : MonoBehaviour {
     private List<GameObject> setCollisionObjectList = new List<GameObject>();
 
     private Rigidbody2D transformRigidbody;
-    private FindCollisionObjectsNum findCollisionObjectsNum;
+    private FindCollisionObjectsBox findCollisionObjectsNum;
 
     private void Awake() {
         transformRigidbody = GetComponent<Rigidbody2D>();
 
         textBoxCountText = transform.GetComponentInChildren<Text>();
 
-        findCollisionObjectsNum = GetComponent<FindCollisionObjectsNum>();
+        findCollisionObjectsNum = GetComponent<FindCollisionObjectsBox>();
 
         InitBoxCountNumText();
     }
@@ -72,10 +72,11 @@ public class TextBoxPrefabController : MonoBehaviour {
             isFisrtCollBoxWithPlayer = true;
         }
         else {
+            isFisrtCollBoxWithPlayer = false;
             for (int i = 0; i < hitCollisionAll.Length; i++) {
                 TextBoxPrefabController textBox = hitCollisionAll[i].GetComponent<TextBoxPrefabController>();
                 if (textBox.GetCollObject_Player()) {
-                    Debug.LogWarning(gameObject.name + " | " + hitCollisionAll[i].name + " | " + textBox.GetCollObject_Player() + " | " + textBox.GetCanMove());
+                    //Debug.LogWarning(gameObject.name + " | " + hitCollisionAll[i].name + " | " + textBox.GetCollObject_Player() + " | " + textBox.GetCanMove());
 
                     canMove = textBox.GetCanMove();
                     findPlayerBoxObject = textBox.GetFindPlayerBoxObject();
@@ -122,7 +123,6 @@ public class TextBoxPrefabController : MonoBehaviour {
 
         }
         else {
-
             findPlayerBoxObject = null;
 
             isFisrtCollBoxWithPlayer = false;            
@@ -202,7 +202,8 @@ public class TextBoxPrefabController : MonoBehaviour {
             canMove = false;
             followingObject = null;
             isGetCollObject_Player = false;
-            findPlayerBoxObject = null; 
+            findPlayerBoxObject = null;
+            InitBoxCountNumText();
         }
     }
 

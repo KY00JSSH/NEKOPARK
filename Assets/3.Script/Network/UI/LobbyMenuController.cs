@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 public enum LobbyMenuType {
     START = 0,
@@ -13,14 +14,12 @@ public class LobbyMenuController : MonoBehaviour {
     private LobbyMenuType lobbyMenuType = LobbyMenuType.START;
     private ConfirmManager confirmManager;
     private LobbyUIController lobbyUIController;
-    private NetworkSceneManager networkSceneManager;
     private bool isExit = false;
 
     private void Awake() {
         menuText = gameObject.GetComponentInChildren<Text>();
         confirmManager = FindObjectOfType<ConfirmManager>();
         lobbyUIController = FindObjectOfType<LobbyUIController>();
-        networkSceneManager = FindObjectOfType<NetworkSceneManager>();
     }
 
     private void Update() {
@@ -36,12 +35,12 @@ public class LobbyMenuController : MonoBehaviour {
             return;
         }
 
-        if (!isConfirm && Input.GetButtonDown("Select") || !isConfirm && Input.GetButtonDown("menu")) {
+        if (!isConfirm && Input.GetButtonDown("menu")) {
             SelectMenu();
             return;
         }
 
-        if (isConfirm && Input.GetButtonDown("Select") || isConfirm && Input.GetButtonDown("menu")) {
+        if (isConfirm && Input.GetButtonDown("menu")) {
             OpenMenu();
             return;
         }
@@ -51,11 +50,35 @@ public class LobbyMenuController : MonoBehaviour {
 
     public void OpenMenu() {
         if (isExit) {
-            networkSceneManager.LoadMainScene();
+            OnExitRoomButtonClicked();
         }
         else {
-            //TODO: 게임 시작
+            OnStartGameButtonClicked();
         }
+    }
+
+    public void OnExitRoomButtonClicked() {
+        // 로비에서 방 나가기 버튼에 할당되는 메서드
+        var roomManager = RoomManager.singleton;
+        if (NetworkServer.active) {
+            FindObjectOfType<TCPclient>().SendRequest(RequestType.Remove);
+            roomManager.StopHost();
+        }
+        else {
+            FindObjectOfType<TCPclient>().SendRequest(RequestType.Exit);
+            roomManager.StopHost();
+        }
+    }
+
+    public void OnStartGameButtonClicked() {
+        // 로비에서 게임 시작 버튼에 할당되는 메서드
+        var roomManager = NetworkManager.singleton as RoomManager;
+        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
+
+        foreach (RoomPlayer player in roomManager.roomSlots)
+            player.ReadyStateChanged(false, true);
+        FindObjectOfType<TCPclient>().SendRequest(RequestType.Start);
+        roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
 
     public void SelectMenu() {

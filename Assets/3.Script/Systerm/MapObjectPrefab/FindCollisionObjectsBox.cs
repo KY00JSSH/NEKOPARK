@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class FindCollisionObjectsNum : MonoBehaviour {
+public class FindCollisionObjectsBox : MonoBehaviour {
     // 1. 목적 : objectPrefab들 => 해당 오브젝트와 충돌된 오브젝트가 몇 개인지 return
     // 검출하는 레이어 : 8번 레이어 붙어있는지 검출함
 

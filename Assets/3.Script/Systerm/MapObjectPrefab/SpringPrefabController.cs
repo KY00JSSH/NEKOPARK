@@ -17,7 +17,7 @@ public class SpringPrefabController : MonoBehaviour {
 
     [SerializeField] private GameObject collisionObject;                                          // ���� ������Ʈ
 
-    private FindCollisionObjects findCollisionObjects;                           // �浹 ��ü ã�� ��ũ��Ʈ
+    private FindCollisionObjectsSpring findCollisionObjects;                           // �浹 ��ü ã�� ��ũ��Ʈ
 
     private Animator spriteAnimator;                                             // spring image animation
 
@@ -28,7 +28,7 @@ public class SpringPrefabController : MonoBehaviour {
     private void Awake() {
         transformPosition = transform.position;
 
-        findCollisionObjects = GetComponent<FindCollisionObjects>();
+        findCollisionObjects = GetComponent<FindCollisionObjectsSpring>();
 
         spriteAnimator = GetComponent<Animator>();
     }
@@ -103,6 +103,9 @@ public class SpringPrefabController : MonoBehaviour {
                     position = collisionObject.transform.position;
                 }
                 else {
+                    //TODO: [김수주] 상자의 x 고정이 안풀리는 문제가 있음
+                    collRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+
                     RectTransform rectTransform = collisionObject.GetComponent<RectTransform>();
                     position = rectTransform.anchoredPosition;
                 }
@@ -110,7 +113,6 @@ public class SpringPrefabController : MonoBehaviour {
                 force = new Vector2(moveX * addForce * 0.3f, addForce);
                 //Debug.Log("? x���� ������ �� �ȵǴ°ǵ� �ù߰� " + force.x + " | " + force.y);
                 collRigidbody2D.AddForceAtPosition(force, position, ForceMode2D.Impulse); // ��ü ������
-                collisionObject = null;
             }
         }
     }
