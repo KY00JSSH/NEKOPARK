@@ -21,7 +21,7 @@ public class JoinRoomController : MonoBehaviour
             }else if (child.name.Equals("MaxCount")) {
                 child.text = data.maxConnected.ToString();
             }else if (child.name.Equals("GameMode")) {
-                child.text = data.gameMode.ToString();
+                child.text = data.gameType.ToString();
             }else if (child.name.Equals("GameStatus")) {
                 if (data.isStart) {
                     child.text = "IN GAME";
