@@ -22,6 +22,11 @@ public class PlayerMove : NetworkBehaviour {
 
     private Text textNickname;
 
+    public bool isRightPushMe { get; private set; }
+    public bool isLeftPushMe { get; private set; }
+    public int rightPushCount { get; private set; }
+    public int leftPushCount { get; private set; }
+
 
     private void Awake()
     {

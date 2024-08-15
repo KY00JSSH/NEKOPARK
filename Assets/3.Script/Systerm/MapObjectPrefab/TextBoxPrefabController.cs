@@ -76,7 +76,7 @@ public class TextBoxPrefabController : MonoBehaviour {
             for (int i = 0; i < hitCollisionAll.Length; i++) {
                 TextBoxPrefabController textBox = hitCollisionAll[i].GetComponent<TextBoxPrefabController>();
                 if (textBox.GetCollObject_Player()) {
-                    //Debug.LogWarning(gameObject.name + " | " + hitCollisionAll[i].name + " | " + textBox.GetCollObject_Player() + " | " + textBox.GetCanMove());
+                    Debug.LogWarning(gameObject.name + " | " + hitCollisionAll[i].name + " | " + textBox.GetCollObject_Player() + " | " + textBox.GetCanMove());
 
                     canMove = textBox.GetCanMove();
                     findPlayerBoxObject = textBox.GetFindPlayerBoxObject();
@@ -151,6 +151,7 @@ public class TextBoxPrefabController : MonoBehaviour {
         if (isFisrtCollBoxWithPlayer) {
             FindCollisionObjectTag();
 
+            Debug.Log(this.name + "  :  "+ findPlayerInCollisionList);
             if (findPlayerInCollisionList >= 1) {
                 CountAllCollisionPushSameDirection();
                 ChangeBoxCountNumText();    // 텍스트숫자변경되어야함
