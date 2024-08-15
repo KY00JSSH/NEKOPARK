@@ -17,11 +17,15 @@ public class Object_NextStageController : MonoBehaviour
         key = FindObjectOfType<Object_KeyController>();
     }
 
-    private void NextStage()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Door_outer.transform.localScale == Vector3.zero && Door_inner.transform.localScale == Vector3.one)
+        if (collision.CompareTag("Player"))
         {
-            //스테이지 넘어가는 로직
+            if (Door_outer.transform.localScale == Vector3.zero && Door_inner.transform.localScale == Vector3.one)
+            {
+                //스테이지 넘어가는 로직
+                
+            }
         }
     }
 }
