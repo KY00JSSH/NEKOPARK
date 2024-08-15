@@ -10,8 +10,6 @@ public class FindCollisionObjects : MonoBehaviour {
 
     private int layerMask = (1 << 8);
 
-    public float addForce = 5f;                                                 // Addforce 값 (레벨 별로 수정가능해야함)
-
     private float raycastCheckDistance = 500f;                                  // raycast를 확인할 거리
     [SerializeField] private float objectWidth;                                 // 오브젝트의 가로 반쪽 길이(raycast를 2개로 나눔)       
 
@@ -39,7 +37,8 @@ public class FindCollisionObjects : MonoBehaviour {
     private void Awake() {
         transformPosition = transform.position;
 
-        objectWidth = GetComponent<Collider2D>().bounds.extents.x;
+        objectWidth = GetComponent<Collider2D>().bounds.extents.x * 0.5f;
+
         // 왼쪽과 오른쪽에서 오프셋된 위치 계산
         leftOrigin = transformPosition - new Vector2(objectWidth, 0);
         rightOrigin = transformPosition + new Vector2(objectWidth, 0);
@@ -131,7 +130,10 @@ public class FindCollisionObjects : MonoBehaviour {
             CheckCollision checkCollision = hits[i].collider.GetComponent<CheckCollision>();
             if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {  // 스프링은 위 방향일 경우만 필요함
                 findObjectList.Add(hits[i].collider.gameObject);
-                if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) { break; }
+                if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
+                    Debug.Log("오브젝트위에 다른 객체 없음???" + hits[i].collider.name);
+                    break;
+                }
             }
             else {
                 break;
