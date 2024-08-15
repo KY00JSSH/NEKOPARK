@@ -8,6 +8,7 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using Org.BouncyCastle.Ocsp;
 
 [System.Serializable]
 public class RoomList {
@@ -193,7 +194,7 @@ public class TCPserver : MonoBehaviour {
             case "Enter":
                 if (FindRoom(room) == null) {
                     AddLog($"Client Enter Failure : {room.hostName}");
-                    response.WriteLine("Failure");
+                    response.WriteLine("EnterFailure");
                 }
                 else {
                     List<PlayerColorType> availableColor = roomList[roomList.IndexOf(FindRoom(room))].availableColor;
@@ -204,7 +205,7 @@ public class TCPserver : MonoBehaviour {
                     }
                     else {
                         AddLog($"Client Color Select Failure : {room.hostName}");
-                        response.WriteLine("Failrue");
+                        response.WriteLine("ColorFailrue");
                     }
                 }
                 break;
