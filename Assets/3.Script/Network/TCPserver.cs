@@ -22,7 +22,7 @@ public class RoomData {
 
     public List<PlayerColorType> availableColor;
     public PlayerColorType hostColor;
-    public GameModeType gameMode;
+    public GameType gameType;
     public bool isStart;
     public int currentConnected;
     public int maxConnected;
@@ -37,7 +37,7 @@ public class RoomData {
             (PlayerColorType[])Enum.GetValues(typeof(PlayerColorType)));
         availableColor.Remove(PlayerColorType.red);
 
-        gameMode = GameModeType.World;
+        gameType = GameType.Public;
         isStart = false;
         currentConnected = 1;
         maxConnected = 8;
@@ -52,11 +52,11 @@ public class TCPrequest {
 
 public enum RequestType {
     Create, Remove, Request,
-    Start, Select, Enter
+    Start, Select, Enter, Exit
 }
 
-public enum GameModeType {
-    World, Battle, Endless
+public enum GameType {
+    Friend, Public
 }
 
 public class TCPserver : MonoBehaviour {
@@ -208,7 +208,17 @@ public class TCPserver : MonoBehaviour {
                     }
                 }
                 break;
-
+            case "Exit":
+                if(FindRoom(room) == null) {
+                    AddLog($"Client Exit Room Failure : {room.hostName}");
+                    response.WriteLine("Status : Room Exit Failed.");
+                }
+                else {
+                    roomList[roomList.IndexOf(FindRoom(room))].currentConnected--;
+                    AddLog($"Client Exit Room : {room.hostName}");
+                    response.WriteLine("Status : Room Exit Successfully.");
+                }
+                break;
             default:
                 AddLog("ERROR : Unexpected Request Receieved");
                 response.WriteLine("Status : Unexpected Request.");

@@ -1,15 +1,54 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
     private HostMenuController hostMenuController;
     private Text valueText;
     private int valueNum = 0;
 
+    private Image[] images;
+    private Image targetColor;
+
+    private PlayerColorType[] colors = 
+        (PlayerColorType[])Enum.GetValues(typeof(PlayerColorType));
+    private int colorIndex = 0;
+    private int ColorIndex(bool isRight) {
+        if (isRight) {
+            colorIndex++;
+            if(colorIndex >= colors.Length - 1) 
+                colorIndex = 0;
+        }
+        else {
+            colorIndex--;
+            if (colorIndex < 0)
+                colorIndex = colors.Length - 2;
+        }
+        return colorIndex;
+    }
+    public int GetColorIndex() { return colorIndex; }
+
     private void Awake() {
         hostMenuController = FindObjectOfType<HostMenuController>();
         valueText = gameObject.GetComponentInChildren<Text>();
+    }
+
+    private void Start() {
+        InitPlayerHeadColor();
+    }
+
+    public void InitPlayerHeadColor() {
+        if (gameObject.name != "ColorValue") return;
+        images = GetComponentsInChildren<Image>();
+        targetColor = null;
+        foreach (Image image in images)
+            if (image.sprite.name == "playerHead") {
+                targetColor = image;
+                break;
+            }
+        targetColor.material = new Material(targetColor.material);
+        targetColor.material.SetColor("_PlayerColor", PlayerColor.Red);
     }
 
     public void ChangeValueText(bool isRight) {
@@ -57,6 +96,12 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
                     valueText.text = $"{valueNum + 2}";
                 }
             }
+        }
+        else if (name.Equals("ColorValue")) {
+            if (targetColor == null) { return; }
+
+            targetColor.material.SetColor(
+                "_PlayerColor", PlayerColor.GetColor(colors[ColorIndex(isRight)]));
         }
     }
 
