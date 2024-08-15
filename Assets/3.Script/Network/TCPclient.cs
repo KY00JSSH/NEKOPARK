@@ -7,6 +7,7 @@ using UnityEngine;
 using System.IO;
 using Mirror;
 using System.Text;
+using UnityEditor;
 
 public class TCPclient : MonoBehaviour {
     public static TCPclient Instance = null;
@@ -52,27 +53,45 @@ public class TCPclient : MonoBehaviour {
         StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.UTF8) { AutoFlush = true };
 
         TCPrequest request = new TCPrequest();
-        request.data = JsonUtility.ToJson(roomData);
         switch (requestType) {
-            case RequestType.Create: request.type = "Create";
-                break;               
-            case RequestType.Remove: request.type = "Remove";
+            case RequestType.Create:
+                request.type = "Create";
+                roomData.availableColor.Add(roomData.hostColor);
+                roomData.hostColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
+                roomData.availableColor.Remove(roomData.hostColor);
+                roomData.gameType = (GameType)PlayerPrefs.GetInt("GameType");
+
+                var roomManager = NetworkManager.singleton as RoomManager;
+                roomManager.maxConnections = PlayerPrefs.GetInt("MaxPlayer");
+                roomData.maxConnected = roomManager.maxConnections;
+                roomData.isStart = false;
                 break;
-            case RequestType.Request: request.type = "Request";
+            case RequestType.Remove:
+                request.type = "Remove";
+                break;
+            case RequestType.Request:
+                request.type = "Request";
                 request.data = null;
-                break;               
-            case RequestType.Start: request.type = "Start";
-                break;               
-            case RequestType.Select: request.type = "Select";
+                break;
+            case RequestType.Start:
+                request.type = "Start";
+                break;
+            case RequestType.Select:
+                request.type = "Select";
                 //TODO: 선택한 방목록의 RoomData 가져오기
-                break;               
-            case RequestType.Enter: request.type = "Enter";
+                break;
+            case RequestType.Enter:
+                request.type = "Enter";
                 //TODO: 선택한 방목록의 RoomData 가져오기
                 //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
+                break;
+            case RequestType.Exit:
+                request.type = "Exit";
                 break;
             default:
                 throw new UnassignedReferenceException("Unexpceted type");
         }
+        request.data = JsonUtility.ToJson(roomData);
 
         writer.WriteLine(JsonUtility.ToJson(request));
 
@@ -81,5 +100,11 @@ public class TCPclient : MonoBehaviour {
 
         client.Close();
         return response;
+    }
+
+    private void OnApplicationQuit() {
+        client.Connect(serverIP);
+        SendRequest(RequestType.Remove);
+        client.Close();
     }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using Mirror;
+using System.Collections.Generic;
+using Org.BouncyCastle.Ocsp;
 
 public class HostCreateController : MonoBehaviour
 {
@@ -33,10 +35,11 @@ public class HostCreateController : MonoBehaviour
         roomManager.minPlayers = NetworkManager.singleton.DebuggingOverride ? 1 : 2;
 
         int maxPlayerCount = PlayerPrefs.GetInt("MaxPlayer");
-        roomManager.maxConnections = maxPlayerCount; //TODO: 최대인원 설정 값 필요
+        roomManager.maxConnections = maxPlayerCount;
         roomManager.SetRoomPassword();  //TODO: 방 비밀번호 설정 값 필요
 
         //TODO: 방 설정 메서드 처리 필요
+        FindObjectOfType<TCPclient>().SendRequest(RequestType.Create);
         roomManager.StartHost();
     }
 }
