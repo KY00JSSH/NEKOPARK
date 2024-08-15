@@ -6,10 +6,18 @@ using UnityEngine.UI;
 public class JoinRoomController : MonoBehaviour
 {
     private Text[] childTexts;
+    private Image hostImage;
     //ID, CurrentCount, Slash, MaxCount, GameMode, GameStatus
 
     private void Awake() {
         childTexts = GetComponentsInChildren<Text>();
+        Image[] images = GetComponentsInChildren<Image>();
+
+        foreach (Image Image in images) {
+            if (Image.name.Contains("Player")) {
+                hostImage = Image;
+            }
+        }
     }
    
     public void RoomTextSetting(RoomData data) {
@@ -32,5 +40,6 @@ public class JoinRoomController : MonoBehaviour
                 }
             }
         }
+        hostImage.color = PlayerColor.GetColor(data.hostColor);
     }
 }

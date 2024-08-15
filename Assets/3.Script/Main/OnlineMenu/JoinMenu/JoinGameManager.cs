@@ -39,11 +39,13 @@ public class JoinGameManager : MonoBehaviour {
         test1.hostName = "ÀüÈ«Çö";
         test1.currentConnected = 3;
         test1.maxConnected = 6;
+        test1.hostColor = PlayerColorType.gray;
         RoomData test2 = new RoomData();
         test2.isStart = true;
         test2.hostName = "±è¼öÁÖ";
         test2.currentConnected = 2;
         test2.maxConnected = 2;
+        test2.hostColor = PlayerColorType.orange;
         data.Add(test1);
         data.Add(test2);
     }
