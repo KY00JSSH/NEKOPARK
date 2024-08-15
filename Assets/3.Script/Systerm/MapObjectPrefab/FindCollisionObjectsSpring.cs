@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FindCollisionObjects : MonoBehaviour {
+public class FindCollisionObjectsSpring : MonoBehaviour {
     // 1. ���� : ������ ������ ������Ʈ ��� ���� => �ش� ������Ʈ�� �浹�� ������Ʈ�� �� ������  / �ٸ� ������Ʈ�� ���������� 
     // �����ϴ� ���̾� : 8�� ���̾� �پ��ִ��� ������
 
@@ -114,7 +114,7 @@ public class FindCollisionObjects : MonoBehaviour {
 
     //�迭�� ��� ������Ʈ�� ���� ������Ʈ���� Ȯ��
     private bool CompareRaycastObject() {
-        return (collObjectsListLeft[0] == collObjectsListRight[0] == collObjectContact) ? true : false;
+        return ((collObjectsListLeft[0] == collObjectsListRight[0]) && (collObjectsListRight[0] == collObjectContact)) ? true : false;
     }
 
 
@@ -129,10 +129,10 @@ public class FindCollisionObjects : MonoBehaviour {
 
             CheckCollision checkCollision = hits[i].collider.GetComponent<CheckCollision>();
             if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {  // �������� �� ������ ��츸 �ʿ���
-                Debug.Log("?????????"+ hits[i].collider.name);
+                //Debug.Log("?????????"+ hits[i].collider.name);
                 findObjectList.Add(hits[i].collider.gameObject);
                 if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
-                    Debug.Log("???false" + hits[i].collider.name);
+                    //Debug.Log("???false" + hits[i].collider.name);
                     break;
                 }
             }
