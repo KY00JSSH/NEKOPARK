@@ -33,17 +33,20 @@ public class Object_KeyController : MonoBehaviour
             PlayerTransform = collision.transform;
             IsFollowingPlayer = true;
 
-            collision.GetComponent<PlayerMove>().SetHasKey(true);
-            AudioManager.instance.PlaySFX(AudioManager.Sfx.getKeyDoorOpen);
+            collision.GetComponent<PlayerMove>().SetHasKey(true);            
         }
     }
 
-    private void KeyFollowing()
+    public void KeyFollowing()
     {
         if (IsFollowingPlayer && PlayerTransform != null)
         {
+            float xOffset = PlayerTransform.localScale.x > 0 ? 0.9f : -0.9f;
+
+            Vector2 targetPosition = (Vector2)PlayerTransform.position + new Vector2(xOffset, 0.5f);
+
             transform.position =
-                Vector2.Lerp(transform.position, PlayerTransform.position, followingSpeed * Time.deltaTime);
+                Vector2.Lerp(transform.position, targetPosition, followingSpeed * Time.deltaTime);
         }
     }
 
