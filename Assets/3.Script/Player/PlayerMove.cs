@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerMove : NetworkBehaviour {
     private float moveSpeed = 5f;
@@ -9,8 +10,10 @@ public class PlayerMove : NetworkBehaviour {
 
     public bool Haskey { get; private set; }
     private bool IsPushingObject = false;
+    private bool IsDie = false;
 
     private float jumpForce = 400f;
+    private float dieAnimForce = 300f;
 
     private Rigidbody2D playerRigidbody;
     private Collider2D playerCollider;
@@ -35,12 +38,18 @@ public class PlayerMove : NetworkBehaviour {
 
     private void Update()
     {
-        Jump();        
+        if (!IsDie)
+        {
+            Jump();      
+        }
     }
 
     private void FixedUpdate() {
-        Move();
-        Jump_Limit();
+        if (!IsDie)
+        {
+            Move();
+            Jump_Limit();
+        }
     }
 
     private void Move() {
@@ -117,14 +126,23 @@ public class PlayerMove : NetworkBehaviour {
         AudioManager.instance.PlaySFX(AudioManager.Sfx.getKeyDoorOpen);
     }
 
-    private void Push()
+    private void Die()      
     {
-
+        if (!IsDie)
+        {
+            IsDie = true;
+            playerAnimator.SetBool("isDie", true);
+            playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기
+            playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     //위로 튕기기
+            StartCoroutine(PlayerDie_co(0.5f));                         //충돌 무시
+        }
     }
 
-    private void Die()      //�÷��̾� ���
+    private IEnumerator PlayerDie_co(float delay)
     {
-
+        yield return new WaitForSeconds(delay);
+        playerCollider.enabled = false;
+        playerRigidbody.isKinematic = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
