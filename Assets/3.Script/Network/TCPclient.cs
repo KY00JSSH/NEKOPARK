@@ -30,9 +30,10 @@ public class TCPclient : MonoBehaviour {
 
     private void InitRoomData() {
         roomData = new RoomData();
+
         IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
-        foreach (IPAddress address in addresses) 
-            if (address.AddressFamily == AddressFamily.InterNetwork) 
+        foreach (IPAddress address in addresses)
+            if (address.AddressFamily == AddressFamily.InterNetwork)
                 roomData.hostIP = address.ToString();
         if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
         roomData.hostPort = 5555;
@@ -49,18 +50,25 @@ public class TCPclient : MonoBehaviour {
         client.Connect(serverIP);
         StreamReader reader = new StreamReader(client.GetStream(), Encoding.UTF8);
         StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.UTF8) { AutoFlush = true };
-        
+
         TCPrequest request = new TCPrequest();
         request.data = JsonUtility.ToJson(roomData);
         switch (requestType) {
-            case RequestType.Create:
-                request.type = "Create";
+            case RequestType.Create: request.type = "Create";
+                break;               
+            case RequestType.Remove: request.type = "Remove";
                 break;
-            case RequestType.Remove:
-                request.type = "Remove";
-                break;
-            case RequestType.Request:
-                request.type = "Request";
+            case RequestType.Request: request.type = "Request";
+                request.data = null;
+                break;               
+            case RequestType.Start: request.type = "Start";
+                break;               
+            case RequestType.Select: request.type = "Select";
+                //TODO: 선택한 방목록의 RoomData 가져오기
+                break;               
+            case RequestType.Enter: request.type = "Enter";
+                //TODO: 선택한 방목록의 RoomData 가져오기
+                //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
                 break;
             default:
                 throw new UnassignedReferenceException("Unexpceted type");
