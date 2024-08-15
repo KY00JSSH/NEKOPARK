@@ -2,54 +2,29 @@ using UnityEngine;
 using Mirror;
 
 public class tempNetworkUI : MonoBehaviour {
-    // ÀÓ½Ã·Î ³×Æ®¿öÅ© ±â´É Å×½ºÆ®ÇÏ±â À§ÇØ¼­
-    // ¹öÆ° ÇÒ´ç ¸Þ¼­µå¸¦ ÀÛ¼ºÇÑ ½ºÅ©¸³Æ®
-    private TCPclient tcp;
-
-    private void Awake() {
-        tcp = FindObjectOfType<TCPclient>();
-    }
-
-
-    public void OnHostButtonClicked() {
-        // °ÔÀÓ ¹æ ¸¸µé±â ¹öÆ°¿¡ ÇÒ´çµÇ´Â ¸Þ¼­µå
-        CreateHostRoom();
-    }
-
-    private void CreateHostRoom() {
-        // È£½ºÆ®°¡ ¹æÀ» ¸¸µå´Â ¸Þ¼­µåÀÔ´Ï´Ù.
-        var roomManager = NetworkManager.singleton as RoomManager;
-
-        roomManager.minPlayers = NetworkManager.singleton.DebuggingOverride ? 1 : 2;
-        roomManager.maxConnections = 5; //TODO: ÃÖ´ëÀÎ¿ø ¼³Á¤ °ª ÇÊ¿ä
-        roomManager.SetRoomPassword();  //TODO: ¹æ ºñ¹Ð¹øÈ£ ¼³Á¤ °ª ÇÊ¿ä
-
-        //TODO: ¹æ ¼³Á¤ ¸Þ¼­µå Ã³¸® ÇÊ¿ä
-        roomManager.StartHost();
-        tcp.SendRequest(RequestType.Create);
-    }
+    // ï¿½Ó½Ã·ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½
+    // ï¿½ï¿½Æ° ï¿½Ò´ï¿½ ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®
 
     public void OnJoinButtonClicked() {
-        // °ÔÀÓ ¹æ µé¾î°¡±â ¹öÆ°¿¡ ÇÒ´çµÇ´Â ¸Þ¼­µå
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ò´ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
         JoinRoom();
     }
 
     private void JoinRoom() {
-        // Å¬¶óÀÌ¾ðÆ®°¡ ¹æ¿¡ µé¾î°¡´Â ¸Þ¼­µåÀÔ´Ï´Ù.
+        // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½æ¿¡ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
         var roomManager = RoomManager.singleton;
         roomManager.StartClient();
-        tcp.SendRequest(RequestType.Request);
     }
 
     public void OnExitRoomButtonClicked() {
-        // ·Îºñ¿¡¼­ ¹æ ³ª°¡±â ¹öÆ°¿¡ ÇÒ´çµÇ´Â ¸Þ¼­µå
+        // ï¿½Îºñ¿¡¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ò´ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
         var roomManager = RoomManager.singleton;
         if (NetworkServer.active) roomManager.StopHost();
         else roomManager.StopHost();
     }
 
     public void OnStartGameButtonClicked() {
-        // ·Îºñ¿¡¼­ °ÔÀÓ ½ÃÀÛ ¹öÆ°¿¡ ÇÒ´çµÇ´Â ¸Þ¼­µå
+        // ï¿½Îºñ¿¡¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½Ò´ï¿½Ç´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
         var roomManager = NetworkManager.singleton as RoomManager;
         if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
 
@@ -58,5 +33,4 @@ public class tempNetworkUI : MonoBehaviour {
 
         roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
-
 }

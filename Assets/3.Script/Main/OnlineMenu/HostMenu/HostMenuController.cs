@@ -28,16 +28,8 @@ public class HostMenuController : MonoBehaviour {
             }
             else {
                 float horizontalInput = Input.GetAxis("Horizontal");
-                switch (selectHostMenu) {
-                    case HostMenuType.TYPE:
-                        valueObjects[0]?.GetComponent<HostMenuValueController>().ChangeValueText(horizontalInput > 0 ? true : false);
-                        break;
-                    case HostMenuType.COLOR:
-                        break;
-                    case HostMenuType.COUNT:
-                        valueObjects[2]?.GetComponent<HostMenuValueController>().ChangeValueText(horizontalInput > 0 ? true : false);
-                        break;
-                }
+                valueObjects[(int)selectHostMenu]?.GetComponent<HostMenuValueController>().
+                    ChangeValueText(horizontalInput > 0);
             }
             return;
         }
@@ -46,7 +38,7 @@ public class HostMenuController : MonoBehaviour {
         if (Input.GetButtonDown("Vertical")) {
             float verticalInput = Input.GetAxis("Vertical");
             if ((int)selectHostMenu > 2) {
-                if (verticalInput > 0) {
+                if (verticalInput < 0) {
                     SetSelectHostMenu(HostMenuType.COUNT);
                     return;
                 }
@@ -56,7 +48,7 @@ public class HostMenuController : MonoBehaviour {
                 }
             }
             else {
-                if (verticalInput > 0) {
+                if (verticalInput < 0) {
                     int menuNum = (int)selectHostMenu;
                     if (menuNum == 0) {
                         menuNum = 4;
@@ -128,8 +120,15 @@ public class HostMenuController : MonoBehaviour {
     }
 
     public void StartHost() {
+        int gameTypeValue = valueObjects[1].GetComponent<HostMenuValueController>().GetValueNum();
+        PlayerPrefs.SetInt("GameType", gameTypeValue);
+        
+        int colorValue = valueObjects[1].GetComponent<HostMenuValueController>().GetColorIndex();
+        PlayerPrefs.SetInt("HostColor", colorValue);
+
         int countValue = valueObjects[2].GetComponent<HostMenuValueController>().GetValueNum();
         PlayerPrefs.SetInt("MaxPlayer", countValue+2);
+
         hostCreateController.OpenCreateLoading();
     }
 }
