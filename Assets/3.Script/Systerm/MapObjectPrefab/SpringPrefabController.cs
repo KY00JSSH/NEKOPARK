@@ -1,55 +1,124 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpringPrefabController : MonoBehaviour {
-    // 1. ¸ñÀû : ½ºÇÁ¸µ ÇÁ¸®Æé ¿ÀºêÁ§Æ® ±â´É ±¸Çö -> ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ³¯·Á¹ö¸®±â 
+    // 1. ï¿½ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  / ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ : 8ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½Ù¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    public float addForce = 10f; // Addforce °ª (·¹º§ º°·Î ¼öÁ¤°¡´ÉÇØ¾ßÇÔ)
-    private Vector2 addForceVector; // Ãæµ¹ ¹°Ã¼ ¹æÇâ È®ÀÎ
-    private Vector2 saveDirectionVector; // Ãæµ¹ ¹°Ã¼ ¹æÇâ ÀúÀå
+    private float moveX;
+    public float addForceY;                                                 // Addforce ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½)
+    public float addForceX;                                                 // Addforce ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½)
 
-    private Animator spriteAnimator; // spring image animation
+    public bool isBoxNeedAddforce { get; private set; }     // ìŠ¤í”„ë§ì—ì„œ box ë°€ì–´ì•¼í• ë•Œ ì‚¬ìš©
 
-    private FindCollisionObjectsNum findCollisionObjectsNum;
+    private RectTransform rectTransform;
+    private Vector2 transformPosition;                                           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+    private Vector2 addForceVector;                                              // ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+    private Vector2 saveDirectionVector;                                         // ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+    [SerializeField] private GameObject collisionObject;                                          // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+
+    private FindCollisionObjectsSpring findCollisionObjects;                           // ï¿½æµ¹ ï¿½ï¿½Ã¼ Ã£ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®
+
+    private Animator spriteAnimator;                                             // spring image animation
+
+    private void SetCollObject() { collisionObject = findCollisionObjects.GetCollObject(); }  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ş¾Æ¿ï¿½ï¿½ï¿½
+
+
 
     private void Awake() {
+        rectTransform = GetComponent<RectTransform>();
+        transformPosition = transform.position;
+
+        findCollisionObjects = GetComponent<FindCollisionObjectsSpring>();
+
         spriteAnimator = GetComponent<Animator>();
-
-        findCollisionObjectsNum = GetComponent<FindCollisionObjectsNum>();
     }
-    // enter¿¡¼­ ¹æÇâ ÀúÀå
+
+
+    private void Update() {
+
+        if (findCollisionObjects.GetIsObjectOnlyOne()) {
+            SetCollObject();
+            AddforceObject();
+            collisionObject = null;
+        }
+
+    }
+
+    // enterï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void OnCollisionEnter2D(Collision2D collision) {
-        saveDirectionVector.x = collision.transform.position.x - transform.position.x;
+        float topY = transform.position.y + GetComponent<Collider2D>().bounds.extents.y;
+        if (collision.transform.TryGetComponent(out RectTransform collisionRect)) {
+            float collisionBottom = collision.transform.position.y - collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
+            // ì¶©ëŒì²´ê°€ ë‚´ ìœ„ì— ìˆëŠ” ê²½ìš°.
+            if (collision.collider.CompareTag("Box")) {
+                if (collisionBottom >= transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f) {
+                    //Vector2 collisionPosition = collisionRect.position;
+
+                    Vector2 relativeVelocity = collision.relativeVelocity;
+                    moveX = relativeVelocity.x >= 0f ? 1f : -1f;
+                    Debug.Log("Collision direction (X): " + moveX);
+                }
+            }
+            else {
+                moveX = 0;
+            }
+            //Debug.Log("collisionBottom : " + collisionBottom + " | " + transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f);
+
+        }
+
     }
 
-    // Ãæµ¹ÇÑ ¹°Ã¼ÀÇ ÁøÀÔ¹æÇâÀ» È®ÀÎÇÏ¿© addforce
-    private void OnCollisionStay2D(Collision2D collision) {
-        Debug.Log("SpringPrefabController : " + findCollisionObjectsNum.GetCollObjectsNum());
+    private void OnCollisionExit2D(Collision2D collision) {
 
-        if (findCollisionObjectsNum.GetCollObjectsNum()==1) {
-            Rigidbody2D collRigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
+        //isBoxNeedAddforce = false;
+    }
+
+    // ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ addforce
+    //TODO: [ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private void AddforceObject() {
+        if (collisionObject != null) {
+
+            Rigidbody2D collRigidbody2D = collisionObject.GetComponent<Rigidbody2D>();
+
             if (collRigidbody2D != null) {
+                Vector2 force;
+                Vector2 position;
 
-                //addForceVector = new Vector2(saveDirectionVector.x, addForce);
-                collRigidbody2D.AddForce(collRigidbody2D.transform.up * addForce, ForceMode2D.Impulse);
+                if (collisionObject.gameObject.CompareTag("Player")) {
+                    //Debug.Log("? xï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ÈµÇ´Â°Çµï¿½ ï¿½Ã¹ß°ï¿½ " + force.x + " | " + force.y);
+                    position = collisionObject.transform.position;
+                }
+                else {
+                    isBoxNeedAddforce = true;
+                    RectTransform rectTransform = collisionObject.GetComponent<RectTransform>();
+                    position = rectTransform.transform.position;
+                }
+
+                force = new Vector2(moveX * addForceX, addForceY);
+                //Debug.Log("? xï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ÈµÇ´Â°Çµï¿½ ï¿½Ã¹ß°ï¿½ " + force.x + " | " + force.y);
+                collRigidbody2D.AddForceAtPosition(force, position, ForceMode2D.Impulse); // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             }
         }
     }
 
+
 }
 
 /*  
- 1. ¸ñÀû : ½ºÇÁ¸µ ÇÁ¸®Æé ¿ÀºêÁ§Æ® ±â´É ±¸Çö -> ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ ³¯·Á¹ö¸®±â 
- 2. ³»¿ë
-    2-1. º¯¼ö 
-        1) Addforce¸¦ ÇÏ·Á´Â °ª ¼³Á¤ : public float·Î ¿ÜºÎ¿¡¼­ ¼³Á¤ => ·¹º§º° Á¡ÇÁ´ëÀÇ ¼º´ÉÀÌ ´Ş¶óÁö´Â °æ¿ì°¡ ÀÖÀ½
-        2) addForceVector : Ãæµ¹ ¹°Ã¼ ¹æÇâ È®ÀÎ ¿ëµµ
-        3) spriteAnimator : spring ÀÌ¹ÌÁö º¯°æ ¾Ö´Ï¸ŞÀÌ¼Ç
-    2-2. Ã³¸® ³»¿ë 
-        1) Collider È®ÀÎ (½ºÇÁ¸µ ÇÁ¸®ÆéÀÇ »óºÎ¸¸ È®ÀÎ)
-        2) if( Collider's num >= ....) return? => 1°³¸¸ Á¡ÇÁÇÒ ¼ö ÀÖÀ½ //TODO: FindCollistionObjects °³¼ö È®ÀÎ °¡´ÉÇÑ°¡?
-        3) È®ÀÎµÈ objectÀÇ ÁøÀÔ¹æÇâÀ» È®ÀÎÇÏ¿© ÇØ´ç ¹æÇâÀ¸·Î ³¯¸²
-        4) ½ºÇÁ¶óÀÌÆ® º¯°æ //TODO: spring sprite »ı¼º µÇ¸é animator ¸¸µé¾î¾ßÇÔ
- 3. ÇØ´ç ½ºÅ©¸³Æ® À§Ä¡ : ½ºÇÁ¸µ ÇÁ¸®Æé
+ 1. ï¿½ï¿½ï¿½ï¿½2 : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+ 2. ï¿½ï¿½ï¿½ï¿½
+    2-1. ï¿½ï¿½ï¿½ï¿½ 
+        1) Addforceï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : public floatï¿½ï¿½ ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì°¡ ï¿½ï¿½ï¿½ï¿½
+        2) addForceVector : ï¿½æµ¹ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ëµµ
+        3) spriteAnimator : spring ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
+    2-2. Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+        1) FindCollisionObjectsï¿½ï¿½ï¿½ï¿½È®ï¿½ï¿½ï¿½ï¿½ boolï¿½ï¿½ ï¿½ï¿½ï¿½
+        2) ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+        3) È®ï¿½Îµï¿½ objectï¿½ï¿½ ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        4) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ 
+ 3. ï¿½Ø´ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½ï¿½Ä¡ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */

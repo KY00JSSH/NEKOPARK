@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,10 @@ public class TextBoxPrefabController : MonoBehaviour {
 
     private int laymask = (1 << 8);                                                 // 찾는 레이어
     [SerializeField] private int TextBoxCountNum;                                   // 초기 카운트 지정
+    private float boxPlayerDeltaX = 0.5f;                                           // 박스 플레이어 x축 차이
+    private float boxPlayerDeltaY = 0.8f;                                           // 박스 플레이어 y축 차이
+
+
 
     private int isPlayerPushingBox;                                                 // 플레이어가 박스를 미는 숫자
 
@@ -39,22 +44,27 @@ public class TextBoxPrefabController : MonoBehaviour {
     private List<GameObject> setCollisionObjectList = new List<GameObject>();
 
     private Rigidbody2D transformRigidbody;
-    private FindCollisionObjectsNum findCollisionObjectsNum;
+    private FindCollisionObjectsBox findCollisionObjectsNum;
 
     private void Awake() {
         transformRigidbody = GetComponent<Rigidbody2D>();
 
         textBoxCountText = transform.GetComponentInChildren<Text>();
 
-        findCollisionObjectsNum = GetComponent<FindCollisionObjectsNum>();
+        findCollisionObjectsNum = GetComponent<FindCollisionObjectsBox>();
 
         InitBoxCountNumText();
-
     }
 
     // Raycast로 부딪힌 모든 객체를 배열에 담음 =>부딪힌 배열에 플레이어가 있다면 객체 담음
     private void RaycastOverlapBoxAll() {
         hitCollisionAll = Physics2D.OverlapBoxAll(transform.position, new Vector2(1.2f, 0.9f), 0, laymask);
+
+        if (hitCollisionAll.Length > 0) {
+            if (hitCollisionAll[0].gameObject == transform.gameObject) {
+                hitCollisionAll = hitCollisionAll.Where(hitCollisionAll => hitCollisionAll.gameObject != transform.gameObject).ToArray();  // 자기 자신일 경우 제외 (TextBOX)
+            }
+        }
 
         if (IsRayCastHavePlayer()) {
             findPlayerBoxObject = gameObject;
@@ -62,10 +72,15 @@ public class TextBoxPrefabController : MonoBehaviour {
             isFisrtCollBoxWithPlayer = true;
         }
         else {
+            isFisrtCollBoxWithPlayer = false;
             for (int i = 0; i < hitCollisionAll.Length; i++) {
                 TextBoxPrefabController textBox = hitCollisionAll[i].GetComponent<TextBoxPrefabController>();
                 if (textBox.GetCollObject_Player()) {
+                    Debug.LogWarning(gameObject.name + " | " + hitCollisionAll[i].name + " | " + textBox.GetCollObject_Player() + " | " + textBox.GetCanMove());
+
+                    canMove = textBox.GetCanMove();
                     findPlayerBoxObject = textBox.GetFindPlayerBoxObject();
+                    isGetCollObject_Player = textBox.GetCollObject_Player();
                 }
             }
         }
@@ -75,9 +90,10 @@ public class TextBoxPrefabController : MonoBehaviour {
     private bool IsRayCastHavePlayer() {
         if (hitCollisionAll != null) {
             for (int i = 0; i < hitCollisionAll.Length; i++) {
-                if (hitCollisionAll[i].gameObject.CompareTag("Player")) { return true; }
+                if (hitCollisionAll[i].gameObject.CompareTag("Player")) {
+                    return true;
+                }
             }
-            return false;
         }
         return false;
 
@@ -102,33 +118,45 @@ public class TextBoxPrefabController : MonoBehaviour {
     private void ChangeTextChange() {
         if(findPlayerBoxObject != null) {
             TextBoxPrefabController textBox = findPlayerBoxObject.GetComponent<TextBoxPrefabController>();
-            isGetCollObject_Player = textBox.GetCollObject_Player();
-            canMove = textBox.GetCanMove();
             isPlayerPushingBox = textBox.GetChangeTextCount();
             ChangeBoxCountNumText();    // 텍스트숫자변경되어야함
 
         }
         else {
             findPlayerBoxObject = null;
+
+            isFisrtCollBoxWithPlayer = false;            
             isGetCollObject_Player = false;
+
+            canMove = false;
+
             InitBoxCountNumText();
         }
     }
 
 
     private void Update() {
+
         RaycastOverlapBoxAll();
+        TextBoxMainControll();
+
         DeleteFindPlayerBoxObjext();
 
+
+        FreezeTransformRigidbody(canMove);
+        FollowObjectIfBoxCanMove();
+    }
+
+    private void TextBoxMainControll() {
         if (isFisrtCollBoxWithPlayer) {
             FindCollisionObjectTag();
 
+            Debug.Log(this.name + "  :  "+ findPlayerInCollisionList);
             if (findPlayerInCollisionList >= 1) {
                 CountAllCollisionPushSameDirection();
                 ChangeBoxCountNumText();    // 텍스트숫자변경되어야함
                 if (CheckCollisionCountNum()) {
                     canMove = true;
-                    GetCanMove();
                 }
                 else {
                     canMove = false;
@@ -142,34 +170,41 @@ public class TextBoxPrefabController : MonoBehaviour {
         else {
             ChangeTextChange();
         }
-
-        FreezeTransformRigidbody(canMove);
-        FollowObjectIfBoxCanMove();
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.transform.position.y <= transform.position.y) {
-            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
-                followingObjectPre.x = collision.gameObject.transform.position.x;
+
+        boxPlayerDeltaX = 0.5f;
+        boxPlayerDeltaY = 0.8f;
+
+        if ((transformRigidbody.position.y - collision.transform.position.y)  >= boxPlayerDeltaY){
+            if ( Mathf.Abs( collision.transform.position.x - transformRigidbody.position.x )<= boxPlayerDeltaX) {
+                if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
+                    followingObjectPre.x = collision.gameObject.transform.position.x;
+                }
             }
         }
     }
 
     // 해당 박스의 아래면에 collision가 플레이어라면 객체 저장 
     private void OnCollisionStay2D(Collision2D collision) {
-        if (collision.transform.position.y <= (transformRigidbody.position.y - 1f)) {
-            if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
-                followingObject = collision.gameObject;
+        if ((transformRigidbody.position.y - collision.transform.position.y) >= boxPlayerDeltaY) {
+            if (Mathf.Abs(collision.transform.position.x - transformRigidbody.position.x) <= boxPlayerDeltaX) {
+                if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
+                    followingObject = collision.gameObject;
+                }
             }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
             canMove = false;
             followingObject = null;
             isGetCollObject_Player = false;
-            findPlayerBoxObject = null; 
+            findPlayerBoxObject = null;
+            InitBoxCountNumText();
         }
     }
 
@@ -308,6 +343,6 @@ public class TextBoxPrefabController : MonoBehaviour {
             2) 필요한 카운트와 해당 숫자가 맞는지 확인
             3) 전체 인원이 같은 방향으로 밀고 있는지 확인
             4) 움직임 고정 메소드
-            5) //TODO: Textbox가 겹쳐있을 경우 판정 이상해짐
-            6) //TODO: Textbox가 플레이어 위에 있을 경우 -> x좌표 이동해야함 
+            5) //TODO: [김수주] Textbox가 겹쳐있을 경우 판정 이상해짐
+            6) //TODO: [김수주] Textbox가 플레이어 위에 있을 경우 -> x좌표 이동해야함 
  */
