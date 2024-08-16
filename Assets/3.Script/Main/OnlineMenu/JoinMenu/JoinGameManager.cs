@@ -10,10 +10,15 @@ public class JoinGameManager : MonoBehaviour {
     private List<RoomData> data = new List<RoomData>();
     //option - world, battel, endless
 
+    private JoinSelectColorController joinSelectColorController;
+    private JoinFailController joinFailController;
+
     private void Awake() {
         mainManager = FindObjectOfType<MainManager>();
         joinButtonHovers = FindObjectsOfType<JoinButtonHoverController>();
         joinRoomManager = FindObjectOfType<JoinRoomManager>();
+        joinSelectColorController = FindObjectOfType<JoinSelectColorController>();
+        joinFailController = FindObjectOfType<JoinFailController>();
     }
 
     private void Start() {
@@ -77,5 +82,24 @@ public class JoinGameManager : MonoBehaviour {
                 component.DisEnableImage();
             }
         }
+    }
+
+    public void OpenSelectColorModal() {
+        //TODO: SELECT COLOR REQUEST
+        joinSelectColorController.gameObject.SetActive(true);
+    }
+   
+    public void OpenConnectFailModal() {
+        CloseSelectColorModal();
+        joinFailController.gameObject.SetActive(true);
+    }
+
+    public void CloseSelectColorModal() {
+        joinSelectColorController.gameObject.SetActive(false);
+    }
+
+    public void CloseConnectFailModal() {
+        joinFailController.gameObject.SetActive(false);
+        //TODO: ¹æ LIST REQUEST
     }
 }
