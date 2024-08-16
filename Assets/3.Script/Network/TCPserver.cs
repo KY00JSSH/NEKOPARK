@@ -8,6 +8,7 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using Org.BouncyCastle.Ocsp;
 
 [System.Serializable]
 public class RoomList {
@@ -69,6 +70,7 @@ public class TCPserver : MonoBehaviour {
     private int maxLogCount = 100;
 
     public void AddLog(string log) {
+        log = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss] ") + log;
         Debug.Log(log);
         Log.Enqueue(log);
         if (Log.Count > maxLogCount) Log.Dequeue();
@@ -181,7 +183,7 @@ public class TCPserver : MonoBehaviour {
             case "Select":
                 if (FindRoom(room) == null) {
                     AddLog($"Client Select Failure : {room.hostName}");
-                    response.WriteLine("Status : Room Select Failed.");
+                    response.WriteLine(JsonUtility.ToJson(null));
                 }
                 else {
                     json = JsonUtility.ToJson(roomList[roomList.IndexOf(FindRoom(room))].availableColor);
@@ -193,7 +195,7 @@ public class TCPserver : MonoBehaviour {
             case "Enter":
                 if (FindRoom(room) == null) {
                     AddLog($"Client Enter Failure : {room.hostName}");
-                    response.WriteLine("Failure");
+                    response.WriteLine("EnterFailure");
                 }
                 else {
                     List<PlayerColorType> availableColor = roomList[roomList.IndexOf(FindRoom(room))].availableColor;
@@ -204,7 +206,7 @@ public class TCPserver : MonoBehaviour {
                     }
                     else {
                         AddLog($"Client Color Select Failure : {room.hostName}");
-                        response.WriteLine("Failrue");
+                        response.WriteLine("ColorFailrue");
                     }
                 }
                 break;

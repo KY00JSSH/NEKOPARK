@@ -8,6 +8,7 @@ using System.IO;
 using Mirror;
 using System.Text;
 using UnityEditor;
+using System;
 
 public class TCPclient : MonoBehaviour {
     public static TCPclient Instance = null;
@@ -48,7 +49,20 @@ public class TCPclient : MonoBehaviour {
     }
 
     public string SendRequest(RequestType requestType) {
-        client.Connect(serverIP);
+        try {
+            client.Connect(serverIP);
+        }
+        catch (Exception e) {
+            if (e is ObjectDisposedException) {
+                try {
+                    StartClient();
+                    client.Connect(serverIP);
+                }
+                catch (Exception f) {
+                    throw;
+                }
+            }
+        }
         StreamReader reader = new StreamReader(client.GetStream(), Encoding.UTF8);
         StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.UTF8) { AutoFlush = true };
 
@@ -58,6 +72,7 @@ public class TCPclient : MonoBehaviour {
                 request.type = "Create";
                 roomData.availableColor.Add(roomData.hostColor);
                 roomData.hostColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
+                FindObjectOfType<RoomManager>().MyPlayerColor = roomData.hostColor;
                 roomData.availableColor.Remove(roomData.hostColor);
                 roomData.gameType = (GameType)PlayerPrefs.GetInt("GameType");
 
@@ -102,8 +117,21 @@ public class TCPclient : MonoBehaviour {
         return response;
     }
 
-    private void OnApplicationQuit() {
-        client.Connect(serverIP);
+    private void OnDestroy() {
+        try {
+            client.Connect(serverIP);
+        }
+        catch (Exception e) {
+            if (e is ObjectDisposedException) {
+                StartClient();
+                client.Connect(serverIP);
+            }
+            else if (e is NullReferenceException) {
+                client = new TcpClient();
+                StartClient();
+                client.Connect(serverIP);
+            }
+        }
         SendRequest(RequestType.Remove);
         client.Close();
     }

@@ -25,6 +25,7 @@ public class HostCreateController : MonoBehaviour
 
     private IEnumerator delayStart() {
         yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
         compeleteCreate();
     }
 
@@ -39,7 +40,7 @@ public class HostCreateController : MonoBehaviour
         roomManager.SetRoomPassword();  //TODO: 방 비밀번호 설정 값 필요
 
         //TODO: 방 설정 메서드 처리 필요
-        FindObjectOfType<TCPclient>().SendRequest(RequestType.Create);
+        TCPclient.Instance.SendRequest(RequestType.Create);
         roomManager.StartHost();
     }
 }

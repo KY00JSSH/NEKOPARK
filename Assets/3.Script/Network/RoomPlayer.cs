@@ -42,7 +42,7 @@ public class RoomPlayer : NetworkRoomPlayer {
         Vector3 spawnPosition = GetSpawnPosition();
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
-        var playerColor = GetSpawnColor();
+        var playerColor = FindObjectOfType<RoomManager>().MyPlayerColor;
         player.GetComponent<PlayerColor>().playerColor = playerColor;
 
         var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
