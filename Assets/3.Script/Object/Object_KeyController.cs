@@ -59,5 +59,4 @@ public class Object_KeyController : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-
 }
