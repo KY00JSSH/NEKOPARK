@@ -23,7 +23,6 @@ public class LobbyMenuController : MonoBehaviour {
     }
 
     private void Update() {
-
         if (!isConfirm && Input.GetButtonDown("Horizontal")) {
             float horizontalInput = Input.GetAxis("Horizontal");
             if (horizontalInput > 0) {
@@ -61,12 +60,12 @@ public class LobbyMenuController : MonoBehaviour {
         // 로비에서 방 나가기 버튼에 할당되는 메서드
         var roomManager = RoomManager.singleton;
         if (NetworkServer.active) {
-            TCPclient.Instance.SendRequest(RequestType.Remove);
             roomManager.StopHost();
+            TCPclient.Instance.SendRequest(RequestType.Remove);
         }
         else {
-            TCPclient.Instance.SendRequest(RequestType.Exit);
             roomManager.StopHost();
+            TCPclient.Instance.SendRequest(RequestType.Exit);
         }
     }
 
@@ -77,8 +76,8 @@ public class LobbyMenuController : MonoBehaviour {
 
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
-        TCPclient.Instance.SendRequest(RequestType.Start);
         roomManager.ServerChangeScene(roomManager.GameplayScene);
+        TCPclient.Instance.SendRequest(RequestType.Start);
     }
 
     public void SelectMenu() {
@@ -116,6 +115,7 @@ public class LobbyMenuController : MonoBehaviour {
         else {
             menuNum++;
         }
+        menuNum = CheckStartAvailable(menuNum, true);
         lobbyMenuType = (LobbyMenuType)menuNum;
     }
 
@@ -127,11 +127,18 @@ public class LobbyMenuController : MonoBehaviour {
         else {
             menuNum--;
         }
+        menuNum = CheckStartAvailable(menuNum, false);
         lobbyMenuType = (LobbyMenuType)menuNum;
     }
 
-    public void StartAvailable(int menuNum, bool isRight) {
-        //if ()
+    public int CheckStartAvailable(int menuNum, bool isRight) {
+        if (menuNum == 0) {
+            if (!(NetworkServer.active && 
+                ((NetworkManager.singleton as RoomManager).roomSlots.Count >= 2))) {
+                menuNum = isRight ? 1 : 2;
+            }
+        }
+        return menuNum;
     }
 
     private void checkMenuText() {

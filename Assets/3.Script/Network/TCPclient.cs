@@ -124,4 +124,11 @@ public class TCPclient : MonoBehaviour {
     public void SetSelectRoomIndex(int num) {
         joinRoomIndex = num;
     }
+
+    private void OnDestroy() {
+        StartClient();
+        client.Connect(serverIP);
+        SendRequest(RequestType.Remove);
+        client.Close();
+    }
 }
