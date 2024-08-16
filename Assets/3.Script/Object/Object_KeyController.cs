@@ -10,15 +10,18 @@ public class Object_KeyController : MonoBehaviour
     */
 
     private Transform PlayerTransform;
-    private Collider2D KeyCollider; //필요없나 확인할 것 240814 10:53
+    //private Collider2D KeyCollider; //필요없나 확인할 것 240814 10:53
 
     private bool IsFollowingPlayer = false;
     public float followingSpeed = 2.0f;            //열쇠가 플레이어를 따라가는 속도
 
+    private bool IsSFXPlayed;
+
     private void Awake()
     {
         PlayerTransform = GetComponent<Transform>();
-        KeyCollider = GetComponent<Collider2D>();
+        //KeyCollider = GetComponent<Collider2D>();
+        
     }
 
     private void Update()
@@ -28,12 +31,14 @@ public class Object_KeyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if(collision.CompareTag("Player") && !IsSFXPlayed)
         {
             PlayerTransform = collision.transform;
             IsFollowingPlayer = true;
 
-            collision.GetComponent<PlayerMove>().SetHasKey(true);            
+            collision.GetComponent<PlayerMove>().SetHasKey(true);
+
+            IsSFXPlayed = true;
         }
     }
 
