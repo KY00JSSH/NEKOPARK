@@ -10,7 +10,7 @@ public class LobbyMenuManager : MonoBehaviour {
     }
 
     private void Start() {
-        OpenJoinHint();
+        OpenJoinHint(); 
     }
 
     public void OpenJoinHint() {
@@ -21,5 +21,13 @@ public class LobbyMenuManager : MonoBehaviour {
     public void OpenRoom() {
         canvases[0].gameObject.SetActive(true);
         canvases[1].gameObject.SetActive(false);
+    }
+    public void SetPlayerIconColor() {
+        foreach(var each in playerIcons) {
+            each.material = new Material(each.material);
+            each.material.SetColor("_PlayerColor", 
+                PlayerColor.GetColor(RoomPlayer.MyRoomPlayer.playerColor));
+        }
+
     }
 }

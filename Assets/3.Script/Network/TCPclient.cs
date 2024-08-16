@@ -68,6 +68,8 @@ public class TCPclient : MonoBehaviour {
         switch (requestType) {
             case RequestType.Create:
                 request.type = "Create";
+                roomData.hostIP = RoomManager.singleton.networkAddress;
+
                 roomData.availableColor.Add(roomData.hostColor);
                 roomData.hostColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
                 FindObjectOfType<RoomManager>().MyPlayerColor = roomData.hostColor;
@@ -92,9 +94,12 @@ public class TCPclient : MonoBehaviour {
             case RequestType.Select:
                 request.type = "Select";
                 roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData();
+                if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
                 break;
             case RequestType.Enter:
                 request.type = "Enter";
+                roomData.hostIP = RoomManager.singleton.networkAddress;
+                if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
                 roomData.hostColor = FindObjectOfType<JoinColorChangeController>().GetSelectClientColor();
                 //TODO: 선택한 방목록의 RoomData 가져오기
                 //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
