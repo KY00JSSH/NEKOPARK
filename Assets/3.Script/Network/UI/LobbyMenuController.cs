@@ -11,7 +11,7 @@ public enum LobbyMenuType {
 public class LobbyMenuController : MonoBehaviour {
     private Text menuText;
     private bool isConfirm = false;
-    private LobbyMenuType lobbyMenuType = LobbyMenuType.START;
+    private LobbyMenuType lobbyMenuType = LobbyMenuType.RETURN;
     private ConfirmManager confirmManager;
     private LobbyUIController lobbyUIController;
     private bool isExit = false;
@@ -130,8 +130,8 @@ public class LobbyMenuController : MonoBehaviour {
         lobbyMenuType = (LobbyMenuType)menuNum;
     }
 
-    public void StartAvailable(int menuNum) {
-
+    public void StartAvailable(int menuNum, bool isRight) {
+        //if ()
     }
 
     private void checkMenuText() {

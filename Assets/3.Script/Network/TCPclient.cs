@@ -117,22 +117,5 @@ public class TCPclient : MonoBehaviour {
         return response;
     }
 
-    private void OnDestroy() {
-        try {
-            client.Connect(serverIP);
-        }
-        catch (Exception e) {
-            if (e is ObjectDisposedException) {
-                StartClient();
-                client.Connect(serverIP);
-            }
-            else if (e is NullReferenceException) {
-                client = new TcpClient();
-                StartClient();
-                client.Connect(serverIP);
-            }
-        }
-        SendRequest(RequestType.Remove);
-        client.Close();
-    }
+
 }

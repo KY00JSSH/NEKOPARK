@@ -135,6 +135,10 @@ public class TCPserver : MonoBehaviour {
     }
 
     private void ProcessRequest(string req, StreamWriter response) {
+        Debug.Log(roomList.Count);
+        if (roomList.Count > 0)
+            Debug.Log(roomList[0]?.hostIP);
+
         TCPrequest request = JsonUtility.FromJson<TCPrequest>(req);
         RoomData room = JsonUtility.FromJson<RoomData>(request.data);
         string json;
