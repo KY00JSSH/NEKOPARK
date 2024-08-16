@@ -35,13 +35,10 @@ public class TCPclient : MonoBehaviour {
     private void InitRoomData() {
         roomData = new RoomData();
 
-        IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
-        foreach (IPAddress address in addresses)
-            if (address.AddressFamily == AddressFamily.InterNetwork)
-                roomData.hostIP = address.ToString();
+        roomData.hostName = "김수주"; //TODO: 로그인 후 UI에서 닉네임 받아오기!!!
+        roomData.hostIP = RoomManager.singleton.networkAddress;
         if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
         roomData.hostPort = 5555;
-        roomData.hostName = "김수주"; //TODO: 로그인 후 UI에서 닉네임 받아오기!!!
     }
 
     private void StartClient() {

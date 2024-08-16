@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +30,9 @@ public class JoinColorModalController : MonoBehaviour {
     }
 
     private void JoinRoom() {
-        var roomManager = RoomManager.singleton;
+        var roomManager = NetworkManager.singleton as RoomManager;
+        var roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData(joinRoomIndex);
+        roomManager.SetNetworkAddress(roomData.hostIP);
         roomManager.StartClient();
     }
 }
