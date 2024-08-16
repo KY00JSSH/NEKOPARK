@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class MainManager : MonoBehaviour {
     private Canvas[] canvases;
+    private JoinGameManager joinGameManager;
+    private JoinMenuFailController joinMenuFailController;
 
     private void Awake() {
         canvases = GetComponentsInChildren<Canvas>();
+        joinGameManager = FindObjectOfType<JoinGameManager>();
+        joinMenuFailController = FindObjectOfType<JoinMenuFailController>();
     }
 
     private void Start() {
@@ -21,11 +25,17 @@ public class MainManager : MonoBehaviour {
         canvases[0].gameObject.SetActive(false);
         canvases[1].gameObject.SetActive(true);
         canvases[2].gameObject.SetActive(false);
+        joinMenuFailController.CloseDialog();
     }
 
     public void OpenJoinCanvas() {
-        canvases[0].gameObject.SetActive(false);
-        canvases[1].gameObject.SetActive(false);
-        canvases[2].gameObject.SetActive(true);
+        if (joinGameManager.JoinRoomSetting()) {
+            canvases[0].gameObject.SetActive(false);
+            canvases[1].gameObject.SetActive(false);
+            canvases[2].gameObject.SetActive(true);
+        }
+        else {
+            joinMenuFailController.OpenDialog();
+        }
     }
 }

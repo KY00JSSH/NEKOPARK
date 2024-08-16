@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,38 +23,37 @@ public class JoinGameManager : MonoBehaviour {
         joinFailController = FindObjectOfType<JoinFailController>();
     }
 
-    private void Start() {
-        //data = JsonUtility.FromJson<List<RoomData>>(FindObjectOfType<TCPclient>().SendRequest(RequestType.Request));
-        //TODO: ROOM 갯수 TEST용도
-        testDataSetting();
-        if (data.Count > 6) {
-            List<RoomData> firstPageData = new List<RoomData>();
-            for (int i = 0; i < data.Count && i < 6; i++) {
-                firstPageData.Add(data[i]);
-            }
-            joinRoomManager.OpenRoomCount(firstPageData);
-        }
-        else {
-            joinRoomManager.OpenRoomCount(data);
+   private bool requestRoomList() {
+        try {
+            string response = TCPclient.Instance.SendRequest(RequestType.Request);
+
+            RoomList responseRoomData = JsonUtility.FromJson<RoomList>(response);
+            data = responseRoomData.roomList;
+
+            return true;
+        }catch(Exception e) {
+            Debug.Log(e.Message);
+            return false;
         }
     }
 
-    //TODO: 테스트 데이터 체크
-    private void testDataSetting() {
-        RoomData test1 = new RoomData();
-        test1.isStart = false;
-        test1.hostName = "전홍현";
-        test1.currentConnected = 3;
-        test1.maxConnected = 6;
-        test1.hostColor = PlayerColorType.gray;
-        RoomData test2 = new RoomData();
-        test2.isStart = true;
-        test2.hostName = "김수주";
-        test2.currentConnected = 2;
-        test2.maxConnected = 2;
-        test2.hostColor = PlayerColorType.orange;
-        data.Add(test1);
-        data.Add(test2);
+    public bool JoinRoomSetting() {
+        if (requestRoomList()) {
+            if (data.Count > 6) {
+                List<RoomData> firstPageData = new List<RoomData>();
+                for (int i = 0; i < data.Count && i < 6; i++) {
+                    firstPageData.Add(data[i]);
+                }
+                joinRoomManager.OpenRoomCount(firstPageData);
+            }
+            else {
+                joinRoomManager.OpenRoomCount(data);
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private void Update() {
@@ -84,11 +85,6 @@ public class JoinGameManager : MonoBehaviour {
         }
     }
 
-    public void OpenSelectColorModal() {
-        //TODO: SELECT COLOR REQUEST
-        joinSelectColorController.gameObject.SetActive(true);
-    }
-   
     public void OpenConnectFailModal() {
         CloseSelectColorModal();
         joinFailController.gameObject.SetActive(true);
@@ -98,8 +94,24 @@ public class JoinGameManager : MonoBehaviour {
         joinSelectColorController.gameObject.SetActive(false);
     }
 
+    public void OpenSelectColorModal() {
+        joinSelectColorController.gameObject.SetActive(true);
+    }
+
     public void CloseConnectFailModal() {
         joinFailController.gameObject.SetActive(false);
         //TODO: 방 LIST REQUEST
+        requestRoomList();
+    }
+
+    public void UpdateRoomList() {
+        bool isGetList = JoinRoomSetting();
+        if (!isGetList) {
+
+        }
+    }
+
+    private void OnDisable() {
+        data = null;
     }
 }
