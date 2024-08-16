@@ -8,10 +8,13 @@ public class SpringPrefabController : MonoBehaviour {
     // �����ϴ� ���̾� : 8�� ���̾� �پ��ִ��� ������
 
     private float moveX;
-    public float addForce;                                                 // Addforce �� (���� ���� ���������ؾ���)
+    public float addForceY;                                                 // Addforce �� (���� ���� ���������ؾ���)
+    public float addForceX;                                                 // Addforce �� (���� ���� ���������ؾ���)
 
+    public bool isBoxNeedAddforce { get; private set; }     // 스프링에서 box 밀어야할때 사용
+
+    private RectTransform rectTransform;
     private Vector2 transformPosition;                                           // ������ ��ġ ����
-
     private Vector2 addForceVector;                                              // �浹 ��ü ���� Ȯ��
     private Vector2 saveDirectionVector;                                         // �浹 ��ü ���� �ʱ� ����
 
@@ -26,6 +29,7 @@ public class SpringPrefabController : MonoBehaviour {
 
 
     private void Awake() {
+        rectTransform = GetComponent<RectTransform>();
         transformPosition = transform.position;
 
         findCollisionObjects = GetComponent<FindCollisionObjectsSpring>();
@@ -47,44 +51,31 @@ public class SpringPrefabController : MonoBehaviour {
     // enter���� �浹 ��ü ���� �ʱ� ����
     private void OnCollisionEnter2D(Collision2D collision) {
         float topY = transform.position.y + GetComponent<Collider2D>().bounds.extents.y;
+        if (collision.transform.TryGetComponent(out RectTransform collisionRect)) {
+            float collisionBottom = collision.transform.position.y - collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
+            // 충돌체가 내 위에 있는 경우.
+            if (collision.collider.CompareTag("Box")) {
+                if (collisionBottom >= transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f) {
+                    //Vector2 collisionPosition = collisionRect.position;
 
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
-            Vector2 collisionPosition;
-
-            // Handle different types of colliders
-            if (collision.gameObject.CompareTag("Player")) {
-                collisionPosition = collision.transform.position;
+                    Vector2 relativeVelocity = collision.relativeVelocity;
+                    moveX = relativeVelocity.x >= 0f ? 1f : -1f;
+                    Debug.Log("Collision direction (X): " + moveX);
+                }
             }
             else {
-                RectTransform rectTransform = collision.gameObject.GetComponent<RectTransform>();
-                collisionPosition = rectTransform.position;
+                moveX = 0;
             }
+            //Debug.Log("collisionBottom : " + collisionBottom + " | " + transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f);
 
-            if (collisionPosition.y >= topY) {
-                Vector2 relativeVelocity = collision.relativeVelocity;
-                moveX = relativeVelocity.x >= 0f ? 1f : -1f;
-                //Debug.Log("Collision direction (X): " + moveX);
-            }
-            else {
-                return;
-            }
         }
 
-        /*
-         
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Box")) {
-            Vector2 relativeVelocity = collision.relativeVelocity; // �浹ü�� ������ ������ �³�?
-
-            moveX = relativeVelocity.x >= 0f ? 1f : -1f;
-
-            Debug.Log("Collision direction (X): " + moveX);
-        }
-         */
     }
+
     private void OnCollisionExit2D(Collision2D collision) {
-        moveX = 0f;
-    }
 
+        //isBoxNeedAddforce = false;
+    }
 
     // �迭�� ������Ʈ�� ���ٸ� addforce
     //TODO: [�����] ���� ������ ���� ������, �������� �� ���� ���� ����
@@ -98,19 +89,16 @@ public class SpringPrefabController : MonoBehaviour {
                 Vector2 position;
 
                 if (collisionObject.gameObject.CompareTag("Player")) {
-
                     //Debug.Log("? x���� ������ �� �ȵǴ°ǵ� �ù߰� " + force.x + " | " + force.y);
                     position = collisionObject.transform.position;
                 }
                 else {
-                    //TODO: [김수주] 상자의 x 고정이 안풀리는 문제가 있음
-                    collRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-
+                    isBoxNeedAddforce = true;
                     RectTransform rectTransform = collisionObject.GetComponent<RectTransform>();
-                    position = rectTransform.anchoredPosition;
+                    position = rectTransform.transform.position;
                 }
 
-                force = new Vector2(moveX * addForce * 0.3f, addForce);
+                force = new Vector2(moveX * addForceX, addForceY);
                 //Debug.Log("? x���� ������ �� �ȵǴ°ǵ� �ù߰� " + force.x + " | " + force.y);
                 collRigidbody2D.AddForceAtPosition(force, position, ForceMode2D.Impulse); // ��ü ������
             }

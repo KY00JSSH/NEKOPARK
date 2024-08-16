@@ -19,6 +19,9 @@ public class Object_BoxController : MonoBehaviour {
 
     private Vector2 lastPosition = Vector2.zero;
 
+    // 스프링에서 밀어야한다면 위치고정 풀기위한 bool
+    private bool isThisBoxNeedAddforce;
+
     private void Awake() {
         rectTransform = GetComponent<RectTransform>();
         boxRigid = GetComponent<Rigidbody2D>();
@@ -46,8 +49,20 @@ public class Object_BoxController : MonoBehaviour {
         // 못움직이게 설정합니다.
         if (isMoveable)
             boxRigid.constraints = RigidbodyConstraints2D.FreezeRotation;
-        else
-            boxRigid.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        else {
+            if (isThisBoxNeedAddforce) {    // 박스가 움직여야할때 회전만 정지
+                boxRigid.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+            else {
+                boxRigid.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (isThisBoxNeedAddforce) {    // 박스가 스프링을 벗어나서 다른 충돌을 한다면 x좌표 고정
+            isThisBoxNeedAddforce = false;
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
@@ -61,7 +76,7 @@ public class Object_BoxController : MonoBehaviour {
                 if (lastPosition == Vector2.zero) lastPosition = (Vector2)transform.position;
                 Vector2 deltaPosition = (Vector2)transform.position - lastPosition;
 
-                if (collision.gameObject.CompareTag("Player")) return;
+                //if (collision.gameObject.CompareTag("Player")) return;
                 collision.transform.position += (Vector3)deltaPosition;
                 lastPosition = transform.position;
                 return;
@@ -74,8 +89,17 @@ public class Object_BoxController : MonoBehaviour {
                 //collision.transform.position += (Vector3)deltaPosition;
                 //lastPosition = transform.position;
 
+                if (collision.collider.CompareTag("Spring")) {
+                    if (collision.transform.TryGetComponent(out SpringPrefabController springController)) {
+                        if (springController.isBoxNeedAddforce ) {
+                            isThisBoxNeedAddforce = true;
+                        }
+                    }
+                }
                 return;
             }
+
+
         }
 
         // 충돌체의 방향을 구합니다.
@@ -105,7 +129,7 @@ public class Object_BoxController : MonoBehaviour {
                 leftPushCount = box.leftPushCount;
             }
         }
-        Debug.Log("WOW");
+        //Debug.Log("WOW");
 
         // 아무도 나를 밀고있지 않다면 미는 사람의 수를 초기화합니다.
         if (!isRightPushMe && !isLeftPushMe) {
@@ -119,6 +143,12 @@ public class Object_BoxController : MonoBehaviour {
         rightPushCount = 0;
         leftPushCount = 0;
     }
+
+
+
+
+
+
 }
 
 //TODO: 플레이어에게도 똑같이 적용해야 함.
