@@ -10,7 +10,6 @@ public class RoomManager : NetworkRoomManager {
     //새로운 클라이언트가 서버에 접속할 때 Game Room에 접속시키는 콜백 함수입니다.
     public override void OnRoomServerConnect(NetworkConnectionToClient conn) {
         base.OnRoomServerConnect(conn);
-        Debug.Log(roomSlots);
     }
 
     public static void UpdateConnenctedPlayerCount () {
