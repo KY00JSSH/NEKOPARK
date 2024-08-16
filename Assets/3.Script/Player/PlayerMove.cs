@@ -65,16 +65,9 @@ public class PlayerMove : NetworkBehaviour {
             float moveDirection = horizontalInput > 0 ? 1f : -1f; //삼항연산자, 오른쪽 이동인지 감지해서 오른쪽 또는 왼쪽으로 이동방향 판단
             transform.localScale = new Vector3(-moveDirection, 1f, 1f); //스프라이트 반전
             transform.position += Vector3.right * moveSpeed * horizontalInput * Time.deltaTime; //플레이어의 이동 
-            playerAnimator.SetBool("isMoving", true); // 
-            
-            if(IsPushingObject)
-            {
-                playerAnimator.SetBool("isPushing", true);
-            }
-            else
-            {
-                playerAnimator.SetBool("isPushing", false);
-            }
+            playerAnimator.SetBool("isMoving", true);                     
+            playerAnimator.SetBool("isPushing", IsPushingObject);
+           
         }
         else 
         {
@@ -152,22 +145,14 @@ public class PlayerMove : NetworkBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(!collision.collider.isTrigger)
-        {
-            IsPushingObject = true;
-            playerAnimator.SetBool("isPushing", true);
-            IsMoving = false;
-            playerAnimator.SetBool("isMoving", false);
-        }
+       if(LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;
+        IsPushingObject = true;     
     }
 
-   //private void OnCollisionExit2D(Collision2D collision)
-   //{
-   //    if (!collision.collider.isTrigger)
-   //    {
-   //        IsPushingObject = false;
-   //    }
-   //}
+   private void OnCollisionExit2D(Collision2D collision)
+   {      
+       IsPushingObject = false;       
+   }
 
     
     //private void OnCollisionEnter2D(Collision2D collision)
