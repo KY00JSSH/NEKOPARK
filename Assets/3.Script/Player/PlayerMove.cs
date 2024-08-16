@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerMove : NetworkBehaviour {
-    private float moveSpeed = 5f;
+    public float moveSpeed = 3f;
     public bool IsMoving { get; private set; }
     public bool IsMovingRight { get; private set; }     // 2024 08 14 ����� �׽�Ʈ�� �߰�
 
@@ -12,8 +12,8 @@ public class PlayerMove : NetworkBehaviour {
     private bool IsPushingObject = false;
     private bool IsDie = false;
 
-    private float jumpForce = 400f;
-    private float dieAnimForce = 350f;
+    public float jumpForce = 400f;
+    private float dieAnimForce = 450f;
 
     private Vector2 lastPosition = Vector2.zero;
 
@@ -148,7 +148,20 @@ public class PlayerMove : NetworkBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;  //땅과 부딪히면 계속 push 애니메이션이 재생될테니 layer로 예외처리
-            IsPushingObject = true;        
+            IsPushingObject = true;
+
+        // 충돌 디버그 메시지
+        Debug.Log($"OnCollisionEnter2D: {collision.gameObject.name} with {gameObject.name}");
+        
+        // 충돌 처리 예시
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Collided with another player!");
+        }
+        else if (collision.gameObject.CompareTag("Box"))
+        {
+            Debug.Log("Collided with a box!");
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
