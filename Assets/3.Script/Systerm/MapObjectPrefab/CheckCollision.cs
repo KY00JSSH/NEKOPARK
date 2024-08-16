@@ -8,6 +8,9 @@ public enum HasCollDirection {
 }
 
 public class CheckCollision : MonoBehaviour {
+    private RectTransform rectTransform;
+    private Vector2 lastPosition = Vector2.zero;
+
     private bool[] checkCollBool;
     public bool GetObjectHasDirection(HasCollDirection collDirection) { return checkCollBool[(int)collDirection]; }
     public bool SetObjectHasDirection(HasCollDirection collDirection) { return checkCollBool[(int)collDirection] = true; }
@@ -18,6 +21,7 @@ public class CheckCollision : MonoBehaviour {
     public bool GetCollisionIsPlayer() { return checkCollisionIsPlayer; }
 
     private void Awake() {
+        rectTransform = GetComponent<RectTransform>();
         checkCollBool = new bool[Enum.GetValues(typeof(HasCollDirection)).Length];
     }
     /*
@@ -36,55 +40,90 @@ public class CheckCollision : MonoBehaviour {
     }
     */
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnCollisionStay2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
 
-            if (collision.transform.CompareTag("Player")) checkCollisionIsPlayer = true;
-            else checkCollisionIsPlayer = false;
+            RectTransform collisionRect = collision.transform.GetComponent<RectTransform>();
 
-            Vector3 collDirection = (transform.position - collision.transform.position);
+            //Debug.Log("?????OnCollisionEnter2D?????" + gameObject.name);
 
-            if (Mathf.Abs(collDirection.y) > Mathf.Abs(collDirection.x)) {
-                if (collDirection.y > 0) {
-                    SetObjectHasDirection(HasCollDirection.down);
-                }
-                else {
-                    SetObjectHasDirection(HasCollDirection.up);
-                }
+
+            float collisionTop = collision.transform.position.y + collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
+            float collisionBottom = collision.transform.position.y - collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
+            float collisionRight = collision.transform.position.x + collisionRect.sizeDelta.x * collisionRect.localScale.x / 2f;
+            float collisionLeft = collision.transform.position.x - collisionRect.sizeDelta.x * collisionRect.localScale.x / 2f;
+
+            float objectTop = transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f;
+            float objectBottom = transform.position.y - rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f;
+            float objectRight = transform.position.x + rectTransform.sizeDelta.x * rectTransform.localScale.x / 2f;
+            float objectLeft = transform.position.x - rectTransform.sizeDelta.x * rectTransform.localScale.x / 2f;
+
+            // 충돌체가 내 위에 있는 경우.
+            if (collisionBottom >= objectTop) {
+                SetObjectHasDirection(HasCollDirection.up);
             }
-            else {
-                if (collDirection.x > 0) {
-                    SetObjectHasDirection(HasCollDirection.left);
-                }
-                else {
-                    SetObjectHasDirection(HasCollDirection.right);
-                }
+            // 충돌체가 내 아래에 있는 경우.
+            else if (collisionTop <= objectBottom) {
+                SetObjectHasDirection(HasCollDirection.down);
             }
+            // 충돌체가 내 왼쪽에 있는 경우.
+            else if (collisionRight <= objectLeft) {
+                SetObjectHasDirection(HasCollDirection.left);
+            }
+            // 충돌체가 내 오른쪽에 있는 경우.
+            else if (collisionLeft >= objectRight) {
+                SetObjectHasDirection(HasCollDirection.right);
+            }
+
+
+            //Debug.Log("?????OnCollisionEnter2D????? up" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.up));
+            //Debug.Log("?????OnCollisionEnter2D????? down" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.down));
 
         }
+
     }
+
+
 
     private void OnCollisionExit2D(Collision2D collision) {
         if (collision.transform.CompareTag("Player") || collision.transform.CompareTag("Box")) {
 
-            Vector3 collDirection = (transform.position - collision.transform.position);
+            RectTransform collisionRect = collision.transform.GetComponent<RectTransform>();
 
-            if (Mathf.Abs(collDirection.y) > Mathf.Abs(collDirection.x)) {
-                if (collDirection.y > 0) {
-                    ResetObjectHasDirection(HasCollDirection.down);
-                }
-                else {
-                    ResetObjectHasDirection(HasCollDirection.up);
-                }
+            //Debug.Log("?????OnCollisionEnter2D?????" + gameObject.name);
+
+
+            float collisionTop = collision.transform.position.y + collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
+            float collisionBottom = collision.transform.position.y - collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
+            float collisionRight = collision.transform.position.x + collisionRect.sizeDelta.x * collisionRect.localScale.x / 2f;
+            float collisionLeft = collision.transform.position.x - collisionRect.sizeDelta.x * collisionRect.localScale.x / 2f;
+
+            float objectTop = transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f;
+            float objectBottom = transform.position.y - rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f;
+            float objectRight = transform.position.x + rectTransform.sizeDelta.x * rectTransform.localScale.x / 2f;
+            float objectLeft = transform.position.x - rectTransform.sizeDelta.x * rectTransform.localScale.x / 2f;
+
+            // 충돌체가 내 위에 있는 경우.
+            if (collisionBottom >= objectTop) {
+                ResetObjectHasDirection(HasCollDirection.up);
             }
-            else {
-                if (collDirection.x > 0) {
-                    ResetObjectHasDirection(HasCollDirection.left);
-                }
-                else {
-                    ResetObjectHasDirection(HasCollDirection.right);
-                }
+            // 충돌체가 내 아래에 있는 경우.
+            else if (collisionTop <= objectBottom) {
+                ResetObjectHasDirection(HasCollDirection.down);
             }
+            // 충돌체가 내 왼쪽에 있는 경우.
+            else if (collisionRight <= objectLeft) {
+                ResetObjectHasDirection(HasCollDirection.left);
+            }
+            // 충돌체가 내 오른쪽에 있는 경우.
+            else if (collisionLeft >= objectRight) {
+                ResetObjectHasDirection(HasCollDirection.right);
+            }
+
+
+            //Debug.Log("?????OnCollisionEnter2D????? up" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.up));
+            //Debug.Log("?????OnCollisionEnter2D????? down" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.down));
+
         }
 
     }
