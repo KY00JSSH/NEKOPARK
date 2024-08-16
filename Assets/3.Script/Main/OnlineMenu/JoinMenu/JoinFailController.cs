@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JoinFailController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private Text description;
+
+    private void Awake() {
+        description = GetComponentInChildren<Text>();    
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SetDescription(bool isColor) {
+        if (isColor) {
+            description.text = "This color is already being used by other users\n\nPlease set it again";
+        }
+        else {
+            description.text = "Connection failed. Please Retry Again";
+        }
     }
 }

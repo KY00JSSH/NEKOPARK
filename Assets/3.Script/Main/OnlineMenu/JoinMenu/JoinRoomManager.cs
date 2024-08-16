@@ -41,10 +41,13 @@ public class JoinRoomManager : MonoBehaviour {
     public void OpenSelectColorModal(int num) {
         TCPclient.Instance.SetSelectRoomIndex(num);
         requsetSelectColor();
-        joinGameManager.OpenSelectColorModal();
     }
 
     private void requsetSelectColor() {
         string responseColor = TCPclient.Instance.SendRequest(RequestType.Select);
+        joinGameManager.OpenSelectColorModal();
+
+        ColorList colorData = JsonUtility.FromJson<ColorList>(responseColor);
+        joinGameManager.SetSelectColorList(colorData.colorList);
     }
 }

@@ -99,7 +99,7 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Enter:
                 request.type = "Enter";
-                //roomData.hostColor = 
+                roomData.hostColor = FindObjectOfType<JoinColorChangeController>().GetSelectClientColor();
                 //TODO: 선택한 방목록의 RoomData 가져오기
                 //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
                 break;

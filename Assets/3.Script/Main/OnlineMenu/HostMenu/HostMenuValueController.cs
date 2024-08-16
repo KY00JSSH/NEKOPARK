@@ -14,6 +14,7 @@ public class HostMenuValueController : MonoBehaviour, IPointerEnterHandler {
     private PlayerColorType[] colors = 
         (PlayerColorType[])Enum.GetValues(typeof(PlayerColorType));
     private int colorIndex = 0;
+
     private int ColorIndex(bool isRight) {
         if (isRight) {
             colorIndex++;

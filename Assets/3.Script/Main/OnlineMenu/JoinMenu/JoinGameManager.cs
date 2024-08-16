@@ -12,18 +12,23 @@ public class JoinGameManager : MonoBehaviour {
     private List<RoomData> data = new List<RoomData>();
     //option - world, battel, endless
 
-    private JoinSelectColorController joinSelectColorController;
     private JoinFailController joinFailController;
+    private JoinColorModalController joinColorModalController;
 
     private void Awake() {
         mainManager = FindObjectOfType<MainManager>();
         joinButtonHovers = FindObjectsOfType<JoinButtonHoverController>();
         joinRoomManager = FindObjectOfType<JoinRoomManager>();
-        joinSelectColorController = FindObjectOfType<JoinSelectColorController>();
+        joinColorModalController = FindObjectOfType<JoinColorModalController>();
         joinFailController = FindObjectOfType<JoinFailController>();
     }
 
-   private bool requestRoomList() {
+    private void Start() {
+        CloseSelectColorModal();
+        CloseConnectFailModal(false);
+    }
+
+    private bool requestRoomList() {
         try {
             string response = TCPclient.Instance.SendRequest(RequestType.Request);
 
@@ -31,7 +36,8 @@ public class JoinGameManager : MonoBehaviour {
             data = responseRoomData.roomList;
 
             return true;
-        }catch(Exception e) {
+        }
+        catch (Exception e) {
             Debug.Log(e.Message);
             return false;
         }
@@ -60,16 +66,18 @@ public class JoinGameManager : MonoBehaviour {
         if (Input.GetButtonDown("Cancel")) {
             mainManager.OpenOnlineCanvas();
         }
-        
+
         //TODO: 키보드로 메뉴 이동 추후 추가
     }
 
     public void CheckOptions(string objName, bool yn) {
         if (objName.Equals("World")) {
             options[0] = yn;
-        }else if (objName.Equals("Battle")) {
+        }
+        else if (objName.Equals("Battle")) {
             options[1] = yn;
-        }else {
+        }
+        else {
             options[2] = yn;
         }
     }
@@ -91,23 +99,27 @@ public class JoinGameManager : MonoBehaviour {
     }
 
     public void CloseSelectColorModal() {
-        joinSelectColorController.gameObject.SetActive(false);
+        joinColorModalController.gameObject.SetActive(false);
     }
 
     public void OpenSelectColorModal() {
-        joinSelectColorController.gameObject.SetActive(true);
+        joinColorModalController.gameObject.SetActive(true);
     }
 
-    public void CloseConnectFailModal() {
+    public void CloseConnectFailModal(bool roomReset) {
         joinFailController.gameObject.SetActive(false);
-        //TODO: 방 LIST REQUEST
-        requestRoomList();
+        if(roomReset)
+            requestRoomList();
+    }
+
+    public void SetSelectColorList(List<PlayerColorType> colorList) {
+        FindObjectOfType<JoinColorChangeController>().GetSelectColor(colorList);
     }
 
     public void UpdateRoomList() {
         bool isGetList = JoinRoomSetting();
         if (!isGetList) {
-
+            OpenConnectFailModal();
         }
     }
 
