@@ -31,16 +31,16 @@ public class JoinRoomController : MonoBehaviour
     public void roomValueSetting() {
         foreach (Text child in childTexts) {
             if (child.name.Equals("ID")) {
-                child.text = roomData?.hostName;
+                child.text = roomData.hostName;
             }
             else if (child.name.Equals("CurrentCount")) {
-                child.text = roomData?.currentConnected.ToString();
+                child.text = roomData.currentConnected.ToString();
             }
             else if (child.name.Equals("MaxCount")) {
-                child.text = roomData?.maxConnected.ToString();
+                child.text = roomData.maxConnected.ToString();
             }
             else if (child.name.Equals("GameMode")) {
-                child.text = roomData?.gameType.ToString();
+                child.text = roomData.gameType.ToString();
             }
             else if (child.name.Equals("GameStatus")) {
                 if (roomData.isStart) {

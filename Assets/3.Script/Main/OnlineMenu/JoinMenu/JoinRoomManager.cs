@@ -35,7 +35,6 @@ public class JoinRoomManager : MonoBehaviour {
                 }
                 else {
                     roomButtons[i].gameObject.SetActive(false);
-                    roomButtons[i].gameObject.GetComponent<JoinRoomController>().SetRoomData(null);
                 }
             }
         }
