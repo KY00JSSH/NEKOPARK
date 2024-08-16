@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyMenuManager : MonoBehaviour {
+    [SerializeField] private Image[] playerIcons;
     private Canvas[] canvases;
 
     private void Awake() {
