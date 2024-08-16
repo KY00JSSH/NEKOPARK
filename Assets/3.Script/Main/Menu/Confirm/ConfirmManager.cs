@@ -17,8 +17,6 @@ public class ConfirmManager : MonoBehaviour {
     private void Start() {
         gameObject.SetActive(false);
 
-        if (transform.parent.name == "MainCanvas") return;
-        playerIconImage = GetComponentsInChildren<Image>()[1];
         playerIconImage.material = new Material(playerIconImage.material);
         SetPlayerIconColor();
     }

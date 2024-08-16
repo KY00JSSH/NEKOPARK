@@ -31,8 +31,8 @@ public class JoinColorModalController : MonoBehaviour {
 
     private void JoinRoom() {
         var roomManager = NetworkManager.singleton as RoomManager;
-        var roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData(joinRoomIndex);
-        roomManager.SetNetworkAddress(roomData.hostIP);
+        //var roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData();
+        //roomManager.SetNetworkAddress(roomData.hostIP);
         roomManager.StartClient();
     }
 }
