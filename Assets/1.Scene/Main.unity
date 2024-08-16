@@ -13874,7 +13874,7 @@ MonoBehaviour:
   autoStartServerBuild: 0
   autoConnectClientBuild: 0
   offlineScene: Assets/1.Scene/Main.unity
-  onlineScene: Assets/1.Scene/Main.unity
+  onlineScene: Assets/1.Scene/Feat_NetworkGameRoom.unity
   transport: {fileID: 1584873654}
   networkAddress: localhost
   maxConnections: 100
