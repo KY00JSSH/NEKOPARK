@@ -1,5 +1,8 @@
 using UnityEngine;
 using Mirror;
+using System.Net;
+using System.Net.Sockets;
+
 public class RoomManager : NetworkRoomManager {
     public static int ConnectedPlayer { get { return (NetworkManager.singleton as RoomManager).roomSlots.Count; } }
     public PlayerColorType MyPlayerColor;
@@ -7,10 +10,19 @@ public class RoomManager : NetworkRoomManager {
     public string roomPassword { get; private set; }
     public void SetRoomPassword(string pwd = null) { roomPassword = pwd; }
 
+    public void SetNetworkAddress() {
+        IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
+        foreach (IPAddress address in addresses)
+            if (address.AddressFamily == AddressFamily.InterNetwork)
+                networkAddress = address.ToString();
+    }
+    public void SetNetworkAddress(string hostIP) {
+        networkAddress = hostIP;
+    }
+
     //새로운 클라이언트가 서버에 접속할 때 Game Room에 접속시키는 콜백 함수입니다.
     public override void OnRoomServerConnect(NetworkConnectionToClient conn) {
         base.OnRoomServerConnect(conn);
-        Debug.Log(roomSlots);
     }
 
     public static void UpdateConnenctedPlayerCount () {

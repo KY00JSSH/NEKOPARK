@@ -7,6 +7,7 @@ public class ConfirmManager : MonoBehaviour {
     private int playerCount = 2;
 
     private Text confirmText;
+    private Image playerIconImage;
 
     private void Awake() {
         buttons = GetComponentsInChildren<Button>();
@@ -15,6 +16,9 @@ public class ConfirmManager : MonoBehaviour {
 
     private void Start() {
         gameObject.SetActive(false);
+
+        playerIconImage.material = new Material(playerIconImage.material);
+        SetPlayerIconColor();
     }
 
     public void ConfirmMainTextChage(MenuType type) {
@@ -68,5 +72,9 @@ public class ConfirmManager : MonoBehaviour {
 
     public bool GetIsHoverYes() {
         return isYesHover;
+    }
+
+    private void SetPlayerIconColor() {
+        playerIconImage.material.SetColor("_PlayerColor", PlayerColor.GetColor(RoomPlayer.MyRoomPlayer.playerColor));
     }
 }

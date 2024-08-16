@@ -16,6 +16,11 @@ public class RoomList {
 }
 
 [System.Serializable]
+public class ColorList {
+    public List<PlayerColorType> colorList;
+}
+
+[System.Serializable]
 public class RoomData {
     public string hostName;
     public string hostIP;
@@ -135,6 +140,10 @@ public class TCPserver : MonoBehaviour {
     }
 
     private void ProcessRequest(string req, StreamWriter response) {
+        Debug.Log(roomList.Count);
+        if (roomList.Count > 0)
+            Debug.Log(roomList[0]?.hostIP);
+
         TCPrequest request = JsonUtility.FromJson<TCPrequest>(req);
         RoomData room = JsonUtility.FromJson<RoomData>(request.data);
         string json;
@@ -186,7 +195,10 @@ public class TCPserver : MonoBehaviour {
                     response.WriteLine(JsonUtility.ToJson(null));
                 }
                 else {
-                    json = JsonUtility.ToJson(roomList[roomList.IndexOf(FindRoom(room))].availableColor);
+                    List<PlayerColorType> availableColor = roomList[roomList.IndexOf(FindRoom(room))].availableColor;
+                    ColorList colorList = new ColorList() { colorList = availableColor };
+                    json = JsonUtility.ToJson(colorList);
+
                     AddLog($"Client Select Room : {room.hostName}");
                     response.WriteLine(json);
                 }

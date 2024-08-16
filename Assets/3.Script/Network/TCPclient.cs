@@ -12,6 +12,7 @@ using System;
 
 public class TCPclient : MonoBehaviour {
     public static TCPclient Instance = null;
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -33,13 +34,10 @@ public class TCPclient : MonoBehaviour {
     private void InitRoomData() {
         roomData = new RoomData();
 
-        IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
-        foreach (IPAddress address in addresses)
-            if (address.AddressFamily == AddressFamily.InterNetwork)
-                roomData.hostIP = address.ToString();
+        roomData.hostName = "김수주"; //TODO: 로그인 후 UI에서 닉네임 받아오기!!!
+        roomData.hostIP = RoomManager.singleton.networkAddress;
         if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
         roomData.hostPort = 5555;
-        roomData.hostName = "김수주"; //TODO: 로그인 후 UI에서 닉네임 받아오기!!!
     }
 
     private void StartClient() {
@@ -93,15 +91,17 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Select:
                 request.type = "Select";
-                //TODO: 선택한 방목록의 RoomData 가져오기
+                roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData();
                 break;
             case RequestType.Enter:
                 request.type = "Enter";
+                roomData.hostColor = FindObjectOfType<JoinColorChangeController>().GetSelectClientColor();
                 //TODO: 선택한 방목록의 RoomData 가져오기
                 //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
                 break;
             case RequestType.Exit:
                 request.type = "Exit";
+                SetSelectRoomIndex(-1);
                 break;
             default:
                 throw new UnassignedReferenceException("Unexpceted type");
@@ -117,21 +117,13 @@ public class TCPclient : MonoBehaviour {
         return response;
     }
 
+    public void SetSelectRoomIndex(int num) {
+        FindObjectOfType<JoinRoomManager>().SetSelectRoomIndex(num);
+    }
+
     private void OnDestroy() {
-        try {
-            client.Connect(serverIP);
-        }
-        catch (Exception e) {
-            if (e is ObjectDisposedException) {
-                StartClient();
-                client.Connect(serverIP);
-            }
-            else if (e is NullReferenceException) {
-                client = new TcpClient();
-                StartClient();
-                client.Connect(serverIP);
-            }
-        }
+        StartClient();
+        client.Connect(serverIP);
         SendRequest(RequestType.Remove);
         client.Close();
     }

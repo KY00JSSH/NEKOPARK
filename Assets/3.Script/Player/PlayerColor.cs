@@ -56,6 +56,7 @@ public class PlayerColor : NetworkBehaviour {
         new Color(0.73f, 0.6f, 1f),
         new Color(1f, 0.65f, 1f),
         new Color(0.8f, 0.8f, 0.8f),
+        new Color(0.1f, 0.1f, 0.1f)
     };
 
     public static Color GetColor(PlayerColorType playerColor) { return colors[(int)playerColor]; }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class JoinRoomController : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class JoinRoomController : MonoBehaviour
     private Image hostImage;
 
     private RoomData roomData;
-
 
     private void Awake() {
         childTexts = GetComponentsInChildren<Text>();
@@ -55,7 +55,7 @@ public class JoinRoomController : MonoBehaviour
         hostImage.color = PlayerColor.GetColor(roomData.hostColor);
     }
 
-    public void SendRequestColor() {
-        
+    public RoomData GetSelectRoomData() {
+        return roomData;
     }
 }

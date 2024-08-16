@@ -351,7 +351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651599379}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3569276, y: 1.3158736, z: 0}
+  m_LocalPosition: {x: 2.3569276, y: 0.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -634,6 +634,10 @@ PrefabInstance:
       propertyPath: m_CompositePaths.m_Paths.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7883283300091577389, guid: 6b97e69cae689f24597381238b959466, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b97e69cae689f24597381238b959466, type: 3}
 --- !u!1 &859504752
@@ -720,7 +724,7 @@ GameObject:
   - component: {fileID: 1089349817}
   - component: {fileID: 1089349816}
   m_Layer: 0
-  m_Name: Block_Test (1)
+  m_Name: Wall_Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -869,10 +873,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4741ba8ac83643848af53703b012c109, type: 3}
   SfxClip:
   - {fileID: 8300000, guid: 9e150325ac309074fac2a1691d27297a, type: 3}
+  - {fileID: 8300000, guid: ec5a78de88361344cab5799435690c64, type: 3}
   - {fileID: 8300000, guid: b6a611eb838a7264cbba246ed7570c7e, type: 3}
   - {fileID: 8300000, guid: cce4bb978ce978f478b55861fa9c0e42, type: 3}
   - {fileID: 8300000, guid: a69dae627cb375c458fa1169dc2e0b8a, type: 3}
+  - {fileID: 8300000, guid: ca6985a861eca6a479ae2a62744e4c07, type: 3}
   - {fileID: 8300000, guid: 078b1ac58e6a70f499d16b28bfbd801a, type: 3}
+  - {fileID: 8300000, guid: f5539e83aef774140ac63e1e6dbba72e, type: 3}
+  - {fileID: 8300000, guid: ee57fcfec4717b84bb5739b3531907df, type: 3}
 --- !u!1 &1580354614
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,7 +892,7 @@ GameObject:
   - component: {fileID: 1580354616}
   - component: {fileID: 1580354615}
   - component: {fileID: 1580354617}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Block_Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1115,7 +1123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900837764}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: TestObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

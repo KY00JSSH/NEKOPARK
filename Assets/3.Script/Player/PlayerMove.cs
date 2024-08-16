@@ -64,32 +64,23 @@ public class PlayerMove : NetworkBehaviour {
 
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        if (horizontalInput != 0)                                               //horizontalinput이 0이 아니라면, 그러니까 입력이 들어가면
+        if (horizontalInput != 0)                                  //입력 들어가면 움직이도록             
         {
-            IsMoving = true;                                                    //isMoving 이 트루
-            IsMovingRight = horizontalInput > 0; //ismovingright가 0보다 크면 오른쪽으로 이동 판단
+            IsMoving = true;                                                    
+            IsMovingRight = horizontalInput > 0; 
 
-            float moveDirection = horizontalInput > 0 ? 1f : -1f; //삼항연산자, 오른쪽 이동인지 감지해서 오른쪽 또는 왼쪽으로 이동방향 판단
-            transform.localScale = new Vector3(-moveDirection, 1f, 1f); //스프라이트 반전
-            transform.position += Vector3.right * moveSpeed * horizontalInput * Time.deltaTime; //플레이어의 이동 
-            playerAnimator.SetBool("isMoving", true); // 
-            
-            if(IsPushingObject)
-            {
-                playerAnimator.SetBool("isPushing", true);
-            }
-            else {
-                playerAnimator.SetBool("isPushing", false);
-            }
+            float moveDirection = horizontalInput > 0 ? 1f : -1f;
+            transform.localScale = new Vector3(-moveDirection, 1f, 1f); 
+            transform.position += Vector3.right * moveSpeed * horizontalInput * Time.deltaTime;  
         }
-        else 
+        else                                                        //입력 없으니까 움직임 false
         {
             IsMoving = false;
-            playerAnimator.SetBool("isMoving", false);
-            playerAnimator.SetBool("isPushing", false);
-
         }
 
+        playerAnimator.SetBool("isMoving", IsMoving);              //여기도 기본 상태로
+        playerAnimator.SetBool("isPushing", IsPushingObject);      //여기도 기본 상태
+            
         Vector3 textScale = new Vector3(0.02f, 0.02f, 0.02f);
         if (transform.localScale.x < 0) {
             textScale.x *= -1;
@@ -106,7 +97,7 @@ public class PlayerMove : NetworkBehaviour {
             playerRigidbody.AddForce(new Vector2(0, jumpForce));
             playerAnimator.SetBool("isJumping", true);
 
-            //AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
+            AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }
     }
 
@@ -145,6 +136,7 @@ public class PlayerMove : NetworkBehaviour {
             playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기
             playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     //위로 튕기기
             StartCoroutine(PlayerDie_co(0.5f));                         //충돌 무시
+            AudioManager.instance.PlaySFX(AudioManager.Sfx.playerDie);
         }
     }
 
@@ -155,12 +147,8 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (!collision.collider.isTrigger) {
-            IsPushingObject = true;
-            playerAnimator.SetBool("isPushing", true);
-            IsMoving = false;
-            playerAnimator.SetBool("isMoving", false);
-        }
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;  //땅과 부딪히면 계속 push 애니메이션이 재생될테니 layer로 예외처리
+            IsPushingObject = true;        
     }
 
     private void OnCollisionStay2D(Collision2D collision) {

@@ -46,10 +46,14 @@ public class AudioManager : MonoBehaviour
     public enum Sfx
     {
         buttonDown,         //빨간 버튼 눌렀을 때 효과음
+        coin,               //코인 획득 효과음
         getKeyDoorOpen,     //열쇠 획득, 문 열었을 때 효과음
         jump,               //점프 효과음
         nextStageLoading,   //다음 스테이지 로딩 효과음
-        stageClear          //스테이지 클리어 효과음
+        playerDie,          //플레이어 사망 효과음
+        stageClear,         //스테이지 클리어 효과음
+        timerBipBip_1sec,   //타이머 삡삡 효과음
+        timeUp              //시간초과 실패 효과음
     }
 
     private void Init()
