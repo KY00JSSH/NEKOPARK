@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 1580354616}
   - component: {fileID: 1580354615}
   - component: {fileID: 1580354617}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Block_Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
