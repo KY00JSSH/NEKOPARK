@@ -105,6 +105,7 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Exit:
                 request.type = "Exit";
+                joinRoomIndex = -1;
                 break;
             default:
                 throw new UnassignedReferenceException("Unexpceted type");
@@ -120,5 +121,7 @@ public class TCPclient : MonoBehaviour {
         return response;
     }
 
-
+    public void SetSelectRoomIndex(int num) {
+        joinRoomIndex = num;
+    }
 }
