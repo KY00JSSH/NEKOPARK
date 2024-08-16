@@ -130,6 +130,10 @@ public class LobbyMenuController : MonoBehaviour {
         lobbyMenuType = (LobbyMenuType)menuNum;
     }
 
+    public void StartAvailable(int menuNum) {
+
+    }
+
     private void checkMenuText() {
         switch (lobbyMenuType) {
             case LobbyMenuType.START:

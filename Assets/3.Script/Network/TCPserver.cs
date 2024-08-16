@@ -183,7 +183,7 @@ public class TCPserver : MonoBehaviour {
             case "Select":
                 if (FindRoom(room) == null) {
                     AddLog($"Client Select Failure : {room.hostName}");
-                    response.WriteLine("Status : Room Select Failed.");
+                    response.WriteLine(JsonUtility.ToJson(null));
                 }
                 else {
                     json = JsonUtility.ToJson(roomList[roomList.IndexOf(FindRoom(room))].availableColor);

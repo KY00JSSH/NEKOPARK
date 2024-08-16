@@ -52,10 +52,15 @@ public class TCPclient : MonoBehaviour {
         try {
             client.Connect(serverIP);
         }
-        catch ( Exception e) {
+        catch (Exception e) {
             if (e is ObjectDisposedException) {
-                StartClient();
-                client.Connect(serverIP);
+                try {
+                    StartClient();
+                    client.Connect(serverIP);
+                }
+                catch (Exception f) {
+                    throw;
+                }
             }
         }
         StreamReader reader = new StreamReader(client.GetStream(), Encoding.UTF8);

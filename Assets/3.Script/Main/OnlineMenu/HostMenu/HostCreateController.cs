@@ -25,6 +25,7 @@ public class HostCreateController : MonoBehaviour
 
     private IEnumerator delayStart() {
         yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
         compeleteCreate();
     }
 
