@@ -12,6 +12,7 @@ using System;
 
 public class TCPclient : MonoBehaviour {
     public static TCPclient Instance = null;
+
     private void Awake() {
         if (Instance == null) {
             Instance = this;
@@ -25,6 +26,7 @@ public class TCPclient : MonoBehaviour {
     private TcpClient client;
     private RoomData roomData;
 
+    private int joinRoomIndex = -1;
     private void Start() {
         StartClient();
         InitRoomData();
@@ -93,10 +95,11 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Select:
                 request.type = "Select";
-                //TODO: 선택한 방목록의 RoomData 가져오기
+                roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData(joinRoomIndex);
                 break;
             case RequestType.Enter:
                 request.type = "Enter";
+                //roomData.hostColor = 
                 //TODO: 선택한 방목록의 RoomData 가져오기
                 //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
                 break;
@@ -117,22 +120,26 @@ public class TCPclient : MonoBehaviour {
         return response;
     }
 
-    private void OnDestroy() {
-        try {
-            client.Connect(serverIP);
-        }
-        catch (Exception e) {
-            if (e is ObjectDisposedException) {
-                StartClient();
-                client.Connect(serverIP);
-            }
-            else if (e is NullReferenceException) {
-                client = new TcpClient();
-                StartClient();
-                client.Connect(serverIP);
-            }
-        }
-        SendRequest(RequestType.Remove);
-        client.Close();
+    //private void OnDestroy() {
+    //    try {
+    //        client.Connect(serverIP);
+    //    }
+    //    catch (Exception e) {
+    //        if (e is ObjectDisposedException) {
+    //            StartClient();
+    //            client.Connect(serverIP);
+    //        }
+    //        else if (e is NullReferenceException) {
+    //            client = new TcpClient();
+    //            StartClient();
+    //            client.Connect(serverIP);
+    //        }
+    //    }
+    //    SendRequest(RequestType.Remove);
+    //    client.Close();
+    //}
+
+    public void SetSelectRoomIndex(int num) {
+        joinRoomIndex = num;
     }
 }

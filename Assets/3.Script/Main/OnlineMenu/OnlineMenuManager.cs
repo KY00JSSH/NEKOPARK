@@ -12,9 +12,18 @@ public class OnlineMenuManager : MonoBehaviour {
     private OnlineMenuType onMenuType;
     private int buttonHover = 0;
     private bool isMenuSelect = false;
+    private bool isServerFail = false;
 
     private MainManager mainManager;
     private HostMenuController hostMenuController;
+
+    public void ServerFailFlagUpdate(bool yn) {
+        isServerFail = yn;
+    }
+
+    public bool GetServerFailFlag() {
+        return isServerFail;
+    }
 
     private void Awake() {
         buttons = GetComponentsInChildren<Button>();
@@ -31,7 +40,7 @@ public class OnlineMenuManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (!isMenuSelect && Input.GetButtonDown("Horizontal")) {
+        if (!isServerFail && !isMenuSelect && Input.GetButtonDown("Horizontal")) {
             float horizontalInput = Input.GetAxis("Horizontal");
             if (horizontalInput > 0) {
                 int selectMenuNum = (int)onMenuType + 1;
@@ -50,7 +59,7 @@ public class OnlineMenuManager : MonoBehaviour {
             return;
         }
 
-        if (!isMenuSelect && Input.GetButtonDown("Vertical")) {
+        if (!isServerFail && !isMenuSelect && Input.GetButtonDown("Vertical")) {
             int thisMenuNum = (int)onMenuType;
             if (thisMenuNum < 2) {
                 int selectMenuNum = thisMenuNum + 2;
@@ -63,7 +72,7 @@ public class OnlineMenuManager : MonoBehaviour {
             return;
         }
 
-        if ((!isMenuSelect && Input.GetButtonDown("Select")) || (!isMenuSelect && Input.GetButtonDown("menu"))) {
+        if ((!isServerFail && !isMenuSelect && Input.GetButtonDown("Select")) || (!isMenuSelect && Input.GetButtonDown("menu"))) {
             GoMenu();
             return;
         }

@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class JoinRoomManager : MonoBehaviour {
     private Button[] roomButtons;
     private Text statusText;
+    private JoinGameManager joinGameManager;
 
     private void Awake() {
         roomButtons = GetComponentsInChildren<Button>();
         statusText = GetComponentInChildren<Text>();
+        joinGameManager = FindObjectOfType<JoinGameManager>();
     }
 
     private void Start() {
@@ -30,5 +32,19 @@ public class JoinRoomManager : MonoBehaviour {
                 roomButtons[i].gameObject.GetComponent<JoinRoomController>().SetRoomData(data[i]);
             }
         }
+    }
+
+    public RoomData GetButtonRoomData(int num) {
+        return roomButtons[num].gameObject.GetComponent<JoinRoomController>().GetSelectRoomData();
+    }
+
+    public void OpenSelectColorModal(int num) {
+        TCPclient.Instance.SetSelectRoomIndex(num);
+        requsetSelectColor();
+        joinGameManager.OpenSelectColorModal();
+    }
+
+    private void requsetSelectColor() {
+        string responseColor = TCPclient.Instance.SendRequest(RequestType.Select);
     }
 }
