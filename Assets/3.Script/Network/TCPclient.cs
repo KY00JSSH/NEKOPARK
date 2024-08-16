@@ -26,7 +26,6 @@ public class TCPclient : MonoBehaviour {
     private TcpClient client;
     private RoomData roomData;
 
-    private int joinRoomIndex = -1;
     private void Start() {
         StartClient();
         InitRoomData();
@@ -92,7 +91,7 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Select:
                 request.type = "Select";
-                roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData(joinRoomIndex);
+                roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData();
                 break;
             case RequestType.Enter:
                 request.type = "Enter";
@@ -102,7 +101,7 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Exit:
                 request.type = "Exit";
-                joinRoomIndex = -1;
+                SetSelectRoomIndex(-1);
                 break;
             default:
                 throw new UnassignedReferenceException("Unexpceted type");
@@ -119,7 +118,7 @@ public class TCPclient : MonoBehaviour {
     }
 
     public void SetSelectRoomIndex(int num) {
-        joinRoomIndex = num;
+        FindObjectOfType<JoinRoomManager>().SetSelectRoomIndex(num);
     }
 
     private void OnDestroy() {
