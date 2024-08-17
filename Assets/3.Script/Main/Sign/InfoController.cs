@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InfoController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private InfoUpdateController infoUpdateController;
+    private InfoDetailController infoDetailController;
+
+    private void Awake() {
+        infoUpdateController = FindObjectOfType<InfoUpdateController>();
+        infoDetailController = FindObjectOfType<InfoDetailController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Start() {
+        infoDetailController.gameObject.SetActive(false);
+        infoUpdateController.gameObject.SetActive(false);
+    }
+
+    public void OpenInfoDetail() {
+        infoDetailController.gameObject.SetActive(true);
+        infoUpdateController.gameObject.SetActive(false);
+    }
+
+    public void OpenInfoUpdate() {
+        infoDetailController.gameObject.SetActive(false);
+        infoUpdateController.gameObject.SetActive(true);
     }
 }

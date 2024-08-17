@@ -51,7 +51,7 @@ public class DBConfig {
 
 public class SQLManager : MonoBehaviour
 {
-    private UserInfo info;
+    private UserInfo info = null;
     public UserInfo UserData { get { return info; } }
 
     private MySqlConnection connection;
@@ -178,7 +178,7 @@ public class SQLManager : MonoBehaviour
         }
     }
 
-    public DBState UpdateUsrInfo(string id, string password, string nick) {
+    public DBState UpdateUsrInfo(string password, string nick) {
         try {
             if (!connectCheck(connection)) {
                 return DBState.DIS_CONNECT;
@@ -186,11 +186,11 @@ public class SQLManager : MonoBehaviour
 
             string hashedPwd = SHA256Hash(password);
 
-            string updSqlCommand = string.Format(@$"UPDATE tb_usr SET USR_ID = '{id}', USR_NCNM='{nick}', USR_PWD ='{hashedPwd}', UPDATE_USR='{id}' ,UPDATE_DATE = NOW()  WHERE USR_ID='{info.userId}';");
+            string updSqlCommand = string.Format(@$"UPDATE tb_usr SET USR_ID = '{info.userId}', USR_NCNM='{nick}', USR_PWD ='{hashedPwd}', UPDATE_USR='{info.userId}' ,UPDATE_DATE = NOW()  WHERE USR_ID='{info.userId}';");
             MySqlCommand cmd2 = new MySqlCommand(updSqlCommand, connection);
             int updNum = cmd2.ExecuteNonQuery();
             if (updNum > 0) {
-                info = new UserInfo(info.userNo, id, nick, password);
+                info = new UserInfo(info.userNo, info.userId, nick, password);
                 return DBState.UPD_SUCCESS;
             }
 

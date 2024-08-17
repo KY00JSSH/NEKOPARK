@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RegistController : MonoBehaviour {
+public class InfoUpdateController : MonoBehaviour {
     private InputField[] inputs;
-    private Button[] buttons;
     private SignManager signManager;
+    private InfoController infoController;
 
     private int focusIndex = 0;
 
     private void Awake() {
         inputs = GetComponentsInChildren<InputField>();
-        buttons = GetComponentsInChildren<Button>();
         signManager = FindObjectOfType<SignManager>();
+        infoController = FindObjectOfType<InfoController>();
     }
 
     private void Update() {
@@ -21,12 +21,12 @@ public class RegistController : MonoBehaviour {
         }
 
         if (Input.GetButtonDown("menu")) {
-            RegistButtonClick();
+            UpdateButtonClick();
         }
     }
 
     private void changeFocus() {
-        if (focusIndex == 3) {
+        if (focusIndex == 2) {
             inputs[0].Select();
             inputs[0].ActivateInputField();
             focusIndex = 0;
@@ -38,7 +38,7 @@ public class RegistController : MonoBehaviour {
         }
     }
 
-    public void RegistButtonClick() {
+    public void UpdateButtonClick() {
         if (inputs[0].text.Equals(string.Empty) || inputs[1].text.Equals(string.Empty) ||
                 inputs[2].text.Equals(string.Empty) || inputs[3].text.Equals(string.Empty)) {
             signManager.OpenFailDialog("There are values you did not enter\nPlease check again.");
@@ -50,16 +50,17 @@ public class RegistController : MonoBehaviour {
             return;
         }
 
-        DBState registState = SQLManager.instance.SignUp(inputs[0].text, inputs[2].text, inputs[1].text);
-        switch (registState) {
-            case DBState.REG_SUCCESS:
-                signManager.OpenLogin();
+        DBState updateState = SQLManager.instance.UpdateUsrInfo(inputs[1].text, inputs[0].text);
+
+        switch (updateState) {
+            case DBState.UPD_SUCCESS:
+                infoController.OpenInfoDetail();
                 break;
-            case DBState.REG_ERROR:
-                signManager.OpenFailDialog(SQLManager.instance.MessageByState(registState));
+            case DBState.UPD_ERROR:
+                signManager.OpenFailDialog(SQLManager.instance.MessageByState(updateState));
                 break;
             case DBState.DIS_CONNECT:
-                signManager.OpenFailDialog(SQLManager.instance.MessageByState(registState));
+                signManager.OpenFailDialog(SQLManager.instance.MessageByState(updateState));
                 break;
         }
     }

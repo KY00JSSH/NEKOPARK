@@ -13,6 +13,7 @@ public class LoginController : MonoBehaviour {
         inputs = GetComponentsInChildren<InputField>();
         buttons = GetComponentsInChildren<Button>();
         signManager = FindObjectOfType<SignManager>();
+        mainManager = FindObjectOfType<MainManager>();
     }
 
     private void Start() {
@@ -40,6 +41,11 @@ public class LoginController : MonoBehaviour {
             inputs[0].Select();
             inputs[0].ActivateInputField();
         }
+    }
+
+    public void LoginFieldReset() {
+        inputs[0].text = string.Empty;
+        inputs[1].text = string.Empty;
     }
 
     public void LoginButtonClick() {
