@@ -5,6 +5,9 @@ public class LobbyMenuManager : MonoBehaviour {
     [SerializeField] private Image[] playerIcons;
     private Canvas[] canvases;
 
+    [SerializeField] private Text maxCountText;
+    public Text MaxCountText { get { return maxCountText; } }
+
     private void Awake() {
         canvases = GetComponentsInChildren<Canvas>();
     }

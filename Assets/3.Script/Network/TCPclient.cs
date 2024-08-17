@@ -52,16 +52,9 @@ public class TCPclient : MonoBehaviour {
             client.Connect(serverIP);
         }
         catch (Exception e) {
-            if (e is ObjectDisposedException) {
-                try {
-                    StartClient();
-                    client.Connect(serverIP);
-                }
-                catch (Exception f) {
-                    throw;
-                }
-            }
+            throw;
         }
+
         StreamReader reader = new StreamReader(client.GetStream(), Encoding.UTF8);
         StreamWriter writer = new StreamWriter(client.GetStream(), Encoding.UTF8) { AutoFlush = true };
 
@@ -128,8 +121,11 @@ public class TCPclient : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
+        Debug.Log("application Quit");
         StartClient();
+        Debug.Log("Start Client");
         client.Connect(serverIP);
+        Debug.Log("Client Connect");
         SendRequest(RequestType.Remove);
         client.Close();
     }

@@ -5,16 +5,14 @@ public class LobbyUIController : MonoBehaviour {
     private int maxPlayerCount;
     private bool isSelectMenu;
 
-    [SerializeField] private Text maxCountText;
     private LobbyMenuController lobbyMenuController;
 
     private void Awake() {
-        maxPlayerCount = PlayerPrefs.GetInt("MaxPlayer");
         lobbyMenuController = FindObjectOfType<LobbyMenuController>();
     }
 
     private void Start() {
-        maxCountText.text = ""+maxPlayerCount;
+
         lobbyMenuController.gameObject.SetActive(false);
     }
 

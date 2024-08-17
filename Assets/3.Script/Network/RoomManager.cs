@@ -2,6 +2,7 @@ using UnityEngine;
 using Mirror;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine.UI;
 
 public class RoomManager : NetworkRoomManager {
     public static int ConnectedPlayer { get { return (NetworkManager.singleton as RoomManager).roomSlots.Count; } }
@@ -33,7 +34,6 @@ public class RoomManager : NetworkRoomManager {
         int currentConnected = networkManager.roomSlots.Count;
         int maxConnected = networkManager.maxConnections;
         
-        //TODO: UI TEXT를 연동해주세요
-        //[CONNECTION_TEXT].text = $"{currentConnected} / {maxConnected}";
+        FindObjectOfType<LobbyMenuManager>().MaxCountText.text = $"{currentConnected} / {maxConnected}";
     }
 }
