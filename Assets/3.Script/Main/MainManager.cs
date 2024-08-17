@@ -23,11 +23,16 @@ public class MainManager : MonoBehaviour {
     }
 
     public void OpenOnlineCanvas() {
-        canvases[0].gameObject.SetActive(false);
-        canvases[1].gameObject.SetActive(true);
-        canvases[2].gameObject.SetActive(false);
-        canvases[3].gameObject.SetActive(false);
-        joinMenuFailController.CloseDialog();
+        if (SQLManager.instance.UserData != null) {
+            canvases[0].gameObject.SetActive(false);
+            canvases[1].gameObject.SetActive(true);
+            canvases[2].gameObject.SetActive(false);
+            canvases[3].gameObject.SetActive(false);
+            joinMenuFailController.CloseDialog();
+        }
+        else {
+            OpenSignCanvas();
+        }
     }
 
     public void OpenJoinCanvas() {

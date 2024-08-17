@@ -51,9 +51,11 @@ public class DBConfig {
 
 public class SQLManager : MonoBehaviour
 {
-    public UserInfo info;
-    public MySqlConnection connection;
-    public MySqlDataReader reader;
+    private UserInfo info;
+    public UserInfo UserData { get { return info; } }
+
+    private MySqlConnection connection;
+    private MySqlDataReader reader;
 
     public static SQLManager instance = null;
 
@@ -103,7 +105,7 @@ public class SQLManager : MonoBehaviour
             if (!connectCheck(connection)) {
                 return DBState.DIS_CONNECT;
             }
-            string sqlCommand = string.Format(@"SELECT USR_NO, USR_ID, USR_NCNM, USR_PWD FROM tb_user WHERE " +
+            string sqlCommand = string.Format(@"SELECT USR_NO, USR_ID, USR_NCNM, USR_PWD FROM tb_usr WHERE " +
                 $"USR_ID = '{id}' AND DEL_YN = 'N';");
             string hashedPwd = SHA256Hash(password);    //ÇØ½Ì
             MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
@@ -145,7 +147,7 @@ public class SQLManager : MonoBehaviour
                 return DBState.DIS_CONNECT;
             }
 
-            string sqlCommand = string.Format(@$"SELECT USR_NO FROM tb_user WHERE USR_ID = '{id}';");
+            string sqlCommand = string.Format(@$"SELECT USR_NO FROM tb_usr WHERE USR_ID = '{id}';");
 
             string hashedPwd = SHA256Hash(password);    //ÇØ½Ì
             MySqlCommand cmd = new MySqlCommand(sqlCommand, connection);
@@ -201,6 +203,10 @@ public class SQLManager : MonoBehaviour
         }
     }
 
+    public void Logout() {
+        info = null;
+    }
+
     public static string SHA256Hash(string data) {
         SHA256 sha = new SHA256Managed();
         byte[] hash = sha.ComputeHash(Encoding.ASCII.GetBytes(data));
@@ -214,21 +220,21 @@ public class SQLManager : MonoBehaviour
     public string MessageByState(DBState thisState) {
         switch (thisState) {
             case DBState.EXIST_ID:
-                return "This ID already exists\n\nPlease sign up with a different ID";
+                return "This ID already exists\nPlease sign up with a different ID";
             case DBState.LGN_SUCCESS:
                 return "Login successful";
             case DBState.LGN_ERROR:
-                return "Login failed\n\nPlease check your information again";
+                return "Login failed\nPlease check your information again";
             case DBState.REG_ERROR:
-                return "Registration faile\n\nPlease check your information again";
+                return "Registration faile\nPlease check your information again";
             case DBState.REG_SUCCESS:
-                return "You've signed up\n\nWelcome :)";
+                return "You've signed up\nWelcome :)";
             case DBState.UPD_SUCCESS:
                 return "Your information has been modified";
             case DBState.UPD_ERROR:
-                return "Modification failed.\n\nPlease check the information you entered.";
+                return "Modification failed.\nPlease check the information you entered.";
             case DBState.DIS_CONNECT:
-                return "The connection to the DB has been lost\n\nPlease check the server connection.";
+                return "The connection to the DB has been lost\nPlease check the server connection.";
             default:
                 return "";
         }
