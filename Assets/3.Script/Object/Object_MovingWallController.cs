@@ -137,7 +137,14 @@ public class Object_MovingWallController : MonoBehaviour {
     private IEnumerator MovingWallPositionChangeUp_Co(Vector2 PositionIWantToGo) {
         isMoving = true;
         while (currentPosition.y <= PositionIWantToGo.y) {
-            currentPosition.y += Time.deltaTime * smoothingFactor;
+            currentPosition.y += Time.smoothDeltaTime; // Time.deltaTime * smoothingFactor;
+
+            foreach (Collider2D each in hitCollisionAll) {
+                Vector2 eachPositionChange = each.gameObject.transform.position;
+                eachPositionChange.y += Time.smoothDeltaTime;
+                each.gameObject.transform.position = eachPositionChange;
+            }
+
             transform.position = currentPosition;
             //transform.position = Vector2.Lerp(transform.position, PositionIWantToGo, Time.deltaTime * smoothingFactor);
             yield return null;
@@ -151,8 +158,15 @@ public class Object_MovingWallController : MonoBehaviour {
         isMoving = true;
 
         while (currentPosition.y >= PositionIWantToGo.y) {
-            currentPosition.y -= Time.deltaTime * smoothingFactor;
+            currentPosition.y -= Time.smoothDeltaTime; // Time.deltaTime * smoothingFactor;
             transform.position = currentPosition;
+
+            foreach (Collider2D each in hitCollisionAll) {
+                Vector2 eachPositionChange = each.gameObject.transform.position;
+                eachPositionChange.y -= Time.smoothDeltaTime;
+                each.gameObject.transform.position = eachPositionChange;
+            }
+
             yield return null;
         }
 

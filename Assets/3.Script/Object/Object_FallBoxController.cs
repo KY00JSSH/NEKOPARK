@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Object_FallBoxController : MonoBehaviour {
-    public int FallBoxRemainTime;
+    public float FallBoxRemainTime;
 
     private RectTransform rectTransform;
     private Rigidbody2D fallBoxRigidyBody;

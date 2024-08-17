@@ -168,8 +168,6 @@ public class PlayerMove : NetworkBehaviour {
         // 위 아래 충돌은 무시합니다.
         if (collision.transform.TryGetComponent(out RectTransform collisionRect)) {
 
-            // 24 08 16 김수주 : 플레이어 위에 따라가면 안되는 물체가 이동되어 tag확인 추가함
-            if (!collision.collider.CompareTag("Player") || !collision.collider.CompareTag("Box")) return;
 
             float collisionTop = collision.transform.position.y + collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
             float collisionBottom = collision.transform.position.y - collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
@@ -180,6 +178,7 @@ public class PlayerMove : NetworkBehaviour {
                 Vector2 deltaPosition = (Vector2)transform.position - lastPosition;
 
                 //if (collision.gameObject.CompareTag("Player")) return;
+
                 collision.transform.position += (Vector3)deltaPosition;
                 lastPosition = transform.position;
                 return;
