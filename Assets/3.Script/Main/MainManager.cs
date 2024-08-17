@@ -5,6 +5,7 @@ public class MainManager : MonoBehaviour {
     private JoinGameManager joinGameManager;
     private JoinMenuFailController joinMenuFailController;
 
+    [SerializeField] private GameObject colorSetter;
     private void Awake() {
         canvases = GetComponentsInChildren<Canvas>();
         joinGameManager = FindObjectOfType<JoinGameManager>();
@@ -13,6 +14,10 @@ public class MainManager : MonoBehaviour {
 
     private void Start() {
         OpenMenuCanvas();
+    }
+
+    private void OnEnable() {
+        colorSetter.SetActive(true);
     }
 
     public void OpenMenuCanvas() {

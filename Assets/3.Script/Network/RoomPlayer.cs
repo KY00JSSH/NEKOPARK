@@ -23,13 +23,13 @@ public class RoomPlayer : NetworkRoomPlayer {
     }
 
     [SyncVar] public string Nickname;
-    [SyncVar]
     public PlayerColorType playerColor;
 
     public override void Start() {
         base.Start();
 
-        playerColor = (NetworkManager.singleton as RoomManager).MyPlayerColor;
+        playerColor = FindObjectOfType<PlayerColorSetting>().playerColor;
+        MyRoomPlayer.playerColor = playerColor;
         FindObjectOfType<LobbyMenuManager>().SetPlayerIconColor();
         if (isServer) SpawnRoomPlayer();
         RoomManager.UpdateConnenctedPlayerCount();
@@ -46,11 +46,11 @@ public class RoomPlayer : NetworkRoomPlayer {
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
 
-        //player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
-        //player.GetComponent<PlayerColor>().playerColor = playerColor;
+        player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
+        player.GetComponent<PlayerColor>().playerColor = MyRoomPlayer.playerColor;
 
         var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
-        clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = playerColor;
+        clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = MyRoomPlayer.playerColor;
 
         NetworkServer.Spawn(player, connectionToClient);
         NetworkServer.Spawn(clickEffect, connectionToClient);

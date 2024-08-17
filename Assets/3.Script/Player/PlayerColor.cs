@@ -27,12 +27,13 @@ public class PlayerColor : NetworkBehaviour {
     }
 
     private void Start() {
-        if (isOwned) CmdSetPlayerColor();
+        if (isOwned) 
+            CmdSetPlayerColor((PlayerColorType)PlayerPrefs.GetInt("HostColor"));
     }
 
     [Command]
-    public void CmdSetPlayerColor() {
-        playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
+    public void CmdSetPlayerColor(PlayerColorType color) {
+        playerColor = color;
     }
 
     public List<PlayerColorType> GetAvailableColor() {

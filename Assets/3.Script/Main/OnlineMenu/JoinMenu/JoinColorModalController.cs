@@ -32,7 +32,7 @@ public class JoinColorModalController : MonoBehaviour {
     private void JoinRoom() {
         var roomManager = NetworkManager.singleton as RoomManager;
         var roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData();
-        roomManager.MyPlayerColor = roomData.hostColor;
+        FindObjectOfType<PlayerColorSetting>().CmdSetPlayerColor(roomData.hostColor);
         PlayerPrefs.SetInt("HostColor", (int)roomData.hostColor);
         roomManager.SetNetworkAddress(roomData.hostIP);
         roomManager.StartClient();

@@ -5,7 +5,6 @@ using System.Net.Sockets;
 
 public class RoomManager : NetworkRoomManager {
     public static int ConnectedPlayer { get { return (NetworkManager.singleton as RoomManager).roomSlots.Count; } }
-    public PlayerColorType MyPlayerColor;
 
     public string roomPassword { get; private set; }
     public void SetRoomPassword(string pwd = null) { roomPassword = pwd; }

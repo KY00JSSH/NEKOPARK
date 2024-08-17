@@ -9,6 +9,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using Org.BouncyCastle.Ocsp;
+using Mirror;
 
 [System.Serializable]
 public class RoomList {
@@ -95,6 +96,8 @@ public class TCPserver : MonoBehaviour {
 
     public void StartServer(string serverIP, string PORT) {
         try {
+            serverIP = "127.0.0.1"; //TODO: For Debug. Remove this on release.
+
             server = new TcpListener(IPAddress.Parse(serverIP), int.Parse(PORT));
             server.Start(); isRun = true;
             AddLog("Server Starting...");

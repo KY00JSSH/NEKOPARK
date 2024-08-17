@@ -27,7 +27,6 @@ public class TCPclient : MonoBehaviour {
     private RoomData roomData;
 
     private void Start() {
-        StartClient();
         InitRoomData();
     }
 
@@ -43,11 +42,13 @@ public class TCPclient : MonoBehaviour {
     private void StartClient() {
         client = new TcpClient();
         serverIP = new IPEndPoint(
-            IPAddress.Parse(TCPserver.GetServerIP()), int.Parse(TCPserver.GetServerPort()));
+            IPAddress.Parse(NetworkManager.singleton.DebuggingOverride ? 
+            "127.0.0.1" : TCPserver.GetServerIP()), int.Parse(TCPserver.GetServerPort()));
     }
 
     public string SendRequest(RequestType requestType) {
         try {
+            StartClient();
             client.Connect(serverIP);
         }
         catch (Exception e) {
@@ -72,7 +73,7 @@ public class TCPclient : MonoBehaviour {
 
                 roomData.availableColor.Add(roomData.hostColor);
                 roomData.hostColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
-                FindObjectOfType<RoomManager>().MyPlayerColor = roomData.hostColor;
+
                 roomData.availableColor.Remove(roomData.hostColor);
                 roomData.gameType = (GameType)PlayerPrefs.GetInt("GameType");
 
@@ -126,7 +127,7 @@ public class TCPclient : MonoBehaviour {
         FindObjectOfType<JoinRoomManager>().SetSelectRoomIndex(num);
     }
 
-    private void OnDestroy() {
+    private void OnApplicationQuit() {
         StartClient();
         client.Connect(serverIP);
         SendRequest(RequestType.Remove);
