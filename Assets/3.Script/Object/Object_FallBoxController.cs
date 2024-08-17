@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Object_FallBoxController : MonoBehaviour {
-    public int FallBoxRemainTime;
+    public float FallBoxRemainTime;
 
     private RectTransform rectTransform;
     private Rigidbody2D fallBoxRigidyBody;
@@ -23,16 +23,16 @@ public class Object_FallBoxController : MonoBehaviour {
             // 충돌체가 내 위에 있는 경우.
             if (collisionBottom >= transform.position.y + rectTransform.sizeDelta.y * rectTransform.localScale.y / 2f) {
                 // 일정시간 뒤 상자 떨어짐
-                StartCoroutine(FallBoxFallingAfterRemainTime());
+                StartCoroutine(FallBoxFallingAfterRemainTime_Co());
             }
         }
     }
     private void OnCollisionExit2D(Collision2D collision) {
-        StopCoroutine(FallBoxFallingAfterRemainTime());
+        StopCoroutine(FallBoxFallingAfterRemainTime_Co());
     }
 
 
-    public IEnumerator FallBoxFallingAfterRemainTime() {
+    public IEnumerator FallBoxFallingAfterRemainTime_Co() {
         float timer = 0.0f;
         while (timer < FallBoxRemainTime) {
             timer += Time.deltaTime;

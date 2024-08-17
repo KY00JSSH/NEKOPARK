@@ -1,7 +1,10 @@
 fileFormatVersion: 2
-guid: 156bf2a9625e4ee4d8eaba955764cef4
+guid: 2f20586af5b6e694ca2c91e6d0fca6bb
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 5156776694448688124
+    second: bar_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -44,9 +47,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 5
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 70
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,7 +116,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: bar_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 174
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 86, y: 11, z: 86, w: 11}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfb80a2f41d809740800000000000000
+      internalID: 5156776694448688124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
