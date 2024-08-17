@@ -15041,6 +15041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09db5db1e6ac19242a9f0af52863dcae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorSetter: {fileID: 0}
 --- !u!1 &1369662391
 GameObject:
   m_ObjectHideFlags: 0
@@ -18149,7 +18150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67aca6915bd2cf54d838329a806f8239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebuggingOverride: 0
+  DebuggingOverride: 1
   dontDestroyOnLoad: 1
   runInBackground: 1
   headlessStartMode: 1
@@ -18193,7 +18194,6 @@ MonoBehaviour:
   GameplayScene: Assets/1.Scene/Feat_NetworkGamePlay.unity
   _allPlayersReady: 0
   clientIndex: 0
-  MyPlayerColor: 0
 --- !u!1 &1601237670
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,12 +23,15 @@ public class RoomPlayer : NetworkRoomPlayer {
     }
 
     [SyncVar] public string Nickname;
-    public PlayerColorType playerColor { get; private set; }
+    public PlayerColorType playerColor;
 
     public override void Start() {
         base.Start();
 
-        if(isServer) SpawnRoomPlayer();
+        //playerColor = FindObjectOfType<PlayerColorSetting>().playerColor;
+        playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
+        FindObjectOfType<LobbyMenuManager>().SetPlayerIconColor();
+        if (isServer) SpawnRoomPlayer();
         RoomManager.UpdateConnenctedPlayerCount();
     }
     
@@ -42,7 +45,7 @@ public class RoomPlayer : NetworkRoomPlayer {
         Vector3 spawnPosition = GetSpawnPosition();
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
-        var playerColor = FindObjectOfType<RoomManager>().MyPlayerColor;
+
         player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
         player.GetComponent<PlayerColor>().playerColor = playerColor;
 

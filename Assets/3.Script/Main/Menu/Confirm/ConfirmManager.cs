@@ -16,11 +16,6 @@ public class ConfirmManager : MonoBehaviour {
 
     private void Start() {
         gameObject.SetActive(false);
-
-        if (transform.parent.name == "MainCanvas") return;
-        playerIconImage = GetComponentsInChildren<Image>()[1];
-        playerIconImage.material = new Material(playerIconImage.material);
-        SetPlayerIconColor();
     }
 
     public void ConfirmMainTextChage(MenuType type) {
@@ -76,7 +71,4 @@ public class ConfirmManager : MonoBehaviour {
         return isYesHover;
     }
 
-    private void SetPlayerIconColor() {
-        playerIconImage.material.SetColor("_PlayerColor", PlayerColor.GetColor(RoomPlayer.MyRoomPlayer.playerColor));
-    }
 }

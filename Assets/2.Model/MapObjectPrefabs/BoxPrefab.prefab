@@ -191,8 +191,8 @@ GameObject:
   - component: {fileID: 4216621377607249580}
   - component: {fileID: 4216621377607249583}
   - component: {fileID: 4216621377607249570}
-  - component: {fileID: -4708808416529828898}
   - component: {fileID: 1243057462}
+  - component: {fileID: -4708808416529828898}
   m_Layer: 8
   m_Name: BoxPrefab
   m_TagString: Box
@@ -209,7 +209,7 @@ RectTransform:
   m_GameObject: {fileID: 4216621377607249582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.96, y: 0.94666666, z: 1}
   m_Children:
   - {fileID: 4216621376544059336}
   m_Father: {fileID: 0}
@@ -264,7 +264,7 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 1
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -286,14 +286,14 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.060000002, y: 0.060000002, z: 0.060000002, w: 0.060000002}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.96, y: 0.94666666}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 1
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
@@ -318,6 +318,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1243057462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216621377607249582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c46978ed61acf4e4582232b193ec21de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-4708808416529828898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,15 +343,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredCount: 1
---- !u!114 &1243057462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4216621377607249582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c46978ed61acf4e4582232b193ec21de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

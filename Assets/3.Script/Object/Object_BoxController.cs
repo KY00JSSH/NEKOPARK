@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,10 @@ public class Object_BoxController : MonoBehaviour {
     private RectTransform rectTransform;
     private Rigidbody2D boxRigid;
     private Text textCount;
+
+
+    // 스프링에서 밀어야한다면 위치고정 풀기위한 bool
+    private bool isThisBoxNeedAddforce;
 
     public bool isMoveable { get { return currentCount == 0; } }
     public bool isRightPushMe { get; private set; }
@@ -19,10 +24,10 @@ public class Object_BoxController : MonoBehaviour {
 
     private Vector2 lastPosition = Vector2.zero;
 
-    // 스프링에서 밀어야한다면 위치고정 풀기위한 bool
-    private bool isThisBoxNeedAddforce;
+    private RectTransform boxRectTransform;
 
     private void Awake() {
+
         rectTransform = GetComponent<RectTransform>();
         boxRigid = GetComponent<Rigidbody2D>();
 
@@ -91,7 +96,7 @@ public class Object_BoxController : MonoBehaviour {
 
                 if (collision.collider.CompareTag("Spring")) {
                     if (collision.transform.TryGetComponent(out SpringPrefabController springController)) {
-                        if (springController.isBoxNeedAddforce ) {
+                        if (springController.isBoxNeedAddforce) {
                             isThisBoxNeedAddforce = true;
                         }
                     }
