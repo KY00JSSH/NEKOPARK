@@ -28,8 +28,8 @@ public class RoomPlayer : NetworkRoomPlayer {
     public override void Start() {
         base.Start();
 
-        playerColor = FindObjectOfType<PlayerColorSetting>().playerColor;
-        MyRoomPlayer.playerColor = playerColor;
+        //playerColor = FindObjectOfType<PlayerColorSetting>().playerColor;
+        playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
         FindObjectOfType<LobbyMenuManager>().SetPlayerIconColor();
         if (isServer) SpawnRoomPlayer();
         RoomManager.UpdateConnenctedPlayerCount();
@@ -47,10 +47,10 @@ public class RoomPlayer : NetworkRoomPlayer {
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
 
         player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
-        player.GetComponent<PlayerColor>().playerColor = MyRoomPlayer.playerColor;
+        player.GetComponent<PlayerColor>().playerColor = playerColor;
 
         var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
-        clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = MyRoomPlayer.playerColor;
+        clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = playerColor;
 
         NetworkServer.Spawn(player, connectionToClient);
         NetworkServer.Spawn(clickEffect, connectionToClient);

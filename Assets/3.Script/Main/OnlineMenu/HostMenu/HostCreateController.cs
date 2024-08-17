@@ -39,7 +39,7 @@ public class HostCreateController : MonoBehaviour
         roomManager.maxConnections = maxPlayerCount;
         roomManager.SetRoomPassword();  //TODO: 방 비밀번호 설정 값 필요
 
-        FindObjectOfType<PlayerColorSetting>().playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
+        //FindObjectOfType<PlayerColorSetting>().playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
 
         //TODO: 방 설정 메서드 처리 필요
         roomManager.SetNetworkAddress();
