@@ -10,7 +10,7 @@ public enum OnlineMenuType {
 public class OnlineMenuManager : MonoBehaviour {
     private Button[] buttons;
     private OnlineMenuType onMenuType;
-    private int buttonHover = 0;
+    //private int buttonHover = 0;
     private bool isMenuSelect = false;
     private bool isServerFail = false;
 
