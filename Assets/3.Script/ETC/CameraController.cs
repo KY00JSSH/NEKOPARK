@@ -33,21 +33,19 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         Velocity = Vector3.zero;
+        PlayersTransform = new List<Transform>();
     }
 
     private void Start()
     {
         Camera.main.orthographicSize = Camera_FixedZoom;    //카메라 줌값 초기화
 
-        if (PlayersTransform == null)
-        {
-            PlayersTransform = new List<Transform>();
-        }
-
         if(Camera_Offset == Vector3.zero)
         {
             Camera_Offset = new Vector3(0, 0, -10);
         }
+
+        FindAllPlayers();
     }
 
     private void FixedUpdate()
@@ -68,5 +66,16 @@ public class CameraController : MonoBehaviour
 
         transform.position =
             Vector3.SmoothDamp(transform.position, cameraPosition, ref Velocity, Camera_MovingSmoothTime);
-    }    
+    }
+
+    private void FindAllPlayers()
+    {
+        GamePlayer[] gamePlayers = FindObjectsOfType<GamePlayer>();
+
+        PlayersTransform.Clear();       //기존의 리스트를 초기화
+        foreach(var player in gamePlayers)
+        {
+            PlayersTransform.Add(player.transform);
+        }
+    }
 }
