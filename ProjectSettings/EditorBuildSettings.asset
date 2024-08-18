@@ -5,16 +5,34 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Main.unity
     guid: a334ed29dfbb39742b773a9b82588983
-  - enabled: 1
+  - enabled: 0
+    path: Assets/1.Scene/Game_List.unity
+    guid: 217431dbab376224a96e568adb6fe2e1
+  - enabled: 0
+    path: Assets/1.Scene/Game/Game_1-1.unity
+    guid: 27db19b1216064346abc34743f7a4435
+  - enabled: 0
+    path: Assets/1.Scene/Game/Game_1-2.unity
+    guid: fd9e5d39cf2375549945c68418c485e2
+  - enabled: 0
+    path: Assets/1.Scene/Game/Game_1-3.unity
+    guid: 6132cbd2a537a2047a773adc72d9144b
+  - enabled: 0
+    path: Assets/1.Scene/Game/Game_1-4.unity
+    guid: e16700a1136c83a48a50726a5c7fc35d
+  - enabled: 0
+    path: Assets/1.Scene/Game/Game_2-1.unity
+    guid: 85f6b7d593b2f5b4e9283587fb5be132
+  - enabled: 0
     path: Assets/1.Scene/Feat_NetworkGameMain.unity
     guid: 4d072ff29253dfe44be966356c10f591
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Feat_NetworkGamePlay.unity
     guid: c11e7908bbcf76842aa29f2637d8c221
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/Feat_NetworkGameRoom.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
