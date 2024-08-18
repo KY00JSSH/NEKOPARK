@@ -17,7 +17,12 @@ public class CameraController : MonoBehaviour
 
     private Vector3 GetcenterPoint()                //플레이어 다수일 경우, 카메라 중앙포지션
     {
-        if(PlayersTransform.Count == 1)
+        if (PlayersTransform.Count == 0)
+        {            
+            return Vector3.zero;
+        }
+
+        if (PlayersTransform.Count == 1)
         {
             return PlayersTransform[0].position;
         }
@@ -76,6 +81,11 @@ public class CameraController : MonoBehaviour
         foreach(var player in gamePlayers)
         {
             PlayersTransform.Add(player.transform);
+        }
+
+        if (PlayersTransform.Count == 0)
+        {
+            PlayersTransform.Add(new GameObject("Placeholder").transform);
         }
     }
 }
