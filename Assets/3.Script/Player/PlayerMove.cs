@@ -65,7 +65,9 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        //if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        if (!GameListUIManager.instance.IsLocalGame) { 
+            if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        }
 
         // 문에 들어갈 경우 이동하지 않도록 처리
         if (IsPlayerEnterTheDoor) return;
@@ -100,7 +102,9 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump() {
-        //if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        if (!GameListUIManager.instance.IsLocalGame) {
+            if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        }
 
         if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping")) {
             playerRigidbody.AddForce(new Vector2(0, jumpForce));
@@ -111,7 +115,9 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump_Limit() {
-        //if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        if (!GameListUIManager.instance.IsLocalGame) {
+            if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        }
 
         if (playerRigidbody.velocity.y < 0) {
             Vector2 feetPosition =
@@ -149,7 +155,13 @@ public class PlayerMove : NetworkBehaviour {
         yield return new WaitForSeconds(delay);
         playerCollider.enabled = false;
         //playerRigidbody.isKinematic = true;
-        RestartWhenPlayerDie();
+        if (!GameListUIManager.instance.IsLocalGame) {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
+        else {
+            RestartWhenPlayerDie();
+        }
     }
 
     public void RestartWhenPlayerDie() {

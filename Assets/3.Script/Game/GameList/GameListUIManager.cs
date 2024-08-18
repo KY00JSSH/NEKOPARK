@@ -57,10 +57,21 @@ public class GameListUIManager : MonoBehaviour {
         GameListUIManager.instance.SetMajorStageIndex(index);
     }
 
+    public void OpenDetailListReturn() {
+        canvas[0].gameObject.SetActive(false);
+        canvas[1].gameObject.SetActive(true);
+    }
+
+    public void AllCloseUI() {
+        canvas[0].gameObject.SetActive(false);
+        canvas[1].gameObject.SetActive(false);
+    }
+
     public void ClearAndOpenList() {
         LoadDataManager.instance.ClearStage(majorStageIndex, minorStageIndex);
         if (isLocalGame) {
             SceneManager.LoadScene("Game_List");
+            OpenDetailListReturn();
             Save.instance.MakeSingleSave();
         }
         else {
@@ -88,9 +99,11 @@ public class GameListUIManager : MonoBehaviour {
     public void OpenGame(int index) {
         minorStageIndex = index;
         if (isLocalGame) {
+            AllCloseUI();
             SceneManager.LoadScene($"Game_{majorStageIndex + 1}-{minorStageIndex + 1}");
         }
         else {
+            AllCloseUI();
             OpenGameScene();
         }
     }
