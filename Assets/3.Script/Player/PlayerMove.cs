@@ -234,6 +234,10 @@ public class PlayerMove : NetworkBehaviour {
         // 위 아래 충돌은 무시합니다.
         if (collision.transform.TryGetComponent(out RectTransform collisionRect)) {
 
+            if (collision.transform.TryGetComponent(out Object_MovingWallController movingWall))
+            {
+                return;
+            }
 
             float collisionTop = collision.transform.position.y + collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
             float collisionBottom = collision.transform.position.y - collisionRect.sizeDelta.y * collisionRect.localScale.y / 2f;
