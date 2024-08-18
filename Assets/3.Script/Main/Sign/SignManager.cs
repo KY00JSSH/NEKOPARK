@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SignManager : MonoBehaviour {
@@ -56,8 +54,8 @@ public class SignManager : MonoBehaviour {
     public void OpenInfo() {
         loginController.gameObject.SetActive(false);
         registController.gameObject.SetActive(false);
-        infoController.gameObject.SetActive(false);
-        failController.gameObject.SetActive(true);
+        infoController.gameObject.SetActive(true);
+       // failController.gameObject.SetActive(true);
     }
 
     public void CloseFailDialog() {

@@ -2,17 +2,20 @@ using UnityEngine;
 
 public class InfoController : MonoBehaviour
 {
-    private InfoUpdateController infoUpdateController;
     private InfoDetailController infoDetailController;
+    private InfoUpdateController infoUpdateController;
 
     private void Awake() {
-        infoUpdateController = FindObjectOfType<InfoUpdateController>();
         infoDetailController = FindObjectOfType<InfoDetailController>();
+        infoUpdateController = FindObjectOfType<InfoUpdateController>();
     }
 
-    private void Start() {
-        infoDetailController.gameObject.SetActive(false);
-        infoUpdateController.gameObject.SetActive(false);
+    private void OnEnable() {
+        if (SQLManager.instance != null) {
+            if (SQLManager.instance.UserData != null) {
+                OpenInfoDetail();
+            }
+        }
     }
 
     public void OpenInfoDetail() {
