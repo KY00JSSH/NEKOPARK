@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public enum LobbyMenuType {
     START = 0,
@@ -15,6 +16,8 @@ public class LobbyMenuController : MonoBehaviour {
     private ConfirmManager confirmManager;
     private LobbyUIController lobbyUIController;
     private bool isExit = false;
+
+    public object ScneneManager { get; private set; }
 
     private void Awake() {
         menuText = gameObject.GetComponentInChildren<Text>();
@@ -50,6 +53,7 @@ public class LobbyMenuController : MonoBehaviour {
     public void OpenMenu() {
         if (isExit) {
             OnExitRoomButtonClicked();
+            SceneManager.LoadScene("Main");
         }
         else {
             OnStartGameButtonClicked();
