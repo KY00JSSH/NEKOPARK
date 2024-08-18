@@ -35,7 +35,6 @@ public class CameraController : MonoBehaviour
         Velocity = Vector3.zero;
     }
 
-
     private void Start()
     {
         Camera.main.orthographicSize = Camera_FixedZoom;    //카메라 줌값 초기화

@@ -132,8 +132,8 @@ public class PlayerMove : NetworkBehaviour {
         if (!IsDie) {
             IsDie = true;
             playerAnimator.SetBool("isDie", true);
-            playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기
-            playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     //위로 튕기기
+            playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기                                
+            playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     // 위로 튕기기
             StartCoroutine(PlayerDie_co(0.5f));                         //충돌 무시
             AudioManager.instance.PlaySFX(AudioManager.Sfx.playerDie);
         }
