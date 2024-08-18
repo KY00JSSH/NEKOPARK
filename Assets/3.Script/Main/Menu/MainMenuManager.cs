@@ -124,6 +124,7 @@ public class MainMenuManager : MonoBehaviour {
                 mainManager.OpenDLCDialog();
                 break;
             case MenuType.EXIT:
+                Application.Quit();
                 break;
         }
     }

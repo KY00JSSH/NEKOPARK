@@ -65,8 +65,13 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        if (!GameListUIManager.instance.IsLocalGame) { 
+        if (GameListUIManager.instance == null) {
             if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        }
+        else {
+            if (!GameListUIManager.instance.IsLocalGame) {
+                if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+            }
         }
 
         // 문에 들어갈 경우 이동하지 않도록 처리
@@ -102,8 +107,13 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump() {
-        if (!GameListUIManager.instance.IsLocalGame) {
+        if (GameListUIManager.instance == null) {
             if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        }
+        else {
+            if (!GameListUIManager.instance.IsLocalGame) {
+                if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+            }
         }
 
         if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping")) {
@@ -115,8 +125,13 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump_Limit() {
-        if (!GameListUIManager.instance.IsLocalGame) {
+        if (GameListUIManager.instance == null) {
             if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+        }
+        else {
+            if (!GameListUIManager.instance.IsLocalGame) {
+                if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
+            }
         }
 
         if (playerRigidbody.velocity.y < 0) {
