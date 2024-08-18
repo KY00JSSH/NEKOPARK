@@ -11,6 +11,7 @@ public class GamePlayer : NetworkBehaviour {
     private PlayerNickname playerNickname;
     private PlayerColor playerColor;
 
+    [SerializeField] private GameObject boxPrefab;
 
     private void Awake() {
         playerColor = GetComponent<PlayerColor>();

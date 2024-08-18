@@ -60,7 +60,7 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        //if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
+        if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
 
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -91,7 +91,7 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump() {
-        //if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
+        if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
 
         if (Input.GetKey(KeyCode.Space) && !playerAnimator.GetBool("isJumping")) {
             playerRigidbody.AddForce(new Vector2(0, jumpForce));
@@ -102,7 +102,7 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump_Limit() {
-        //if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
+        if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
 
         if (playerRigidbody.velocity.y < 0) {
             Vector2 feetPosition =
