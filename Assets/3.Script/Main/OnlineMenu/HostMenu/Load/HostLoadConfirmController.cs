@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class HostLoadConfirmController : MonoBehaviour {
     private HostLoadConfirmButton[] buttons;
@@ -25,9 +22,6 @@ public class HostLoadConfirmController : MonoBehaviour {
 
     public void NewGameButtonClick() {
         onlineMenuManager.OpenHostMenu();
-    }
-
-    public void LoadGameButtonClick() {
-
+        gameObject.SetActive(false);
     }
 }

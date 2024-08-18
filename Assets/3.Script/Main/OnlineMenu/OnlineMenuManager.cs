@@ -129,6 +129,7 @@ public class OnlineMenuManager : MonoBehaviour {
 
     public void OpenHostMenu() {
         hostMenuController.gameObject.SetActive(true);
+        CloseHostConfirm();
         isMenuSelect = true;
     }
 
