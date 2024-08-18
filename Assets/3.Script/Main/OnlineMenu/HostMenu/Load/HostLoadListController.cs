@@ -1,10 +1,5 @@
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
-using System.Reflection;
-using static UnityEditor.Progress;
 
 public class HostLoadListController : MonoBehaviour {
     private SaveDataButtonController[] buttons;
@@ -38,6 +33,7 @@ public class HostLoadListController : MonoBehaviour {
                 index++;
             }
         }
-
     }
+
+
 }

@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class SaveDataButtonController : MonoBehaviour{
     private Text[] texts;
+    private string thisKey = string.Empty;
+    private StageSaveData thisSaveData = null;
 
     private void Awake() {
         texts = GetComponentsInChildren<Text>();
@@ -10,6 +12,9 @@ public class SaveDataButtonController : MonoBehaviour{
 
     public void SetLoadDataText(string key, StageSaveData saveData) {
         texts[0].text = key;
+
+        thisSaveData = saveData;
+        thisKey = key;
 
         int clearStageNum = 0;
         int notClearStageNum = 0;
@@ -51,5 +56,9 @@ public class SaveDataButtonController : MonoBehaviour{
         }
 
         texts[1].text = $"{clearStageNum} / ${notClearStageNum}";
+    }
+
+    public void ClickLoadButton() {
+        LoadDataManager.instance.SetLoadData(thisSaveData);
     }
 }

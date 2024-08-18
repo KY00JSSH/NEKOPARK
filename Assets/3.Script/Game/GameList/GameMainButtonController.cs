@@ -12,11 +12,11 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
         gameMainList = FindObjectOfType<GameMainListController>();
     }
 
-    private void openCrown() {
+    public void OpenCrown() {
         images[2].enabled = true;
     }
 
-    private void closeCrown() {
+    public void CloseCrown() {
         images[2].enabled = false;
     }
 
