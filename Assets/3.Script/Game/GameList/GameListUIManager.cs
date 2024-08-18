@@ -16,6 +16,11 @@ public class GameListUIManager : MonoBehaviour {
     public int MinorStageIndex { get { return minorStageIndex; } }
     public void SetMinorStageIndex(int num) { minorStageIndex = num; }
 
+    private bool isLocalGame = false;
+
+    public bool IsLocalGame { get { return isLocalGame; } }
+    public void SetIsLocalGame(bool yn) { isLocalGame = yn; }
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -24,6 +29,11 @@ public class GameListUIManager : MonoBehaviour {
         else {
             Destroy(gameObject);
             return;
+        }
+
+        int localYn = PlayerPrefs.GetInt("localGame");
+        if (localYn == 1) {
+            isLocalGame = true;
         }
 
         canvas = GetComponentsInChildren<Canvas>();
@@ -46,14 +56,40 @@ public class GameListUIManager : MonoBehaviour {
 
     public void ClearAndOpenList() {
         LoadDataManager.instance.ClearStage(majorStageIndex, minorStageIndex);
-        OpenGameListScene();
+        if (isLocalGame) {
+            SceneManager.LoadScene("Game_List");
+            Save.instance.MakeSingleSave();
+        }
+        else {
+            OpenGameListScene();
+            StageSaveData tempStageData = Save.instance.SaveData;
+            if (majorStageIndex == 0) {
+                tempStageData.stage1[minorStageIndex] = true;
+            }
+            else if (majorStageIndex == 1) {
+                tempStageData.stage2[minorStageIndex] = true;
+            }
+            else if (minorStageIndex == 2) {
+                tempStageData.stage3[minorStageIndex] = true;
+            }
+            else {
+                tempStageData.stage4[minorStageIndex] = true;
+            }
+            Save.instance.SaveData = tempStageData;
+            Save.instance.MakeMultiSave();
+        }
         canvas[0].gameObject.SetActive(false);
         canvas[1].gameObject.SetActive(true);
     }
 
     public void OpenGame(int index) {
         minorStageIndex = index;
-        OpenGameScene();
+        if (isLocalGame) {
+            SceneManager.LoadScene($"Game_{majorStageIndex + 1}-{minorStageIndex + 1}");
+        }
+        else {
+            OpenGameScene();
+        }
     }
 
     private void OpenGameScene() {

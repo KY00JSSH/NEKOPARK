@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
     private bool isSelectMenu = false;
@@ -67,14 +68,15 @@ public class MainMenuManager : MonoBehaviour {
         if ((!isConfirm && isSelectMenu && Input.GetButtonDown("Select")) || (!isConfirm && isSelectMenu && Input.GetButtonDown("menu"))) {
             switch (mainMenuController.GetSelectMenu()) {
                 case MenuType.PLAY_LOCAL:
-                    //TODO: (수진) LOCAL MODE 추가하기
+                    PlayerPrefs.SetInt("localGame", 1);
+                    SceneManager.LoadScene("Game_List");
                     break;
                 case MenuType.PLAY_ONLINE:
                     ShowConfirm();
                     confirmManager.ConfirmMainTextChage(mainMenuController.GetSelectMenu());
                     break;
                 case MenuType.OPTION:
-                    //TODO: (수진) OPTION 추가하기
+                    mainManager.OpenDLCDialog();
                     break;
                 case MenuType.EXIT:
                     ShowConfirm();
@@ -112,11 +114,14 @@ public class MainMenuManager : MonoBehaviour {
     public void GoToMenu() {
         switch (mainMenuController.GetSelectMenu()) {
             case MenuType.PLAY_LOCAL:
+                PlayerPrefs.SetInt("localGame", 1);
+                SceneManager.LoadScene("Game_List");
                 break;
             case MenuType.PLAY_ONLINE:
                 mainManager.OpenOnlineCanvas();
                 break;
             case MenuType.OPTION:
+                mainManager.OpenDLCDialog();
                 break;
             case MenuType.EXIT:
                 break;
