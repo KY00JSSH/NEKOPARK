@@ -85,6 +85,9 @@ public class OnlineMenuManager : MonoBehaviour {
     }
 
     private void checkButtonOutline() {
+        if (isMenuSelect)
+            return;
+
         buttons[0].image.enabled = false;
         buttons[1].image.enabled = false;
         buttons[2].image.enabled = false;
@@ -139,6 +142,11 @@ public class OnlineMenuManager : MonoBehaviour {
     }
 
     public void OpenLoadList() {
+        CloseHostConfirm();
         hostLoadList.GetLoadList();
+    }
+
+    public void CloseLoadList() {
+        hostLoadList.gameObject.SetActive(false);
     }
 }

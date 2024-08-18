@@ -8,6 +8,7 @@ public class HostLoadConfirmButton : MonoBehaviour, IPointerEnterHandler {
 
     private void Awake() {
         thisHoverOutline = gameObject.GetComponentInChildren<Image>();
+        controller = FindObjectOfType<HostLoadConfirmController>();
     }
     public void EnableImage() {
         thisHoverOutline.enabled = true;
