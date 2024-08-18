@@ -16,6 +16,8 @@ public class OnlineMenuManager : MonoBehaviour {
 
     private MainManager mainManager;
     private HostMenuController hostMenuController;
+    private HostLoadConfirmController hostLoadConfirm;
+    private HostLoadListController hostLoadList;
 
     public void ServerFailFlagUpdate(bool yn) {
         isServerFail = yn;
@@ -29,9 +31,13 @@ public class OnlineMenuManager : MonoBehaviour {
         buttons = GetComponentsInChildren<Button>();
         mainManager = FindObjectOfType<MainManager>();
         hostMenuController = FindObjectOfType<HostMenuController>();
+        hostLoadConfirm = FindObjectOfType<HostLoadConfirmController>();
+        hostLoadList = FindObjectOfType<HostLoadListController>();
 
         setMenuType(OnlineMenuType.PUBLIC);
         hostMenuController.gameObject.SetActive(false);
+        hostLoadConfirm.gameObject.SetActive(false);
+        hostLoadList.gameObject.SetActive(false);
     }
 
     public void setMenuType(OnlineMenuType type) {
@@ -110,7 +116,7 @@ public class OnlineMenuManager : MonoBehaviour {
                 mainManager.OpenJoinCanvas();
                 break;
             case OnlineMenuType.HOST:
-                openHostMenu();
+                hostLoadConfirm.gameObject.SetActive(true);
                 break;
             case OnlineMenuType.OPTION:
                 //TODO: (수진) OPTION 추가하기
@@ -118,7 +124,7 @@ public class OnlineMenuManager : MonoBehaviour {
         }
     }
 
-    private void openHostMenu() {
+    public void OpenHostMenu() {
         hostMenuController.gameObject.SetActive(true);
         isMenuSelect = true;
     }
@@ -126,5 +132,13 @@ public class OnlineMenuManager : MonoBehaviour {
     public void CloseHostMenu() {
         hostMenuController.gameObject.SetActive(false);
         isMenuSelect = false;
+    }
+
+    public void CloseHostConfirm() {
+        hostLoadConfirm.gameObject.SetActive(false);
+    }
+
+    public void OpenLoadList() {
+        hostLoadList.GetLoadList();
     }
 }

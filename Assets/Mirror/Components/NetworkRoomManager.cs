@@ -50,6 +50,9 @@ namespace Mirror
         /// The scene to use for the playing the game from the room. This is similar to the onlineScene of the NetworkManager.
         /// </summary>
         [Scene]
+        public string GameListScene;
+
+        [Scene]
         public string GameplayScene;
 
         /// <summary>

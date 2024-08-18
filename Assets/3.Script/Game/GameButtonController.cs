@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class GameButtonController : MonoBehaviour, IPointerEnterHandler {
     private Image outline;
-    private GameListController gameListController;
+    private GameMainListController gameListController;
 
     private void Awake() {
         outline = GetComponentInChildren<Image>();
-        gameListController = FindObjectOfType<GameListController>();
+        gameListController = FindObjectOfType<GameMainListController>();
     }
 
     public void EnableOutline() {

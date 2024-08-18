@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameListController : MonoBehaviour {
+public class GameMainListController : MonoBehaviour {
     private Button[] buttons;
 
     private void Awake() {

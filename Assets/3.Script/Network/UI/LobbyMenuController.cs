@@ -76,7 +76,7 @@ public class LobbyMenuController : MonoBehaviour {
 
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
-        roomManager.ServerChangeScene(roomManager.GameplayScene);
+        roomManager.ServerChangeScene(roomManager.GameListScene);
         TCPclient.Instance.SendRequest(RequestType.Start);
     }
 
