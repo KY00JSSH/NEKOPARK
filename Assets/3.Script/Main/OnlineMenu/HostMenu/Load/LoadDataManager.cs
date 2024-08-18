@@ -51,4 +51,8 @@ public class LoadDataManager : MonoBehaviour
             }
         }
     }
+
+    public void ClearStage(int majorIndex, int minorIndex) {
+        stageData[majorIndex, minorIndex] = true;
+    }
 }

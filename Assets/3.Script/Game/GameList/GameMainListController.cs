@@ -61,24 +61,18 @@ public class GameMainListController : MonoBehaviour {
 
 
     public void CheckHoverIndex(string name) {
-        if (name.Contains("01")) {
-            buttons[0].EnableOutline();
-            buttons[1].DisEnableOutline();
-            buttons[2].DisEnableOutline();
-        }
-        else if (name.Contains("02")) {
-            buttons[0].DisEnableOutline();
-            buttons[1].EnableOutline();
-            buttons[2].DisEnableOutline();
-        }
-        else {
-            buttons[0].DisEnableOutline();
-            buttons[1].DisEnableOutline();
-            buttons[2].EnableOutline();
+        for(int i=0; i < 3; i++) {
+            if (buttons[i].name.Equals(name)) {
+                buttons[i].EnableOutline();
+            }
+            else {
+                buttons[i].DisEnableOutline();
+
+            }
         }
     }
 
     public void OpenStage(int index) {
-        gameListUIManager.OpenDetailList();
+        gameListUIManager.OpenDetailList(index);
     }
 }
