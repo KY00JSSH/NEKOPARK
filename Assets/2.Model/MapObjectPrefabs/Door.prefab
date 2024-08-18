@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7606782929462130469}
   m_Layer: 0
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4956197887576889552}
   m_Enabled: 1
-  m_SortingLayerID: 1847519855
+  m_SortingLayerID: -1326486581
   m_SortingLayer: 2
   m_SortingOrder: 0
 --- !u!1 &4956197887777025837
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 4956197887777025833}
   m_Layer: 0
   m_Name: Door_outer
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1847519855
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 6623719234781301212, guid: 250625914f0da89488ffff67c7c71e21, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 4956197888094290467}
   m_Layer: 0
   m_Name: Door_inner
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -239,7 +239,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1847519855
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -7341407202210888751, guid: 250625914f0da89488ffff67c7c71e21, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

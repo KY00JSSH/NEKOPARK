@@ -31,6 +31,9 @@ public class PlayerMove : NetworkBehaviour {
     public int leftPushCount { get; private set; }
 
 
+    // 24 08 17 김수주 : 플레이어 문에 들어왔는지 확인하는 값 추가
+    public bool IsPlayerEnterTheDoor { get; private set; }
+
     private void Awake() {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
@@ -66,12 +69,12 @@ public class PlayerMove : NetworkBehaviour {
 
         if (horizontalInput != 0)                                  //입력 들어가면 움직이도록             
         {
-            IsMoving = true;                                                    
-            IsMovingRight = horizontalInput > 0; 
+            IsMoving = true;
+            IsMovingRight = horizontalInput > 0;
 
             float moveDirection = horizontalInput > 0 ? 1f : -1f;
-            transform.localScale = new Vector3(-moveDirection, 1f, 1f); 
-            transform.position += Vector3.right * moveSpeed * horizontalInput * Time.deltaTime;  
+            transform.localScale = new Vector3(-moveDirection, 1f, 1f);
+            transform.position += Vector3.right * moveSpeed * horizontalInput * Time.deltaTime;
         }
         else                                                        //입력 없으니까 움직임 false
         {
@@ -80,7 +83,7 @@ public class PlayerMove : NetworkBehaviour {
 
         playerAnimator.SetBool("isMoving", IsMoving);              //여기도 기본 상태로
         playerAnimator.SetBool("isPushing", IsPushingObject);      //여기도 기본 상태
-            
+
         Vector3 textScale = new Vector3(0.02f, 0.02f, 0.02f);
         if (transform.localScale.x < 0) {
             textScale.x *= -1;
@@ -118,19 +121,15 @@ public class PlayerMove : NetworkBehaviour {
         }
     }
 
-    public void SetHasKey(bool hasKey)
-    {
-        if (!IsDie)
-        {
+    public void SetHasKey(bool hasKey) {
+        if (!IsDie) {
             Haskey = hasKey;
             AudioManager.instance.PlaySFX(AudioManager.Sfx.getKeyDoorOpen);
-        }        
+        }
     }
 
-    public void Die()      
-    {
-        if (!IsDie)
-        {
+    public void Die() {
+        if (!IsDie) {
             IsDie = true;
             playerAnimator.SetBool("isDie", true);
             playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기
@@ -148,23 +147,40 @@ public class PlayerMove : NetworkBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;  //땅과 부딪히면 계속 push 애니메이션이 재생될테니 layer로 예외처리
-            IsPushingObject = true;
+        IsPushingObject = true;
 
         // 충돌 디버그 메시지
         Debug.Log($"OnCollisionEnter2D: {collision.gameObject.name} with {gameObject.name}");
-        
+
         // 충돌 처리 예시
-        if (collision.gameObject.CompareTag("Player"))
-        {
+        if (collision.gameObject.CompareTag("Player")) {
             Debug.Log("Collided with another player!");
         }
-        else if (collision.gameObject.CompareTag("Box"))
-        {
+        else if (collision.gameObject.CompareTag("Box")) {
             Debug.Log("Collided with a box!");
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision) {
+        // 24 08 17 김수주 : 문이 열렸을 때, 플레이어가 문에 닿고 있을 경우 키를 누를면 들어감 여부 변경
+        if (Object_DoorController.IsDoorOpen) {
+            if (collision.CompareTag("Door")) {
+                float verticalInput = Input.GetAxis("Vertical");
+                if (verticalInput > 0) {
+                    //TODO: [김수주] 플레이어 이미지 없어져야함 + 움직임 막아야함
+                    IsPlayerEnterTheDoor = true;
+                    Debug.Log("문 입장 플레이어 이름 " + transform.name);
+                }
+                else {
+                    //TODO: [김수주] 플레이어 이미지 나타나야함
+                    IsPlayerEnterTheDoor = false;
+                }
+            }
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D collision) {
+
         // 위 아래 충돌은 무시합니다.
         if (collision.transform.TryGetComponent(out RectTransform collisionRect)) {
 
@@ -242,7 +258,7 @@ public class PlayerMove : NetworkBehaviour {
         leftPushCount = 0;
     }
 
-    
+
     //private void OnCollisionEnter2D(Collision2D collision)
     //{
     //    // 충돌 디버그 메시지
@@ -274,5 +290,5 @@ public class PlayerMove : NetworkBehaviour {
     //        Debug.Log("No longer colliding with a box!");
     //    }
     //}
-    
+
 }

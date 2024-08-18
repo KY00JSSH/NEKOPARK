@@ -14,7 +14,9 @@ public class Object_DoorController : MonoBehaviour
     [SerializeField] private Object_NextStageController Door_inner; //문을 연 후의 검은색 공간 콜라이더
 
     private Object_KeyController key;
+
     
+    public static bool IsDoorOpen { get; private set; }            // 24 08 17 김수주 : 플레이어 전체 들어왔는지 확인하는 값 추가
     private void Awake()
     {        
         Door_outer = GetComponent<Transform>();
@@ -41,7 +43,10 @@ public class Object_DoorController : MonoBehaviour
                 key.KeyUsed();
                 Debug.Log("열쇠 사용 완료");
                 AudioManager.instance.PlaySFX(AudioManager.Sfx.getKeyDoorOpen);
-                Debug.Log("사운드 재생 완료");                
+                Debug.Log("사운드 재생 완료");
+
+                //TODO: [김수주] 플레이어 전체가 다 들어갔는지 확인하는 값 필요함 => 개별 플레이어마다 문에 닿아서 들어갔는지 확인하는 bool값 필요
+                IsDoorOpen = true;
             }
         }
         else
@@ -49,5 +54,4 @@ public class Object_DoorController : MonoBehaviour
             Debug.Log("충돌한 오브젝트는 Key 태그가 아닙니다: " + collision.tag);
         }
     }
-
 }
