@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.85, y: 0.66}
+  m_AnchoredPosition: {x: -0.92, y: 0.66}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!50 &4613392922242597124
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BaseWidth: 3
-  BaseHeight: 1
+  BaseHeight: 2
   PillarObject: {fileID: 8827726687391891194}
   BaseObject: {fileID: 8827726687217016371}
   NeedNumToMove: 3

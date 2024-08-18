@@ -10,6 +10,7 @@ public class Object_MovingWallController : MonoBehaviour {
 
     private int layerMask = (1 << 8);
     private int currentCollisionNum;
+    private int preCollisionNum;
     private float smoothingFactor = 0.5f;                                        // y 좌표 이동 기본 값
     private bool isMoving = false;                                             // 코르틴 객체 움직이는 중 실행
     private bool isStartToChangeText;
@@ -65,11 +66,15 @@ public class Object_MovingWallController : MonoBehaviour {
         ChangeText();
         hitCollisionAll = GetOverlapBoxAll();
 
-        if (hitCollisionAll.Length >= 0) {
+        if (hitCollisionAll.Length >= 1) {
             CheckHitCollisionArrayAll();
 
-            ChangeTransformPosition();
-            //Debug.Log("currentCollisionNum | " + currentCollisionNum);
+            if (preCollisionNum != currentCollisionNum) {
+                ChangeTransformPosition();
+                preCollisionNum = currentCollisionNum;
+                //Debug.Log("currentCollisionNum | " + currentCollisionNum);
+            }
+
         }
     }
 
@@ -91,9 +96,9 @@ public class Object_MovingWallController : MonoBehaviour {
 
         }
 
-        //foreach (var item in _hitCollisionAll) {
-        //    Debug.LogWarning(item.name);
-        //}
+        foreach (var item in _hitCollisionAll) {
+            Debug.LogWarning(item.name);
+        }
 
         return _hitCollisionAll;
     }
@@ -125,10 +130,10 @@ public class Object_MovingWallController : MonoBehaviour {
         }
 
 
-        if (PositionIWantToGo.y >= currentPosition.y) {     // 현재위치가 낮으면 올라가야함
+        if (PositionIWantToGo.y > currentPosition.y) {     // 현재위치가 낮으면 올라가야함
             StartCoroutine(MovingWallPositionChangeUp_Co(PositionIWantToGo));
         }
-        else {
+        else if(PositionIWantToGo.y < currentPosition.y) {
             StartCoroutine(MovingWallPositionChangeDown_Co(PositionIWantToGo));
         }
 
@@ -199,7 +204,6 @@ public class Object_MovingWallController : MonoBehaviour {
     // 찾는 객체의 위에 다른 물체가 있으면 true;
     private bool CheckHitCollisionArray(GameObject gameObject) {
         if (gameObject.TryGetComponent(out CheckCollision checkCollision)) {
-
             if (checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
                 return true;
             }
@@ -212,6 +216,9 @@ public class Object_MovingWallController : MonoBehaviour {
         Vector3 rayDirection = _gameObject.transform.position;
         RaycastHit2D[] _raycastHits = Physics2D.RaycastAll(rayDirection, Vector2.up, layerMask);
 
+        foreach (var item in _raycastHits) {
+            Debug.Log(item.collider.name);
+        }
 
         // 불필요한 요소들을 제외하는 방법
         if (_raycastHits.Length > 0) {
