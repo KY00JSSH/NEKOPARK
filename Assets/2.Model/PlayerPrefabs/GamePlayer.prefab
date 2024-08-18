@@ -146,11 +146,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 746280121217587312}
-  m_Father: {fileID: 344699803541625691}
+  m_Father: {fileID: 6134598048169237604}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6691347417366613270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +223,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 344699803541625691}
+  - component: {fileID: 6134598048169237604}
   - component: {fileID: 2297701016105840305}
   - component: {fileID: 4753397139760323301}
   - component: {fileID: 1168366180270851336}
@@ -245,8 +245,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &344699803541625691
-Transform:
+--- !u!224 &6134598048169237604
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -260,6 +260,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.95, y: 1.1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &2297701016105840305
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -343,7 +348,7 @@ MonoBehaviour:
   syncDirection: 1
   syncMode: 0
   syncInterval: 0
-  target: {fileID: 344699803541625691}
+  target: {fileID: 6134598048169237604}
   syncPosition: 1
   syncRotation: 1
   syncScale: 1
@@ -378,6 +383,8 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  moveSpeed: 3
+  jumpForce: 400
 --- !u!50 &2445888733384195179
 Rigidbody2D:
   serializedVersion: 4
@@ -417,16 +424,6 @@ CompositeCollider2D:
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
-  - m_Collider: {fileID: 7505672782471917841}
-    m_ColliderPaths:
-    - - X: 4640470
-        Y: -1776958
-      - X: 4640470
-        Y: 4503780
-      - X: -4621263
-        Y: 4503487
-      - X: -4620970
-        Y: -1776958
   - m_Collider: {fileID: 4761964624937784405}
     m_ColliderPaths:
     - - X: 2292191
@@ -437,6 +434,16 @@ CompositeCollider2D:
         Y: -1793619
       - X: -1829741
         Y: -5380876
+  - m_Collider: {fileID: 7505672782471917841}
+    m_ColliderPaths:
+    - - X: 4640470
+        Y: -1776958
+      - X: 4640470
+        Y: 4503780
+      - X: -4621263
+        Y: 4503487
+      - X: -4620970
+        Y: -1776958
   m_CompositePaths:
     m_Paths:
     - - {x: 0.46401772, y: -0.1776958}

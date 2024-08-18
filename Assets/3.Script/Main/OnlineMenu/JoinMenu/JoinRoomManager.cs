@@ -25,11 +25,14 @@ public class JoinRoomManager : MonoBehaviour {
     public void OpenRoomCount(List<RoomData> data) {
         if (data.Count == 0) {
             statusText.gameObject.SetActive(true);
+            for (int i = 0; i < roomButtons.Length; i++) {
+                roomButtons[i].gameObject.SetActive(false);
+            }
         }
         else {
             statusText.gameObject.SetActive(false);
             for (int i = 0; i < roomButtons.Length; i++) {
-                if(i < data.Count) {
+                if (i < data.Count) {
                     roomButtons[i].gameObject.SetActive(true);
                     roomButtons[i].gameObject.GetComponent<JoinRoomController>().SetRoomData(data[i]);
                 }

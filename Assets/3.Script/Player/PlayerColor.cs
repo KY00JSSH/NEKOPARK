@@ -24,11 +24,21 @@ public class PlayerColor : NetworkBehaviour {
             spriteRenderer = GetComponent<SpriteRenderer>();
 
         spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
+        RoomPlayer.MyRoomPlayer.playerColor = newColor;
+    }
+
+    private void Start() {
+        if (isOwned) 
+            CmdSetPlayerColor((PlayerColorType)PlayerPrefs.GetInt("HostColor"));
+    }
+
+    [Command]
+    public void CmdSetPlayerColor(PlayerColorType color) {
+        playerColor = color;
     }
 
     public List<PlayerColorType> GetAvailableColor() {
         // 플레이어가 선택하지 않은, 사용가능한 색상의 리스트를 return 합니다.
-        //TODO: UI에서 이 List를 return 받은 뒤, length에 맞게 색상을 출력
 
         List<PlayerColorType> colors = new List<PlayerColorType>(
                 (PlayerColorType[])Enum.GetValues(typeof(PlayerColorType)));

@@ -13,7 +13,7 @@ public class JoinFailController : MonoBehaviour
 
     public void SetDescription(bool isColor) {
         if (isColor) {
-            description.text = "This color is already being used by other users\n\nPlease set it again";
+            description.text = "This color is already being used by other users\nPlease set it again";
         }
         else {
             description.text = "Connection failed. Please Retry Again";
