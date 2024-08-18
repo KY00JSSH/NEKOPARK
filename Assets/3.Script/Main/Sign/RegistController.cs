@@ -55,12 +55,21 @@ public class RegistController : MonoBehaviour {
             case DBState.REG_SUCCESS:
                 signManager.OpenLogin();
                 break;
+            case DBState.EXIST_ID:
+                signManager.OpenFailDialog(SQLManager.instance.MessageByState(registState));
+                break;
             case DBState.REG_ERROR:
                 signManager.OpenFailDialog(SQLManager.instance.MessageByState(registState));
                 break;
             case DBState.DIS_CONNECT:
                 signManager.OpenFailDialog(SQLManager.instance.MessageByState(registState));
                 break;
+        }
+    }
+
+    public void FieldReset() {
+        for(int i=0; i<inputs.Length; i++) {
+            inputs[i].text = string.Empty;
         }
     }
 }

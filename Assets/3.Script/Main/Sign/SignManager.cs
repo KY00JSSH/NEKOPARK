@@ -34,6 +34,7 @@ public class SignManager : MonoBehaviour {
     public void OpenLogin() {
         loginController.gameObject.SetActive(true);
         registController.gameObject.SetActive(false);
+        registController.FieldReset();
         infoController.gameObject.SetActive(false);
         failController.gameObject.SetActive(false);
     }
