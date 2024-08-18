@@ -70,6 +70,9 @@ public class TCPclient : MonoBehaviour {
                 roomData.availableColor.Remove(roomData.hostColor);
                 roomData.gameType = (GameType)PlayerPrefs.GetInt("GameType");
 
+                roomData.hostName = SQLManager.instance.UserData.userNick;
+                PlayerPrefs.SetString("UserName", roomData.hostName);
+
                 var roomManager = NetworkManager.singleton as RoomManager;
                 roomManager.maxConnections = PlayerPrefs.GetInt("MaxPlayer");
                 roomData.maxConnected = roomManager.maxConnections;
@@ -88,6 +91,7 @@ public class TCPclient : MonoBehaviour {
             case RequestType.Select:
                 request.type = "Select";
                 roomData = FindObjectOfType<JoinRoomManager>().GetButtonRoomData();
+                PlayerPrefs.SetInt("SelectRoomMaxPlayer", roomData.maxConnected);
                 if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
                 break;
             case RequestType.Enter:
@@ -95,8 +99,9 @@ public class TCPclient : MonoBehaviour {
                 roomData.hostIP = RoomManager.singleton.networkAddress;
                 if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
                 roomData.hostColor = FindObjectOfType<JoinColorChangeController>().GetSelectClientColor();
-                //TODO: 선택한 방목록의 RoomData 가져오기
-                //TODO: RoomData.hostColor를 선택한 플레이어 색상으로 설정하기
+
+                PlayerPrefs.SetString("UserName", SQLManager.instance.UserData.userNick);
+
                 break;
             case RequestType.Exit:
                 request.type = "Exit";
