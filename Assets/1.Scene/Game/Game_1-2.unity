@@ -349,7 +349,6 @@ MonoBehaviour:
   GameplayScene: Assets/1.Scene/Feat_NetworkGamePlay.unity
   _allPlayersReady: 0
   clientIndex: 0
-  MyPlayerColor: 0
 --- !u!1 &305796728
 GameObject:
   m_ObjectHideFlags: 0
@@ -3071,3 +3070,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Door_inner: {fileID: 0}
   Door_outer: {fileID: 0}
+  StageNum: 0
+  SubStageNum: 1

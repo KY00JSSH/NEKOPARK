@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[System.Serializable]
 public class StageSaveData {
     // 스테이지 달성 여부 bool
     public bool[] stage1 = new bool[4]; // 현재 1개 Stage만 있음
@@ -15,6 +15,8 @@ public class StageSaveData {
     // Save 확인용
     //public bool hasSave;
 }
+
+[System.Serializable]
 public class StageSaveDataList {    // Multi list 저장
     public List<StageSaveData> MultiDatas;
 }
@@ -38,15 +40,14 @@ public class Save : MonoBehaviour {
     // single mode 확인용 
     private bool isSingleMode; //TODO: 모드 선택할때 변경해야함
     public bool GetPlayMode() { return isSingleMode; }
-    public void SetPlayMode(bool isSinglePlayMode) { isSingleMode = isSinglePlayMode; }
+    public void SetPlayMode(bool isSinglePlayMode) { isSingleMode = isSinglePlayMode; }//TODO:[김수주] 방 생성할 경우 모드 확인용 -> 넣어야 저장됨
 
 
     private bool isHostPlayer;                                      // 방생성하기를 누른 플레이어만 저장해야함?
-    public void SetHostPlayer() { isHostPlayer = true; }            // 방 생성할 경우 넣어야함?
+    public void SetHostPlayer() { isHostPlayer = true; }            //TODO:[김수주] 방 생성할 경우 호스트 확인용 -> 넣어야 저장됨
 
     // 경로 저장
     public StageSaveData SaveData = new StageSaveData();
-    public StageSaveData MultiSaveData = new StageSaveData();
 
     private string SingleplayerSaveJsonFilePath;
     private string MultiplayerSaveJsonFilePath;
@@ -91,29 +92,27 @@ public class Save : MonoBehaviour {
     // Multi Save =============================================================
     public void MakeMultiSave() {
         if (!isHostPlayer) return;      // 방생성하기를 누른 본인이 아니면 저장 안함
+                                        
+        if (SaveData == null) {         // SaveData가 null일 경우 새 StageSaveData 객체 생성
+            SaveData = new StageSaveData();
+        }
 
         StageSaveDataList saveDataList = MultiLoad();
         if (saveDataList == null) {
-
-            // SaveData가 null일 경우 새 StageSaveData 객체 생성
-            if (MultiSaveData == null) {
-                MultiSaveData = new StageSaveData();
-            }
+            Debug.Log("SaveDataList null");
 
             // 새 StageSaveDataList 객체 초기화
-            saveDataList = new StageSaveDataList();
-            saveDataList.MultiDatas = new List<StageSaveData>();
-
-            Debug.Log("??????????!!!!!!!!!!");
-
+            saveDataList = new StageSaveDataList { MultiDatas = new List<StageSaveData>() };
+            File.WriteAllText(MultiplayerSaveJsonFilePath, JsonUtility.ToJson(saveDataList)); 
         }
 
         if (saveDataList.MultiDatas == null) {
-            Debug.Log("??????????");
+            Debug.Log(saveDataList);
+            Debug.Log(saveDataList.MultiDatas);
         }
         GetTargetSaveData(); //TODO: [김수주] 씬 성공할 때마다 자동저장 // 중복제거는 일단 나중에
 
-        saveDataList.MultiDatas.Add(MultiSaveData);
+        saveDataList.MultiDatas.Add(SaveData);
 
         File.WriteAllText(MultiplayerSaveJsonFilePath, JsonUtility.ToJson(saveDataList));
     }

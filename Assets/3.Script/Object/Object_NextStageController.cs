@@ -9,9 +9,11 @@ public class Object_NextStageController : MonoBehaviour
 
     private Object_KeyController key;
 
+    public StageNum StageNum;
+    public int SubStageNum;
 
     private GameObject[] allPlyersInGame;                   // 24 08 17 김수주 : 게임에 들어온 전체 플레이어 수 => gamemanager에 넣을 수도 있음 : 확정아님
-    public bool IsStageClear { get; private set; }
+    public static bool IsStageClear { get; private set; }
 
     private void Awake()
     {
@@ -44,6 +46,7 @@ public class Object_NextStageController : MonoBehaviour
                 //Save.instance.MakeSave();
                 Debug.LogWarning(" 스테이지 클리어 ");
                 IsStageClear = true;
+                StageClearManager.instance.GetStageClear(StageNum)[SubStageNum] = true;
             }
         }
     }
