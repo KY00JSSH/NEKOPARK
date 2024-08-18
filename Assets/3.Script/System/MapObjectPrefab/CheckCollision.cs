@@ -76,8 +76,8 @@ public class CheckCollision : MonoBehaviour {
             }
 
 
-            //Debug.Log("?????OnCollisionEnter2D????? up" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.up));
-            //Debug.Log("?????OnCollisionEnter2D????? down" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.down));
+            Debug.Log("?????OnCollisionEnter2D????? up" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.up));
+            Debug.Log("?????OnCollisionEnter2D????? down" + gameObject.name + " | " + GetObjectHasDirection(HasCollDirection.down));
 
         }
 

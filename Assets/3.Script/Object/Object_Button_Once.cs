@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Object_Button_Once : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Object_Button_Once : MonoBehaviour
     private bool isButtonPushed;
     public bool GetIsButtonPushed() { return isButtonPushed; }
 
+    private Transform DontPushTransform;
 
     private void Awake()
     {
@@ -22,6 +24,8 @@ public class Object_Button_Once : MonoBehaviour
 
         PushedButton = transform.parent.GetChild(1);
         Button = transform;
+
+        DontPushTransform = transform.parent.GetChild(2);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,8 +39,13 @@ public class Object_Button_Once : MonoBehaviour
 
                 Debug.Log("버튼을 눌렀습니다.");
                 isButtonPushed = true;
-            }
-            
+
+                if(DontPushTransform != null)
+                {
+                    Player.Die();
+                    
+                }
+            }  
         }
     }
 }
