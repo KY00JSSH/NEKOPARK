@@ -382,6 +382,8 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  moveSpeed: 3
+  jumpForce: 400
 --- !u!50 &2445888733384195179
 Rigidbody2D:
   serializedVersion: 4
@@ -538,7 +540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncDirection: 1
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   clientAuthority: 1
   animator: {fileID: 1322495186895800959}
 --- !u!114 &-7203574324466883237
