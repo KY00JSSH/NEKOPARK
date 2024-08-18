@@ -11,14 +11,6 @@ public class StageSaveData {
     public bool[] stage2 = new bool[4]; // 
     public bool[] stage3 = new bool[4]; // 
     public bool[] stage4 = new bool[4]; // 
-
-    // Save 확인용
-    //public bool hasSave;
-}
-
-[System.Serializable]
-public class StageSaveDataList {    // Multi list 저장
-    public List<StageSaveData> MultiDatas;
 }
 
 
@@ -46,27 +38,32 @@ public class Save : MonoBehaviour {
     private bool isHostPlayer;                                      // 방생성하기를 누른 플레이어만 저장해야함?
     public void SetHostPlayer() { isHostPlayer = true; }            //TODO:[김수주] 방 생성할 경우 호스트 확인용 -> 넣어야 저장됨
 
-    // 경로 저장
     public StageSaveData SaveData = new StageSaveData();
+
+
+    private bool doesMultiSaveDataExist;
+    // 경로 저장
+    private string multiplayerSaveDirectory;
 
     private string SingleplayerSaveJsonFilePath;
     private string MultiplayerSaveJsonFilePath;
 
-    
     private void Start() {
-        SingleplayerSaveJsonFilePath = Path.Combine(Application.persistentDataPath, "Save/SingleSaveData.json");
+        // 싱글 플레이어 저장 파일 경로 설정 : 단일로 저장
+        SingleplayerSaveJsonFilePath = Path.Combine(Application.persistentDataPath, "SingleSave/SingleSaveData.json");
         if (!Directory.Exists(Path.GetDirectoryName(SingleplayerSaveJsonFilePath))) {
             Directory.CreateDirectory(Path.GetDirectoryName(SingleplayerSaveJsonFilePath));
         }
         Debug.Log("single 파일 위치 : " + SingleplayerSaveJsonFilePath);
 
-        MultiplayerSaveJsonFilePath = Path.Combine(Application.persistentDataPath, "Save/MultiSaveData.json");
-        if (!Directory.Exists(Path.GetDirectoryName(MultiplayerSaveJsonFilePath))) {
-            Directory.CreateDirectory(Path.GetDirectoryName(MultiplayerSaveJsonFilePath));
+        // 멀티플레이어 저장 파일 경로 설정
+        multiplayerSaveDirectory = Path.Combine(Application.persistentDataPath, "MultiSave");
+        if (!Directory.Exists(multiplayerSaveDirectory)) {
+            Directory.CreateDirectory(multiplayerSaveDirectory);
         }
-        Debug.Log("multy 파일 위치 : " + MultiplayerSaveJsonFilePath);
+
     }
-    
+
 
     public void MakeSave() {
         if (isSingleMode) {
@@ -84,53 +81,95 @@ public class Save : MonoBehaviour {
             SaveData = new StageSaveData();
         }
 
-        GetTargetSaveData();
-
         File.WriteAllText(SingleplayerSaveJsonFilePath, JsonUtility.ToJson(SaveData));
     }
 
     // Multi Save =============================================================
     public void MakeMultiSave() {
         if (!isHostPlayer) return;      // 방생성하기를 누른 본인이 아니면 저장 안함
-                                        
+
         if (SaveData == null) {         // SaveData가 null일 경우 새 StageSaveData 객체 생성
             SaveData = new StageSaveData();
         }
 
-        StageSaveDataList saveDataList = MultiLoad();
-        if (saveDataList == null) {
-            Debug.Log("SaveDataList null");
-
-            // 새 StageSaveDataList 객체 초기화
-            saveDataList = new StageSaveDataList { MultiDatas = new List<StageSaveData>() };
-            File.WriteAllText(MultiplayerSaveJsonFilePath, JsonUtility.ToJson(saveDataList)); 
+        StageSaveData saveData = MultiLoad();
+        if (saveData == null) {
+            CreateMultiFile();
+        }
+        else {
+            if (!doesMultiSaveDataExist) {                                                           // 멀티파일에서 원하는 파일이 아니면 생성            
+                CreateMultiFile();
+            }
         }
 
-        if (saveDataList.MultiDatas == null) {
-            Debug.Log(saveDataList);
-            Debug.Log(saveDataList.MultiDatas);
-        }
-        GetTargetSaveData(); //TODO: [김수주] 씬 성공할 때마다 자동저장 // 중복제거는 일단 나중에
-
-        saveDataList.MultiDatas.Add(SaveData);
-
-        File.WriteAllText(MultiplayerSaveJsonFilePath, JsonUtility.ToJson(saveDataList));
+        File.WriteAllText(MultiplayerSaveJsonFilePath, JsonUtility.ToJson(SaveData));
     }
 
-    // 멀티일 경우 불러오기
-    public StageSaveDataList MultiLoad() {
+    //TODO:[김수주] 멀티일 경우 불러오기 ! multi를 선택했을 경우 처음에만 사용하는 메소드
+    // 멀티 파일을 선택하고 string 파일명으로 파일이 있는지 확인
+    public bool SetMultiSaveDataExistCheck(string fileDataTime) {
+
+        string saveFileName = $"MultiSaveData_{fileDataTime}.json";
+
+        MultiplayerSaveJsonFilePath = Path.Combine(multiplayerSaveDirectory, saveFileName);
+
+        // 파일 존재 여부를 확인
         if (File.Exists(MultiplayerSaveJsonFilePath)) {
-            return JsonUtility.FromJson<StageSaveDataList>(File.ReadAllText(MultiplayerSaveJsonFilePath));
+            doesMultiSaveDataExist = true;
+            SaveData = JsonUtility.FromJson<StageSaveData>(File.ReadAllText(MultiplayerSaveJsonFilePath)); // 데이터 덮어쓰기
+            
+            Debug.Log("Save Data 덮어쓰기 확인 ");
+            GetTargetSaveData(); //TODO: [김수주] 디버깅
+        }
+        else {
+            doesMultiSaveDataExist = false;
+        }
+
+        return doesMultiSaveDataExist;
+    }
+
+
+    // 멀티 신규 생성
+    public void CreateMultiFile() {
+        string dateTimeString = DateTime.Now.ToString("yyyy-MM-dd_HH-mm");                              
+        string saveFileName = $"MultiSaveData_{dateTimeString}.json";
+
+        MultiplayerSaveJsonFilePath = Path.Combine(multiplayerSaveDirectory, saveFileName);
+        if (!File.Exists(MultiplayerSaveJsonFilePath)) {
+            File.WriteAllText(MultiplayerSaveJsonFilePath, JsonUtility.ToJson(SaveData));
+        }
+    }
+
+
+    //폴더 경로에 파일이 있는지확인
+    public StageSaveData MultiLoad() {
+        if (File.Exists(MultiplayerSaveJsonFilePath)) {
+            return JsonUtility.FromJson<StageSaveData>(File.ReadAllText(MultiplayerSaveJsonFilePath));
         }
         return null;
     }
-
+    /*
+     멀티
+    1. load할때 파일 이름으로 찾기 : 매개변수 스트링값
+    2. 없으면 새로운 파일을 생성하기
+    3. 있으면 해당 파일 덮어쓰기
+     
+     */
 
     // ========================================================================
-    public void GetTargetSaveData() {
+    public void GetTargetSaveData() {   // 디버깅
         Debug.Log("=================");
         for (int i = 0; i < SaveData.stage1.Length; i++) {
             Debug.Log("save stage1 Clear" + SaveData.stage1[i]);
+        }
+        for (int i = 0; i < SaveData.stage1.Length; i++) {
+            Debug.Log("save stage2 Clear" + SaveData.stage2[i]);
+        }
+        for (int i = 0; i < SaveData.stage1.Length; i++) {
+            Debug.Log("save stage3 Clear" + SaveData.stage3[i]);
+        }
+        for (int i = 0; i < SaveData.stage1.Length; i++) {
+            Debug.Log("save stage4 Clear" + SaveData.stage4[i]);
         }
     }
 

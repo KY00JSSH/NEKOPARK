@@ -38,16 +38,49 @@ public class StageClearManager : MonoBehaviour
     public void Temp_OnButtonClick() {
         bool[] vs = new bool[4];
 
-        SaveStage1Clear(vs);
+        //SaveStage1Clear(vs);
+        bool[,] _vs = new bool[3, 4];
+
+        _vs[1, 1] = true;
+        _vs[1, 3] = true;
+        _vs[2, 2] = true;
+        SaveStageAllClear(_vs);
+
     }
 
+
+    // stage 1만 사용할 경우 그냥 바로 넣으면 됨 : 현재 스테이지 1밖에 없음
     public void SaveStage1Clear( bool[] StageClearFlag) {
         Debug.Log("Save stage Clear");
         //Save.instance.SetHostPlayer();
+
         for (int i = 0; i < StageClearFlag.Length; i++) {
             Save.instance.SaveData.stage1[i] = StageClearFlag[i];
             Debug.Log("save stage1 Clear" + Save.instance.SaveData.stage1[i]);
         }
+
+        Save.instance.MakeSave();
+    }
+
+
+    // 전체 bool 값 넣을 경우
+    public void SaveStageAllClear(bool[,] StageClearFlag) {
+        Debug.Log("Save stage Clear");
+        //Save.instance.SetPlayMode(false);
+        //Save.instance.SetHostPlayer();
+        //Save.instance.SetMultiSaveDataExistCheck("2024-08-18_14-40");
+
+        // 첫 번째 차원을 기준으로 열거형 StageNum 값에 해당하는 bool[] 배열을 가져옴
+        for (int i = 0; i < StageClearFlag.GetLength(0); i++) {
+            StageNum stageNum = (StageNum)i;  // enum의 숫자 값을 기반으로 StageNum에 대응
+
+            // 두 번째 차원의 값을 해당 stageNum에 대응하는 bool[] 배열에 저장
+            for (int j = 0; j < StageClearFlag.GetLength(1); j++) {
+                GetStageClear(stageNum)[j] = StageClearFlag[i, j];
+                Debug.Log("save stage Clear for " + stageNum + " at index " + j + ": " + Save.instance.SaveData.stage1[j]);
+            }
+        }
+
         Save.instance.MakeSave();
     }
 
@@ -71,6 +104,6 @@ public class StageClearManager : MonoBehaviour
 
 /*
  1. 씬 선택된 스테이지확인해서 
-2. 해당 씬의 클리어를 
+2. 해당 씬의 클리어-> 스테이지 bool값 전체 변경
  
  */

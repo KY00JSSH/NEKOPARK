@@ -349,7 +349,6 @@ MonoBehaviour:
   GameplayScene: Assets/1.Scene/Feat_NetworkGamePlay.unity
   _allPlayersReady: 0
   clientIndex: 0
-  MyPlayerColor: 0
 --- !u!1 &305796728
 GameObject:
   m_ObjectHideFlags: 0
@@ -2315,7 +2314,7 @@ GameObject:
   - component: {fileID: 7794675523632452807}
   m_Layer: 0
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2361,7 +2360,7 @@ GameObject:
   - component: {fileID: 7794675523832587068}
   m_Layer: 0
   m_Name: Door_outer
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2485,7 +2484,7 @@ GameObject:
   - component: {fileID: 7794675524149857846}
   m_Layer: 0
   m_Name: Door_inner
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2595,3 +2594,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Door_inner: {fileID: 0}
   Door_outer: {fileID: 0}
+  StageNum: 0
+  SubStageNum: 0
