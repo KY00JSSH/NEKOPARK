@@ -1,8 +1,10 @@
+using Mirror;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class Object_BoxController : MonoBehaviour {
+public class Object_BoxController : NetworkBehaviour {
     private RectTransform rectTransform;
     private Rigidbody2D boxRigid;
     private Text textCount;
@@ -34,12 +36,47 @@ public class Object_BoxController : MonoBehaviour {
         textCount = GetComponentInChildren<Text>();
         textCount.text = requiredCount.ToString();
         currentCount = requiredCount;
+
+        //StartCoroutine(SyncDelay());
+    }
+    /*
+    [SyncVar] private Vector3 syncPosition;
+    public float syncTerm = 0.001f; // 동기화 간격 (초 단위)
+    public float movementThreshold = 0.01f; // 위치 변화 감지 임계값
+
+    [Command]
+    public void CmdSyncPosition(Vector3 newPosition) {
+        syncPosition = newPosition;
     }
 
+    [ClientRpc]
+    void RpcUpdateNPCPosition(Vector3 position) {
+        transform.position = position;
+    }
+    private IEnumerator SyncDelay() {
+        while (true) {
+            // 일정 간격으로 위치 동기화 수행
+            yield return new WaitForSeconds(syncTerm);
+
+            if (isServer) {
+                // NPC의 위치가 충분히 변화했을 때만 동기화 수행
+                if (Vector3.Distance(transform.position, lastPosition) > movementThreshold) {
+                    lastPosition = transform.position;
+                    syncPosition = lastPosition;
+                    RpcUpdateNPCPosition(syncPosition);
+                }
+            }
+        }
+    }
+    */
     private void Update() {
         SetCount();
         SetMoveAvailable();
+        //if (!isServer) transform.position = syncPosition;
+
+
     }
+
 
     private void SetCount() {
         // 현재 표시되는 카운트는 총 필요 카운트에서 미는 사람의 수를 뺀 값입니다.

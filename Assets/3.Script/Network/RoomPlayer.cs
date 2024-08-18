@@ -28,7 +28,6 @@ public class RoomPlayer : NetworkRoomPlayer {
     public override void Start() {
         base.Start();
 
-        //playerColor = FindObjectOfType<PlayerColorSetting>().playerColor;
         playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
         FindObjectOfType<LobbyMenuManager>().SetPlayerIconColor();
         if (isServer) SpawnRoomPlayer();
@@ -45,37 +44,15 @@ public class RoomPlayer : NetworkRoomPlayer {
         Vector3 spawnPosition = GetSpawnPosition();
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
-
         player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
         player.GetComponent<PlayerColor>().playerColor = playerColor;
 
         var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
+        clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = PlayerColorType.nullColor;
         clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = playerColor;
 
         NetworkServer.Spawn(player, connectionToClient);
         NetworkServer.Spawn(clickEffect, connectionToClient);
-    }
-
-    private PlayerColorType GetSpawnColor() {
-        // 게임 로비에 참여한 각 플레이어마다 다른 색깔을 배정합니다.
-        var roomSlots = (NetworkManager.singleton as RoomManager).roomSlots;
-
-        foreach (PlayerColorType spawnColor in Enum.GetValues(typeof(PlayerColorType))) {
-            bool isUsedColor = false;
-            foreach (var roomPlayer in roomSlots) {
-            var player = roomPlayer as RoomPlayer;
-                if (player.playerColor == spawnColor &&
-                    roomPlayer.netId != netId) {
-                    isUsedColor = true;
-                    break;
-                }
-            }
-            if(!isUsedColor) {
-                playerColor = spawnColor;
-                break;
-            }
-        }
-        return playerColor;
     }
 
     private Vector3 GetSpawnPosition() {

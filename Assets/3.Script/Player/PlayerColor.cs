@@ -24,11 +24,10 @@ public class PlayerColor : NetworkBehaviour {
             spriteRenderer = GetComponent<SpriteRenderer>();
 
         spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
-        RoomPlayer.MyRoomPlayer.playerColor = newColor;
     }
 
     private void Start() {
-        if (isOwned) 
+            if (isOwned) 
             CmdSetPlayerColor((PlayerColorType)PlayerPrefs.GetInt("HostColor"));
     }
 

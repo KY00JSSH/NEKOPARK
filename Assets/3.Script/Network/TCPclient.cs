@@ -96,7 +96,6 @@ public class TCPclient : MonoBehaviour {
                 break;
             case RequestType.Enter:
                 request.type = "Enter";
-                roomData.hostIP = RoomManager.singleton.networkAddress;
                 if (NetworkManager.singleton.DebuggingOverride) roomData.hostIP = "127.0.0.1";
                 roomData.hostColor = FindObjectOfType<JoinColorChangeController>().GetSelectClientColor();
 
