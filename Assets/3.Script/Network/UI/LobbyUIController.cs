@@ -12,7 +12,6 @@ public class LobbyUIController : MonoBehaviour {
     }
 
     private void Start() {
-
         lobbyMenuController.gameObject.SetActive(false);
     }
 
