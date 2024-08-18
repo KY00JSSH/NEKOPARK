@@ -21,7 +21,7 @@ public class HostLoadListController : MonoBehaviour {
         gameObject.SetActive(true);
         multiSaveDictionary = Save.instance.LoadMultiFiles();
 
-        if (multiSaveDictionary != null) {
+        if (multiSaveDictionary.Count != 0) {
             int index = 0;
             // µð¹ö±ë
             foreach (var item in multiSaveDictionary) {

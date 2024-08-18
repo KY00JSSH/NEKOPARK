@@ -122,7 +122,7 @@ public class OnlineMenuManager : MonoBehaviour {
                 hostLoadConfirm.gameObject.SetActive(true);
                 break;
             case OnlineMenuType.OPTION:
-                //TODO: (수진) OPTION 추가하기
+                mainManager.OpenDLCDialog();
                 break;
         }
     }

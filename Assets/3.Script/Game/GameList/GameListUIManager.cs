@@ -21,6 +21,8 @@ public class GameListUIManager : MonoBehaviour {
     public bool IsLocalGame { get { return isLocalGame; } }
     public void SetIsLocalGame(bool yn) { isLocalGame = yn; }
 
+    [SerializeField] GameObject networkGameCore;
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -34,6 +36,7 @@ public class GameListUIManager : MonoBehaviour {
         int localYn = PlayerPrefs.GetInt("localGame");
         if (localYn == 1) {
             isLocalGame = true;
+            networkGameCore.gameObject.SetActive(false);
         }
 
         canvas = GetComponentsInChildren<Canvas>();
