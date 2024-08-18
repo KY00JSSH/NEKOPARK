@@ -235,16 +235,19 @@ public class Object_MovingWallController : MonoBehaviour {
         int countCollisionsNum = 0;
         for (int i = 0; i < _raycastHits.Length; i++) {
 
-            CheckCollision checkCollision = _raycastHits[i].collider.GetComponent<CheckCollision>();
-            if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {
-                countCollisionsNum++;
-                if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
+            if (_raycastHits[i].collider.TryGetComponent(out CheckCollision checkCollision)) {
+
+                if (checkCollision.GetObjectHasDirection(HasCollDirection.down)) {
+                    countCollisionsNum++;
+                    if (!checkCollision.GetObjectHasDirection(HasCollDirection.up)) {
+                        break;
+                    }
+                }
+                else {
                     break;
                 }
             }
-            else {
-                break;
-            }
+            
         }
 
         return countCollisionsNum;
