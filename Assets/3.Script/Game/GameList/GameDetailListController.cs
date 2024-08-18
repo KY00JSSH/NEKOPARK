@@ -14,20 +14,21 @@ public class GameDetailListController : MonoBehaviour {
 
     private void Start() {
         title.text = "01. HELLO NEKO PARK";
-        for (int i = 0; i < buttons.Length; i++) {
-            buttons[i].CloseStage();
-        }
     }
 
     private void OnEnable() {
         if (LoadDataManager.instance != null && GameListUIManager.instance.MajorStageIndex != -1) {
             bool[] stageData = new bool[4];
+            int stageOpenCount = 0;
             for (int i = 0; i < 4; i++) {
                 stageData[i] = LoadDataManager.instance.StageData[GameListUIManager.instance.MajorStageIndex, i];
+                if (stageData[i]) {
+                    stageOpenCount++;
+                }
             }
 
-            for (int i = 0; i < buttons.Length; i++) {
-                if (stageData[i]) {
+            for (int i = 0; i < 4; i++) {
+                if (i <= stageOpenCount) {
                     buttons[i].OpenStage();
                 }
                 else {

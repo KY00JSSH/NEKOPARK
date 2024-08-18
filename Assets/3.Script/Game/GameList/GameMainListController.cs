@@ -4,16 +4,16 @@ public class GameMainListController : MonoBehaviour {
     private GameMainButtonController[] buttons;
     private GameListUIManager gameListUIManager;
 
+    private bool completeFirst = false;
+    private bool completeSecond = false;
+    private bool completeThird = false;
+
     private void Awake() {
         buttons = FindObjectsOfType<GameMainButtonController>();
         gameListUIManager = FindObjectOfType<GameListUIManager>();
     }
     private void OnEnable() {
         if (LoadDataManager.instance != null) {
-
-            bool completeFirst = false;
-            bool completeSecond = false;
-            bool completeThird = false;
 
             bool[,] stageData = LoadDataManager.instance.StageData;
 
@@ -31,38 +31,48 @@ public class GameMainListController : MonoBehaviour {
                 }
             }
 
-            if (completeFirst) {
-                buttons[0].OpenCrown();
+            if(!completeFirst || !completeSecond && !completeThird) {
+                for (int i = 0; i < 3; i++) {
+                    buttons[i].CloseCrown();
+                }
+                buttons[1].SetInteractable(false);
+                buttons[2].SetInteractable(false);
             }
             else {
-                buttons[0].CloseCrown();
-            }
+                if (completeFirst) {
+                    buttons[0].OpenCrown();
+                }
+                else {
+                    buttons[0].CloseCrown();
+                }
 
-            if (completeSecond) {
-                buttons[1].OpenCrown();
-            }
-            else {
-                buttons[1].CloseCrown();
-            }
+                if (completeSecond) {
+                    buttons[1].OpenCrown();
+                }
+                else {
+                    buttons[1].CloseCrown();
+                }
 
-            if (completeThird) {
-                buttons[2].OpenCrown();
-            }
-            else {
-                buttons[2].CloseCrown();
+                if (completeThird) {
+                    buttons[2].OpenCrown();
+                }
+                else {
+                    buttons[2].CloseCrown();
+                }
             }
         }
         else {
             for (int i = 0; i < 3; i++) {
                 buttons[i].CloseCrown();
             }
+            buttons[1].SetInteractable(false);
+            buttons[2].SetInteractable(false);
         }
     }
 
-
     public void CheckHoverIndex(string name) {
-        for(int i=0; i < 3; i++) {
-            if (buttons[i].name.Equals(name)) {
+        for (int i = 0; i < 3; i++) {
+            if (buttons[i].name.Equals(name)) {                
                 buttons[i].EnableOutline();
             }
             else {

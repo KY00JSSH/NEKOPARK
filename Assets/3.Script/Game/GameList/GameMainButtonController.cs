@@ -1,13 +1,16 @@
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
     private Image[] images;
+    private Button button;
 
     private GameMainListController gameMainList;
 
     private void Awake() {
+        button = GetComponent<Button>();
         images = GetComponentsInChildren<Image>();
         gameMainList = FindObjectOfType<GameMainListController>();
     }
@@ -30,5 +33,28 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
 
     public void OnPointerEnter(PointerEventData eventData) {
         gameMainList.CheckHoverIndex(gameObject.name);
+    }
+
+    public void SetInteractable(bool yn) {
+        button.interactable = yn;
+        if (!yn) {
+            images[0].color= HexToRGB("E3B49D", yn);
+        }
+        else {
+            images[0].color = HexToRGB("FF864D", yn);
+        }
+    }
+
+    private Color32 HexToRGB(string hexCode, bool yn) {
+        byte r = byte.Parse(hexCode.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+        byte g = byte.Parse(hexCode.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+        byte b = byte.Parse(hexCode.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+
+        if (yn) {
+            return new Color32(r, g, b, 255);
+        }
+        else {
+            return new Color32(r, g, b, 135);
+        }
     }
 }

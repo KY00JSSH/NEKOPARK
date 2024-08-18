@@ -16,18 +16,26 @@ public class MainManager : MonoBehaviour {
     }
 
     public void OpenMenuCanvas() {
-        canvases[0].gameObject.SetActive(true);
-        canvases[1].gameObject.SetActive(false);
-        canvases[2].gameObject.SetActive(false);
-        canvases[3].gameObject.SetActive(false);
+        for (int i = 0; i < canvases.Length; i++) {
+            if (i == 0) {
+                canvases[i].gameObject.SetActive(true);
+            }
+            else {
+                canvases[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     public void OpenOnlineCanvas() {
         if (SQLManager.instance.UserData != null) {
-            canvases[0].gameObject.SetActive(false);
-            canvases[1].gameObject.SetActive(true);
-            canvases[2].gameObject.SetActive(false);
-            canvases[3].gameObject.SetActive(false);
+            for (int i = 0; i < canvases.Length; i++) {
+                if (i == 1) {
+                    canvases[i].gameObject.SetActive(true);
+                }
+                else {
+                    canvases[i].gameObject.SetActive(false);
+                }
+            }
             joinMenuFailController.CloseDialog();
         }
         else {
@@ -37,10 +45,14 @@ public class MainManager : MonoBehaviour {
 
     public void OpenJoinCanvas() {
         if (joinGameManager.JoinRoomSetting()) {
-            canvases[0].gameObject.SetActive(false);
-            canvases[1].gameObject.SetActive(false);
-            canvases[2].gameObject.SetActive(true);
-            canvases[3].gameObject.SetActive(false);
+            for (int i = 0; i < canvases.Length; i++) {
+                if (i == 2) {
+                    canvases[i].gameObject.SetActive(true);
+                }
+                else {
+                    canvases[i].gameObject.SetActive(false);
+                }
+            }
         }
         else {
             joinMenuFailController.OpenDialog();
@@ -48,9 +60,22 @@ public class MainManager : MonoBehaviour {
     }
 
     public void OpenSignCanvas() {
-        canvases[0].gameObject.SetActive(false);
-        canvases[1].gameObject.SetActive(false);
-        canvases[2].gameObject.SetActive(false);
-        canvases[3].gameObject.SetActive(true);
+        for (int i = 0; i < canvases.Length; i++) {
+            if (i == 3) {
+                canvases[i].gameObject.SetActive(true);
+            }
+            else {
+                canvases[i].gameObject.SetActive(false);
+            }
+        }
     }
+
+    public void OpenDLCDialog() {
+        canvases[4].gameObject.SetActive(true);
+    }
+
+    public void CloseDLCDialog() {
+        canvases[4].gameObject.SetActive(false);
+    }
+
 }
