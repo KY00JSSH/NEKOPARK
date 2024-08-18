@@ -21,8 +21,12 @@ public class LoadDataManager : MonoBehaviour
         }
     }
 
+    private void Start() {
+        stageDataiInit();
+    }
+
     private void stageDataiInit() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 stageData[i, j] = false;
             }
