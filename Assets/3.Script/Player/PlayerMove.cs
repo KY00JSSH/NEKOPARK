@@ -2,6 +2,7 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : NetworkBehaviour {
     public float moveSpeed = 3f;
@@ -17,6 +18,7 @@ public class PlayerMove : NetworkBehaviour {
 
     private Vector2 lastPosition = Vector2.zero;
 
+    private SpriteRenderer playerSpriteRenderer;
     private RectTransform rectTransform;
     private Rigidbody2D playerRigidbody;
     private Collider2D playerCollider;
@@ -41,7 +43,7 @@ public class PlayerMove : NetworkBehaviour {
 
         textNickname = GetComponentInChildren<Text>();
 
-
+        playerSpriteRenderer = GetComponent<SpriteRenderer>();
         rectTransform = GetComponent<RectTransform>();
     }
 
@@ -64,6 +66,10 @@ public class PlayerMove : NetworkBehaviour {
 
     private void Move() {
         //if (!isOwned || !NetworkManager.singleton.DebuggingOverride) return;
+
+        // 문에 들어갈 경우 이동하지 않도록 처리
+        if (IsPlayerEnterTheDoor) return;
+
 
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -134,8 +140,8 @@ public class PlayerMove : NetworkBehaviour {
             playerAnimator.SetBool("isDie", true);
             playerRigidbody.velocity = Vector2.zero;                    //속도 0으로 만들기
             playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     //위로 튕기기
-            StartCoroutine(PlayerDie_co(0.5f));                         //충돌 무시
             AudioManager.instance.PlaySFX(AudioManager.Sfx.playerDie);
+            StartCoroutine(PlayerDie_co(1.5f));                         //충돌 무시
         }
     }
 
@@ -143,7 +149,24 @@ public class PlayerMove : NetworkBehaviour {
         yield return new WaitForSeconds(delay);
         playerCollider.enabled = false;
         //playerRigidbody.isKinematic = true;
+        RestartWhenPlayerDie();
     }
+
+    public void RestartWhenPlayerDie() {
+        // 플레이어가 죽었을 경우 해당 씬 확인해서 리로드되는 메서드
+        var roomManager = NetworkManager.singleton as RoomManager;
+        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
+
+        foreach (RoomPlayer player in roomManager.roomSlots)
+            player.ReadyStateChanged(false, true);
+
+        // 현재 씬 확인
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        roomManager.ServerChangeScene(currentSceneName);
+        TCPclient.Instance.SendRequest(RequestType.Start);
+    }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;  //땅과 부딪히면 계속 push 애니메이션이 재생될테니 layer로 예외처리
@@ -165,17 +188,44 @@ public class PlayerMove : NetworkBehaviour {
         // 24 08 17 김수주 : 문이 열렸을 때, 플레이어가 문에 닿고 있을 경우 키를 누를면 들어감 여부 변경
         if (Object_DoorController.IsDoorOpen) {
             if (collision.CompareTag("Door")) {
+
                 float verticalInput = Input.GetAxis("Vertical");
                 if (verticalInput > 0) {
-                    //TODO: [김수주] 플레이어 이미지 없어져야함 + 움직임 막아야함
-                    IsPlayerEnterTheDoor = true;
-                    Debug.Log("문 입장 플레이어 이름 " + transform.name);
+                    //TODO: 플레이어 이미지 없어져야함 + 움직임 막아야함
+                    if (!IsPlayerEnterTheDoor) {  // 중복 호출 방지
+                        IsPlayerEnterTheDoor = true;
+                        Debug.Log("문 입장 플레이어 이름 " + transform.name);
+                        SettingPlayerMoveWhenDoorOpen(true);
+                    }
                 }
-                else {
-                    //TODO: [김수주] 플레이어 이미지 나타나야함
-                    IsPlayerEnterTheDoor = false;
+                else if (verticalInput < 0) {
+                    //TODO: 플레이어 이미지 나타나야함
+                    // 문에서 나올 때
+                    if (IsPlayerEnterTheDoor) {  // 중복 호출 방지
+                        IsPlayerEnterTheDoor = false;
+                        SettingPlayerMoveWhenDoorOpen(false);
+                    }
                 }
             }
+        }
+    }
+
+    // 플레이어가 문에 들어가거나 나왔을 경우  => 1. 이미지 off, collider off, position fix
+    private void SettingPlayerMoveWhenDoorOpen(bool doesplayerEnterDoor) {
+        Canvas playerName = GetComponentInChildren<Canvas>();
+
+        if (doesplayerEnterDoor) {
+            playerName.gameObject.SetActive(false);
+            playerSpriteRenderer.enabled = false;
+            playerCollider.isTrigger = true; // 플레이어가 문에 닿고있어야 플레이어가 문에 들어갔다는 flag가 살아있음
+
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;            
+        }
+        else {
+            playerName.gameObject.SetActive(true);
+            playerSpriteRenderer.enabled = true;
+            playerCollider.isTrigger = false;
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
