@@ -23,11 +23,13 @@ public class SignManager : MonoBehaviour {
     }
 
     private void OnEnable() {
-        if (SQLManager.instance.UserData == null) {
-            OpenLogin();
-        }
-        else {
-            OpenInfo();
+        if (SQLManager.instance != null) {
+            if (SQLManager.instance.UserData == null) {
+                OpenLogin();
+            }
+            else {
+                OpenInfo();
+            }
         }
     }
 

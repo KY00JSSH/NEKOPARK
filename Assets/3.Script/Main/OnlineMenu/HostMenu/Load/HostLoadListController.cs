@@ -2,34 +2,40 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
+using System.Reflection;
+using static UnityEditor.Progress;
 
 public class HostLoadListController : MonoBehaviour {
-    private Button[] listButton;
+    private SaveDataButtonController[] buttons;
 
     // 24 08 18 김수주 Multi List Load 추가 
     private Dictionary<string, StageSaveData> multiSaveDictionary;
 
     private void Awake() {
-        listButton = GetComponentsInChildren<Button>();
+        buttons = FindObjectsOfType<SaveDataButtonController>();
     }
 
     private void Start() {
-        for (int i = 0; i < listButton.Length; i++) {
-            listButton[i].gameObject.SetActive(false);
+        for (int i = 0; i < buttons.Length; i++) {
+            buttons[i].gameObject.SetActive(false);
         }
     }
 
     public void GetLoadList() {
         gameObject.SetActive(true);
-        //TODO: 세이브 파일 목록 가져오기
         multiSaveDictionary = Save.instance.LoadMultiFiles();
 
-        if(multiSaveDictionary != null) {
-
+        if (multiSaveDictionary != null) {
+            int index = 0;
             // 디버깅
             foreach (var item in multiSaveDictionary) {
-                Debug.Log(item.Key);
-                Debug.Log(item.Value);
+                if (index >= multiSaveDictionary.Count) {
+                    break;
+                }
+                buttons[index].gameObject.SetActive(true);
+                buttons[index].SetLoadDataText(item.Key, item.Value);
+                index++;
             }
         }
 
