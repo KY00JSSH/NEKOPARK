@@ -13,6 +13,11 @@ public class StageSaveData {
     public bool[] stage4 = new bool[4]; // 
 }
 
+[System.Serializable]
+public class MultiSaveList {
+    public List<StageSaveData> MultiList;
+}
+
 
 public class Save : MonoBehaviour {
     // 1. 목적 : 게임 플레이 저장
@@ -92,7 +97,7 @@ public class Save : MonoBehaviour {
             SaveData = new StageSaveData();
         }
 
-        StageSaveData saveData = MultiLoad();
+        StageSaveData saveData = MultiFileCheck();
         if (saveData == null) {
             CreateMultiFile();
         }
@@ -118,8 +123,8 @@ public class Save : MonoBehaviour {
             doesMultiSaveDataExist = true;
             SaveData = JsonUtility.FromJson<StageSaveData>(File.ReadAllText(MultiplayerSaveJsonFilePath)); // 데이터 덮어쓰기
             
-            Debug.Log("Save Data 덮어쓰기 확인 ");
-            GetTargetSaveData(); //TODO: [김수주] 디버깅
+            //Debug.Log("Save Data 덮어쓰기 확인 ");
+            //GetTargetSaveData(); // 디버깅
         }
         else {
             doesMultiSaveDataExist = false;
@@ -140,13 +145,29 @@ public class Save : MonoBehaviour {
         }
     }
 
-
     //폴더 경로에 파일이 있는지확인
-    public StageSaveData MultiLoad() {
+    public StageSaveData MultiFileCheck() {
         if (File.Exists(MultiplayerSaveJsonFilePath)) {
             return JsonUtility.FromJson<StageSaveData>(File.ReadAllText(MultiplayerSaveJsonFilePath));
         }
         return null;
+    }
+
+    public MultiSaveList LoadMultiFiles() {
+        MultiSaveList multiSaveList = new MultiSaveList { MultiList = new List<StageSaveData>() };
+
+        if (Directory.Exists(multiplayerSaveDirectory)){
+            
+            string[] files = Directory.GetFiles(multiplayerSaveDirectory, "*.json");    // 해당 경로 전체 파일 들고오기
+                                                                                       
+            foreach (string file in files) {                                            // 각 파일을 읽어 StageSaveData로 변환한 후 리스트에 추가
+                string fileContents = File.ReadAllText(file);
+                StageSaveData saveData = JsonUtility.FromJson<StageSaveData>(fileContents);
+                multiSaveList.MultiList.Add(saveData);
+            }
+        }
+
+        return multiSaveList;
     }
     /*
      멀티

@@ -66,8 +66,8 @@ public class StageClearManager : MonoBehaviour
     // 전체 bool 값 넣을 경우
     public void SaveStageAllClear(bool[,] StageClearFlag) {
         Debug.Log("Save stage Clear");
-        //Save.instance.SetPlayMode(false);
-        //Save.instance.SetHostPlayer();
+        Save.instance.SetPlayMode(false);
+        Save.instance.SetHostPlayer();
         //Save.instance.SetMultiSaveDataExistCheck("2024-08-18_14-40");
 
         // 첫 번째 차원을 기준으로 열거형 StageNum 값에 해당하는 bool[] 배열을 가져옴
