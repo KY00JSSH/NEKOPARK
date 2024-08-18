@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class StageSaveData {
@@ -11,11 +12,6 @@ public class StageSaveData {
     public bool[] stage2 = new bool[4]; // 
     public bool[] stage3 = new bool[4]; // 
     public bool[] stage4 = new bool[4]; // 
-}
-
-[System.Serializable]
-public class MultiSaveList {
-    public List<StageSaveData> MultiList;
 }
 
 
@@ -45,6 +41,7 @@ public class Save : MonoBehaviour {
 
     public StageSaveData SaveData = new StageSaveData();
 
+    public Dictionary<string, StageSaveData> MultiSaveData { get; private set; }
 
     private bool doesMultiSaveDataExist;
     // 경로 저장
@@ -67,6 +64,7 @@ public class Save : MonoBehaviour {
             Directory.CreateDirectory(multiplayerSaveDirectory);
         }
 
+        MultiSaveData = new Dictionary<string, StageSaveData>();
     }
 
 
@@ -153,21 +151,21 @@ public class Save : MonoBehaviour {
         return null;
     }
 
-    public MultiSaveList LoadMultiFiles() {
-        MultiSaveList multiSaveList = new MultiSaveList { MultiList = new List<StageSaveData>() };
+    public Dictionary<string, StageSaveData> LoadMultiFiles() {
+        MultiSaveData.Clear(); 
 
-        if (Directory.Exists(multiplayerSaveDirectory)){
-            
+        if (Directory.Exists(multiplayerSaveDirectory)) {
             string[] files = Directory.GetFiles(multiplayerSaveDirectory, "*.json");    // 해당 경로 전체 파일 들고오기
-                                                                                       
-            foreach (string file in files) {                                            // 각 파일을 읽어 StageSaveData로 변환한 후 리스트에 추가
+
+            foreach (string file in files) {                                            // 각 파일을 읽어 StageSaveData로 변환한 후 딕셔너리에 추가
                 string fileContents = File.ReadAllText(file);
                 StageSaveData saveData = JsonUtility.FromJson<StageSaveData>(fileContents);
-                multiSaveList.MultiList.Add(saveData);
+                string fileName = Path.GetFileName(file);
+                MultiSaveData[fileName] = saveData;  // 파일명을 키로, 데이터를 값으로 저장
             }
         }
 
-        return multiSaveList;
+        return MultiSaveData;
     }
     /*
      멀티
