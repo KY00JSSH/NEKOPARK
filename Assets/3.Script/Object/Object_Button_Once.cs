@@ -25,7 +25,14 @@ public class Object_Button_Once : MonoBehaviour
         PushedButton = transform.parent.GetChild(1);
         Button = transform;
 
-        DontPushTransform = transform.parent.GetChild(2);
+        if (transform.parent.childCount > 2)
+        {
+            DontPushTransform = transform.parent.GetChild(2);
+        }
+        else
+        {
+            DontPushTransform = null; // 자식이 없을 경우 null로 설정
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
