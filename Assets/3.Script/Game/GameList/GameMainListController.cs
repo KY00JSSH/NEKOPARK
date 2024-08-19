@@ -1,6 +1,8 @@
 using UnityEngine;
+using Mirror;
 
 public class GameMainListController : MonoBehaviour {
+    [SerializeField] private GameObject[] gameButton;
     private GameMainButtonController[] buttons;
     private GameListUIManager gameListUIManager;
 
@@ -12,7 +14,12 @@ public class GameMainListController : MonoBehaviour {
         buttons = FindObjectsOfType<GameMainButtonController>();
         gameListUIManager = FindObjectOfType<GameListUIManager>();
     }
+    private void Start() {
+        foreach (var each in gameButton) each.SetActive(true);
+
+    }
     private void OnEnable() {
+        foreach (var each in gameButton) each.SetActive(true);
         if (LoadDataManager.instance != null) {
 
             bool[,] stageData = LoadDataManager.instance.StageData;
@@ -72,12 +79,19 @@ public class GameMainListController : MonoBehaviour {
 
     public void CheckHoverIndex(string name) {
         for (int i = 0; i < 3; i++) {
-            if (buttons[i].name.Equals(name)) {                
-                buttons[i].EnableOutline();
+            if (buttons[i].name.Equals(name)) {
+                if (GameListManager.instance.IsLocalGame)
+                    buttons[i].EnableOutline();
+                else if (NetworkServer.active) {
+                    buttons[i].CmdEnableOutline();
+                }
             }
             else {
-                buttons[i].DisEnableOutline();
-
+                if (GameListManager.instance.IsLocalGame)
+                    buttons[i].DisableOutline();
+                else if (NetworkServer.active) {
+                    buttons[i].CmdDisableOutline();
+                }
             }
         }
     }

@@ -199,8 +199,6 @@ public class PlayerMove : NetworkBehaviour {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;  //땅과 부딪히면 계속 push 애니메이션이 재생될테니 layer로 예외처리
         IsPushingObject = true;
 
-        // 충돌 디버그 메시지
-        Debug.Log($"OnCollisionEnter2D: {collision.gameObject.name} with {gameObject.name}");
 
         // 충돌 처리 예시
         if (collision.gameObject.CompareTag("Player")) {
