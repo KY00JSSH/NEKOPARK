@@ -275,7 +275,7 @@ public class LocalPlayerMove : MonoBehaviour {
         else if (collision.transform.position.x < transform.position.x) direction = Vector2.left;
 
         // 충돌체가 나를 밀고 있는 상태인지를 가져옵니다.
-        if (collision.transform.TryGetComponent(out PlayerMove player)) {
+        if (collision.transform.TryGetComponent(out LocalPlayerMove player)) {
             if (direction == Vector2.right) {
                 isRightPushMe = player.IsMoving && !player.IsMovingRight;       // 플레이어가 오른쪽에서 박스와 닿은 상태로 왼쪽으로 이동하는 상황
                 rightPushCount = player.rightPushCount + 1;
@@ -286,7 +286,7 @@ public class LocalPlayerMove : MonoBehaviour {
             }
         }
         // 박스의 경우에는 미는 사람의 수를 더하지 않습니다.
-        else if (collision.transform.TryGetComponent(out Object_BoxController box)) {
+        else if (collision.transform.TryGetComponent(out Object_BoxLocalController box)) {
             if (direction == Vector2.right) {
                 isRightPushMe = box.isRightPushMe && box.isMoveable;            // 박스가 밀리고 있고, 움직일 수 있는 상황
                 rightPushCount = box.rightPushCount;

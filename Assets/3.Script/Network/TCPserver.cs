@@ -212,10 +212,14 @@ public class TCPserver : MonoBehaviour {
                     response.WriteLine("EnterFailure");
                 }
                 else {
+                    if(roomList[roomList.IndexOf(FindRoom(room))].currentConnected >= roomList[roomList.IndexOf(FindRoom(room))].maxConnected) {
+                        response.WriteLine("EnterFailure");
+                    }
                     List<PlayerColorType> availableColor = roomList[roomList.IndexOf(FindRoom(room))].availableColor;
                     if (availableColor.Contains(room.hostColor)) {
                         availableColor.Remove(room.hostColor);
                         AddLog($"Client Enter Room : {room.hostName}");
+                        roomList[roomList.IndexOf(FindRoom(room))].currentConnected++; 
                         response.WriteLine("Success");
                     }
                     else {
