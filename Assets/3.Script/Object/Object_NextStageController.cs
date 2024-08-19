@@ -60,4 +60,8 @@ public class Object_NextStageController : MonoBehaviour
         }
         return true;
     }
+
+    private void OnDisable() {
+        IsStageClear = false;
+    }
 }
