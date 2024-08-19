@@ -182,15 +182,10 @@ public class PlayerMove : NetworkBehaviour {
     public void RestartWhenPlayerDie() {
         // 플레이어가 죽었을 경우 해당 씬 확인해서 리로드되는 메서드
         var roomManager = NetworkManager.singleton as RoomManager;
-        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
-
-        foreach (RoomPlayer player in roomManager.roomSlots)
-            player.ReadyStateChanged(false, true);
 
         // 현재 씬 확인
         string currentSceneName = SceneManager.GetActiveScene().name;
         roomManager.ServerChangeScene(currentSceneName);
-        TCPclient.Instance.SendRequest(RequestType.Start);
     }
 
 
