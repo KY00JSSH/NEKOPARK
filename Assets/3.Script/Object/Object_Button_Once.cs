@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class Object_Button_Once : MonoBehaviour
 {
     private BoxCollider2D ButtonBox;
-    private PlayerMove Player;
+    public PlayerMove Player;
+    public LocalPlayerMove LocalPlayer;
 
     private Transform PushedButton;
     private Transform Button;
@@ -19,8 +20,14 @@ public class Object_Button_Once : MonoBehaviour
 
     private void Awake()
     {
+        
+    }
+
+    private void Start()
+    {
         ButtonBox = GetComponent<BoxCollider2D>();
         Player = FindObjectOfType<PlayerMove>();
+        LocalPlayer = FindObjectOfType<LocalPlayerMove>();
 
         PushedButton = transform.parent.GetChild(1);
         Button = transform;
@@ -32,6 +39,7 @@ public class Object_Button_Once : MonoBehaviour
         else
         {
             DontPushTransform = null; // 자식이 없을 경우 null로 설정
+            Debug.Log("자식이 없습니다.");
         }
     }
 
@@ -47,10 +55,21 @@ public class Object_Button_Once : MonoBehaviour
                 Debug.Log("버튼을 눌렀습니다.");
                 isButtonPushed = true;
 
-                if(DontPushTransform != null)
+                if (Player == null && LocalPlayer == null)
+                {
+                    Debug.LogError("Player 객체가 null 상태입니다. Die 메서드를 호출할 수 없습니다.");
+                    return;
+                }
+
+
+                if (DontPushTransform != null)
                 {
                     Player.Die();
-                    
+                    LocalPlayer.Die();
+                }
+                else
+                {
+                    Debug.LogWarning("DontPushTransform이 null 상태입니다. Player.Die()가 호출되지 않았습니다.");
                 }
             }  
         }

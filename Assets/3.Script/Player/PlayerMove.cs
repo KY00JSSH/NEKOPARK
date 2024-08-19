@@ -37,9 +37,9 @@ public class PlayerMove : NetworkBehaviour {
     public bool IsPlayerEnterTheDoor { get; private set; }
 
     private void Awake() {
-        playerRigidbody = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<Collider2D>();
-        playerAnimator = GetComponent<Animator>();
+        playerRigidbody = FindObjectOfType<PlayerMove>().GetComponent<Rigidbody2D>();
+        playerCollider = FindObjectOfType<PlayerMove>().GetComponent<Collider2D>();
+        playerAnimator = FindObjectOfType<PlayerMove>().GetComponent<Animator>();
 
         textNickname = GetComponentInChildren<Text>();
 
@@ -163,6 +163,7 @@ public class PlayerMove : NetworkBehaviour {
             playerRigidbody.AddForce(new Vector2(0, dieAnimForce));     //위로 튕기기
             AudioManager.instance.PlaySFX(AudioManager.Sfx.playerDie);
             StartCoroutine(PlayerDie_co(1.5f));                         //충돌 무시
+
         }
     }
 
@@ -198,7 +199,6 @@ public class PlayerMove : NetworkBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground") return;  //땅과 부딪히면 계속 push 애니메이션이 재생될테니 layer로 예외처리
         IsPushingObject = true;
-
 
         // 충돌 처리 예시
         if (collision.gameObject.CompareTag("Player")) {

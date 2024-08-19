@@ -37,8 +37,8 @@ public class LocalPlayerMove : MonoBehaviour {
     public bool IsPlayerEnterTheDoor { get; private set; }
 
     private void Awake() {
-        playerRigidbody = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<Collider2D>();
+        playerRigidbody = FindObjectOfType<LocalPlayerMove>().GetComponent<Rigidbody2D>();
+        playerCollider = FindObjectOfType<LocalPlayerMove>().GetComponent<Collider2D>();
         playerAnimator = GetComponent<Animator>();
 
         textNickname = GetComponentInChildren<Text>();
