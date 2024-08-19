@@ -55,7 +55,7 @@ public class SaveDataButtonController : MonoBehaviour{
             }
         }
 
-        texts[1].text = $"{clearStageNum} / ${notClearStageNum}";
+        texts[1].text = $"{clearStageNum}/{notClearStageNum}";
     }
 
     public void ClickLoadButton() {
