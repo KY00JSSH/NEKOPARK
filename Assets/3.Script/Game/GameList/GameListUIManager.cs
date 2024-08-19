@@ -38,6 +38,7 @@ public class GameListUIManager : MonoBehaviour {
         GameListManager.instance.SetMinorStageIndex(index);
         if (GameListManager.instance.IsLocalGame) {
             AllCloseUI();
+            AudioManager.instance.StopBGM();
             SceneManager.LoadScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
         }
         else {

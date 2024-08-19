@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
 
         if (PlayersTransform.Count == 1)
         {
-            Debug.Log($"플레이어 위치: {PlayersTransform[0].position}");
+            //Debug.Log($"플레이어 위치: {PlayersTransform[0].position}");
             return PlayersTransform[0].position;
         }
 
@@ -32,9 +32,9 @@ public class CameraController : MonoBehaviour
         for(int i = 0; i < PlayersTransform.Count; i++)
         {
             bounds.Encapsulate(PlayersTransform[i].position);
-            Debug.Log($"플레이어 {i} 위치: {PlayersTransform[i].position}");
+            //Debug.Log($"플레이어 {i} 위치: {PlayersTransform[i].position}");
         }
-        Debug.Log($"계산된 중심 위치: {bounds.center}"); // 중심 위치 출력
+        //Debug.Log($"계산된 중심 위치: {bounds.center}"); // 중심 위치 출력
         return bounds.center;
     }
 
@@ -82,7 +82,7 @@ public class CameraController : MonoBehaviour
             Vector3 initialCameraPosition = new Vector3(bgTransform.position.x, bgTransform.position.y, Camera_Offset.z);
             transform.position = initialCameraPosition;
 
-            Debug.Log($"Camera_minPosition: {Camera_minPosition}, Camera_maxPosition: {Camera_maxPosition}");
+            //Debug.Log($"Camera_minPosition: {Camera_minPosition}, Camera_maxPosition: {Camera_maxPosition}");
         }
         else
         {
@@ -93,7 +93,7 @@ public class CameraController : MonoBehaviour
     private void Move()                                //카메라 이동
     {
         Vector3 playersCenterPoint = GetcenterPoint(); //플레이어들의 중간지점 계산
-        Debug.Log($"플레이어 중심 위치: {playersCenterPoint}");
+        //Debug.Log($"플레이어 중심 위치: {playersCenterPoint}");
 
         Vector3 cameraPosition = playersCenterPoint + Camera_Offset;
 
@@ -103,7 +103,7 @@ public class CameraController : MonoBehaviour
             Mathf.Clamp(cameraPosition.y, Camera_minPosition.y, Camera_maxPosition.y);
 
         //Debug.Log($"카메라 목표 위치: {cameraPosition}");
-        Debug.Log($"카메라 목표 위치(클램프 적용): {cameraPosition}");
+        //Debug.Log($"카메라 목표 위치(클램프 적용): {cameraPosition}");
         transform.position =
             //Vector3.SmoothDamp(transform.position, cameraPosition, ref Velocity, Camera_MovingSmoothTime);
             Vector3.Lerp(transform.position, cameraPosition, Camera_MovingSmoothTime);
@@ -113,7 +113,7 @@ public class CameraController : MonoBehaviour
     {
         PlayersTransform.Clear();       //기존의 리스트를 초기화
 
-        GamePlayer[] gamePlayers = FindObjectsOfType<GamePlayer>();
+        PlayerMove[] gamePlayers = FindObjectsOfType<PlayerMove>();
 
         if(gamePlayers.Length > 0)
         {

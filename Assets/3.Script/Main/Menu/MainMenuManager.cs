@@ -17,6 +17,8 @@ public class MainMenuManager : MonoBehaviour {
 
     private void Start() {
         mainMenuController.gameObject.SetActive(false);
+
+        AudioManager.instance.PlayBGM(AudioManager.Bgm.MainMenuBGM, 0);
     }
 
     private void Update() {

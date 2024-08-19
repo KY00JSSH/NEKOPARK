@@ -38,6 +38,9 @@ public class OnlineMenuManager : MonoBehaviour {
         hostMenuController.gameObject.SetActive(false);
         hostLoadConfirm.gameObject.SetActive(false);
         hostLoadList.gameObject.SetActive(false);
+
+        AudioManager.instance.StopBGM();
+        AudioManager.instance.PlayBGM(AudioManager.Bgm.MultiRoomBGM, 0);
     }
 
     public void setMenuType(OnlineMenuType type) {

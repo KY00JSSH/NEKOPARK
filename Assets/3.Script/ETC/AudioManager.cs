@@ -15,11 +15,12 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            Init();
         }
         else
+        {
             Destroy(gameObject);
-
-        Init();
+        }
     }
 
 
@@ -85,14 +86,16 @@ public class AudioManager : MonoBehaviour
             sfxPlayer[index].playOnAwake = false;
             sfxPlayer[index].outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
         }
+
+        Debug.Log("AudioManager Initialized.");
     }
 
 
 
     public void PlayBGM(Bgm bgm, int channel)           //브금 플레이 메서드
     {
-        //사용시, AudioManager.instance.PlayBGM(AudioManager.Bgm.ClipName); 사용
-        //정지시, AudioManager.instance.StopBGM(AudioManager.Bgm.ClipName);
+        //사용시, AudioManager.instance.PlayBGM(AudioManager.Bgm.ClipName, channelNumbber); 사용
+        //정지시, AudioManager.instance.StopBGM();
 
         if (channel < 0 || channel >= bgmPlayer.Length)
         {
