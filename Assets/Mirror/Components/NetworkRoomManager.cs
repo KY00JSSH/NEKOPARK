@@ -55,6 +55,11 @@ namespace Mirror
         [Scene]
         public string GameplayScene;
 
+        [Scene] public string Game_1_1;
+        [Scene] public string Game_1_2;
+        [Scene] public string Game_1_3;
+        [Scene] public string Game_1_4;
+
         /// <summary>
         /// List of players that are in the Room
         /// </summary>

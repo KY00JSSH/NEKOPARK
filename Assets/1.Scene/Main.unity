@@ -21011,7 +21011,7 @@ MonoBehaviour:
   DualMode: 1
   NoDelay: 1
   Interval: 10
-  Timeout: 10000
+  Timeout: 5000
   RecvBufferSize: 7361536
   SendBufferSize: 7361536
   FastResend: 2
@@ -21050,7 +21050,7 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
+  disconnectInactiveTimeout: 5
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 8023733475220816051, guid: 1ad38f79558f4d642af87544f8e53f5c, type: 3}
   autoCreatePlayer: 1
@@ -21079,6 +21079,10 @@ MonoBehaviour:
   RoomScene: Assets/1.Scene/Feat_NetworkGameRoom.unity
   GameListScene: Assets/1.Scene/Game_List.unity
   GameplayScene: Assets/1.Scene/Feat_NetworkGamePlay.unity
+  Game_1_1: Assets/1.Scene/Game/Game_1-1.unity
+  Game_1_2: Assets/1.Scene/Game/Game_1-2.unity
+  Game_1_3: Assets/1.Scene/Game/Game_1-3.unity
+  Game_1_4: Assets/1.Scene/Game/Game_1-4.unity
   _allPlayersReady: 0
   clientIndex: 0
 --- !u!1 &1601237670
