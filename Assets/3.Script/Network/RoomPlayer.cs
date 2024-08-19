@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using System;
+using UnityEngine.SceneManagement;
 
 // 이 스크립트는 Mirror Network의 Room Manager를 설정하고,
 // 멀티플레이 로비 (Game Room Scene) 에서 플레이어를 생성, 제어하기 위한 스크립트입니다.
@@ -24,6 +25,11 @@ public class RoomPlayer : NetworkRoomPlayer {
     [SyncVar] public string Nickname;
     public PlayerColorType playerColor;
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.F1)) {
+            (NetworkRoomManager.singleton as RoomManager).ServerChangeScene(SceneManager.GetActiveScene().name);
+        }
+    }
     public override void Start() {
         base.Start();
 
@@ -41,16 +47,14 @@ public class RoomPlayer : NetworkRoomPlayer {
 
     private void SpawnRoomPlayer() {
         // 게임 로비에서 플레이어가 사용할 플레이어 캐릭터를 설정 및 Instantiate 합니다.
+        CheckSpawned();
 
         Vector3 spawnPosition = GetSpawnPosition();
 
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
         player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
         player.GetComponent<PlayerColor>().playerColor = playerColor;
-        if (CheckSpawned()) {
-            Destroy(player);
-            Destroy(gameObject);
-        }
+        
 
 
         var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
@@ -61,14 +65,20 @@ public class RoomPlayer : NetworkRoomPlayer {
         NetworkServer.Spawn(clickEffect, connectionToClient);
     }
 
-    private bool CheckSpawned() {
+    private void CheckSpawned() {
         var players = FindObjectsOfType<RoomPlayer>();
         int count = 0;
-        foreach(var player in players) {
+        foreach (var player in players) {
             if (player.isOwned) count++;
-            if (count > 1) return true;
+            if (count > 1)
+                foreach (var target in players) {
+                    if (target.isOwned) {
+                        Destroy(target);
+                        break;
+                    }
+
+                }
         }
-        return false;
     }
 
     private Vector3 GetSpawnPosition() {
