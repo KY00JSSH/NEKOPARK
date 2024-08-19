@@ -57,6 +57,10 @@ public class CameraController : MonoBehaviour
 
         FindAllPlayers();
         Invoke("FindAllPlayers", 0.5f);
+
+        AudioManager.instance.StopBGM(0);
+        AudioManager.Bgm selectedBGM = (Random.value > 0.5f) ? AudioManager.Bgm.GameBGM1 : AudioManager.Bgm.GameBGM2;
+        AudioManager.instance.PlayBGM(selectedBGM, 0);
     }
 
     private void LateUpdate()

@@ -120,8 +120,8 @@ public class PlayerMove : NetworkBehaviour {
             playerRigidbody.AddForce(new Vector2(0, jumpForce));
             playerAnimator.SetBool("isJumping", true);
 
-            AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
         }
+            AudioManager.instance.PlaySFX(AudioManager.Sfx.jump);
     }
 
     private void Jump_Limit() {

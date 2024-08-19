@@ -94,8 +94,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBGM(Bgm bgm, int channel)           //브금 플레이 메서드
     {
-        //사용시, AudioManager.instance.PlayBGM(AudioManager.Bgm.ClipName, channelNumbber); 사용
-        //정지시, AudioManager.instance.StopBGM();
+        //사용시, AudioManager.instance.PlayBGM(AudioManager.Bgm.ClipName, 0); 사용
+        //정지시, AudioManager.instance.StopBGM(0);
 
         if (channel < 0 || channel >= bgmPlayer.Length)
         {
@@ -108,14 +108,25 @@ public class AudioManager : MonoBehaviour
         bgmSource.Play();
     }
 
-    public void StopBGM()                               //브금 정지 메서드
+    public void StopBGM(int channel)                               //브금 정지 메서드
     {
-        foreach(AudioSource player in bgmPlayer)
+        //foreach(AudioSource player in bgmPlayer)
+        //{
+        //    if(player.isPlaying)
+        //    {
+        //        player.Stop();
+        //    }
+        //}
+
+        if (channel < 0 || channel >= bgmPlayer.Length)
         {
-            if(player.isPlaying)
-            {
-                player.Stop();
-            }
+            return;
+        }
+
+        AudioSource bgmSource = bgmPlayer[channel];
+        if (bgmSource.isPlaying)
+        {
+            bgmSource.Stop();
         }
     }
 

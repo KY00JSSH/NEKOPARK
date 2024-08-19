@@ -37,9 +37,12 @@ public class OnlineMenuManager : MonoBehaviour {
         setMenuType(OnlineMenuType.PUBLIC);
         hostMenuController.gameObject.SetActive(false);
         hostLoadConfirm.gameObject.SetActive(false);
-        hostLoadList.gameObject.SetActive(false);
+        hostLoadList.gameObject.SetActive(false);        
+    }
 
-        AudioManager.instance.StopBGM();
+    private void Start()        //BGM 재생을 위해 추가 240819
+    {
+        AudioManager.instance.StopBGM(0);
         AudioManager.instance.PlayBGM(AudioManager.Bgm.MultiRoomBGM, 0);
     }
 

@@ -50,7 +50,8 @@ public class GameListUIManager : MonoBehaviour {
         else {
             if (GameListManager.instance.IsLocalGame) {
                 AllCloseUI();
-                AudioManager.instance.StopBGM();
+
+                AudioManager.instance.StopBGM(0);
             
                 SceneManager.LoadScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
             }
