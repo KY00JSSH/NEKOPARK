@@ -55,8 +55,8 @@ public class GameListUIManager : MonoBehaviour {
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
         Debug.Log("WOW");
-        //roomManager.ServerChangeScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
-        roomManager.ServerChangeScene(roomManager.Game_1_1);
+        roomManager.ServerChangeScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
+        //roomManager.ServerChangeScene(roomManager.Game_1_1);
     }
 
     private void OpenGameListScene() {
