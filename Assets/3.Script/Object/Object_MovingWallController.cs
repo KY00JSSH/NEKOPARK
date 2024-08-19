@@ -66,15 +66,12 @@ public class Object_MovingWallController : MonoBehaviour {
         ChangeText();
         hitCollisionAll = GetOverlapBoxAll();
 
-        if (hitCollisionAll.Length >= 1) {
-            CheckHitCollisionArrayAll();
+        CheckHitCollisionArrayAll();
 
-            if (preCollisionNum != currentCollisionNum) {
-                ChangeTransformPosition();
-                preCollisionNum = currentCollisionNum;
-                //Debug.Log("currentCollisionNum | " + currentCollisionNum);
-            }
-
+        if (preCollisionNum != currentCollisionNum) {
+            ChangeTransformPosition();
+            preCollisionNum = currentCollisionNum;
+            //Debug.Log("currentCollisionNum | " + currentCollisionNum);
         }
     }
 
@@ -96,9 +93,9 @@ public class Object_MovingWallController : MonoBehaviour {
 
         }
 
-        foreach (var item in _hitCollisionAll) {
-            Debug.LogWarning(item.name);
-        }
+        //foreach (var item in _hitCollisionAll) {
+        //    Debug.LogWarning(item.name);
+        //}
 
         return _hitCollisionAll;
     }
@@ -217,7 +214,7 @@ public class Object_MovingWallController : MonoBehaviour {
         RaycastHit2D[] _raycastHits = Physics2D.RaycastAll(rayDirection, Vector2.up, layerMask);
 
         foreach (var item in _raycastHits) {
-            Debug.Log(item.collider.name);
+            //Debug.Log(item.collider.name);
         }
 
         // 불필요한 요소들을 제외하는 방법
