@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Diagnostics;
+using Mirror;
 
 public class AudioManager : MonoBehaviour
 {
@@ -63,7 +65,7 @@ public class AudioManager : MonoBehaviour
         bgmObject.transform.parent = transform;
         bgmPlayer = new AudioSource[BgmClip.Length];
 
-        Debug.Log("BGM Channels: " + bgmPlayer.Length);
+        //Debug.Log("BGM Channels: " + bgmPlayer.Length);
 
         for (int index = 0; index < bgmPlayer.Length; index++)
         {
@@ -72,7 +74,7 @@ public class AudioManager : MonoBehaviour
             bgmPlayer[index].loop = true;
             bgmPlayer[index].outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];
         }
-        Debug.Log("BGM Player Array Length: " + bgmPlayer.Length);
+        //Debug.Log("BGM Player Array Length: " + bgmPlayer.Length);
 
 
 
@@ -87,7 +89,7 @@ public class AudioManager : MonoBehaviour
             sfxPlayer[index].outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
         }
 
-        Debug.Log("AudioManager Initialized.");
+        //Debug.Log("AudioManager Initialized.");
     }
 
 
@@ -134,6 +136,21 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(Sfx sfx)
     {
+        //if (NetworkManager.singleton.isNetworkActive && sfx == Sfx.jump)
+        //{
+        //    UnityEngine.Debug.LogWarning("Attempted to play jump SFX in network lobby, skipping.");
+        //    return;
+        //}
+        //
+        //UnityEngine.Debug.LogError($"PlaySFX called for SFX: {sfx}");
+        //
+        //if (sfx == Sfx.jump)
+        //{
+        //    // 스택 트레이스 출력
+        //    StackTrace stackTrace = new StackTrace();
+        //    UnityEngine.Debug.Log($"PlaySFX called for jump at: {stackTrace}");
+        //}
+
         //사용시, AudioManager.instance.PlaySFX(AudioManager.Sfx.ClipName); 사용
 
         //TODO: [김수주] 오디오 에러로 임시 주석처리
