@@ -24,6 +24,7 @@ public class CameraController : MonoBehaviour
 
         if (PlayersTransform.Count == 1)
         {
+            Debug.Log($"플레이어 위치: {PlayersTransform[0].position}");
             return PlayersTransform[0].position;
         }
 
@@ -31,7 +32,9 @@ public class CameraController : MonoBehaviour
         for(int i = 0; i < PlayersTransform.Count; i++)
         {
             bounds.Encapsulate(PlayersTransform[i].position);
+            Debug.Log($"플레이어 {i} 위치: {PlayersTransform[i].position}");
         }
+        Debug.Log($"계산된 중심 위치: {bounds.center}"); // 중심 위치 출력
         return bounds.center;
     }
 
@@ -50,17 +53,43 @@ public class CameraController : MonoBehaviour
             Camera_Offset = new Vector3(0, 0, -10);
         }
 
+        SetCameraBounds();
+
         FindAllPlayers();
+        Invoke("FindAllPlayers", 0.5f);
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         Move();
+    }
+
+    private void SetCameraBounds()
+    {
+        // BackGround 오브젝트 찾기
+        GameObject background = GameObject.Find("BackGround");
+
+        if (background != null)
+        {
+            // BackGround의 Transform 컴포넌트에서 Scale 값을 가져옴
+            Transform bgTransform = background.transform;
+
+            // Scale 값에 따라 최소 및 최대 위치 설정
+            Camera_minPosition = new Vector2(-bgTransform.localScale.x / 2, -bgTransform.localScale.y / 2);
+            Camera_maxPosition = new Vector2(bgTransform.localScale.x / 2, bgTransform.localScale.y / 2);
+
+            Debug.Log($"Camera_minPosition: {Camera_minPosition}, Camera_maxPosition: {Camera_maxPosition}");
+        }
+        else
+        {
+            Debug.LogWarning("BackGround 오브젝트를 찾을 수 없습니다. Camera_minPosition과 Camera_maxPosition이 설정되지 않았습니다.");
+        }
     }
 
     private void Move()                                //카메라 이동
     {
         Vector3 playersCenterPoint = GetcenterPoint(); //플레이어들의 중간지점 계산
+        Debug.Log($"플레이어 중심 위치: {playersCenterPoint}");
 
         Vector3 cameraPosition = playersCenterPoint + Camera_Offset;
 
@@ -69,23 +98,49 @@ public class CameraController : MonoBehaviour
         cameraPosition.y = 
             Mathf.Clamp(cameraPosition.y, Camera_minPosition.y, Camera_maxPosition.y);
 
+        //Debug.Log($"카메라 목표 위치: {cameraPosition}");
+        Debug.Log($"카메라 목표 위치(클램프 적용): {cameraPosition}");
         transform.position =
-            Vector3.SmoothDamp(transform.position, cameraPosition, ref Velocity, Camera_MovingSmoothTime);
+            //Vector3.SmoothDamp(transform.position, cameraPosition, ref Velocity, Camera_MovingSmoothTime);
+            Vector3.Lerp(transform.position, cameraPosition, Camera_MovingSmoothTime);
     }
 
     private void FindAllPlayers()
     {
+        PlayersTransform.Clear();       //기존의 리스트를 초기화
+
         GamePlayer[] gamePlayers = FindObjectsOfType<GamePlayer>();
 
-        PlayersTransform.Clear();       //기존의 리스트를 초기화
-        foreach(var player in gamePlayers)
+        if(gamePlayers.Length > 0)
         {
-            PlayersTransform.Add(player.transform);
+            foreach (var player in gamePlayers)
+            {
+                PlayersTransform.Add(player.transform);
+            }
+            Debug.Log($"{PlayersTransform.Count}명의 플레이어를 찾았습니다.");
         }
+        else
+        {
+            GameObject gameManager = GameObject.Find("GameManager");
+            if (gameManager != null)
+            {
+                // GameManager의 모든 자식 오브젝트에서 "LocalPlayer(Clone)"을 찾기
+                Transform[] allTransforms = gameManager.GetComponentsInChildren<Transform>();
+                foreach (Transform child in allTransforms)
+                {
+                    if (child.name.Contains("LocalPlayer(Clone)"))
+                    {
+                        PlayersTransform.Add(child);
+                    }
+                }
+                Debug.Log($"{PlayersTransform.Count}명의 LocalPlayer(Clone)을 찾았습니다.");
+            }
 
-        if (PlayersTransform.Count == 0)
-        {
-            PlayersTransform.Add(new GameObject("Placeholder").transform);
-        }
+            if (PlayersTransform.Count == 0)
+            {
+                PlayersTransform.Add(new GameObject("Placeholder").transform);
+                Debug.LogWarning("플레이어를 찾지 못했습니다. 플레이스홀더 추가");
+            }
+        }        
     }
 }
