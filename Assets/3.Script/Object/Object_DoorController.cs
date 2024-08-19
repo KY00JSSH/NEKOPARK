@@ -54,4 +54,8 @@ public class Object_DoorController : MonoBehaviour
             Debug.Log("충돌한 오브젝트는 Key 태그가 아닙니다: " + collision.tag);
         }
     }
+
+    private void OnDisable() {
+        IsDoorOpen = false;
+    }
 }

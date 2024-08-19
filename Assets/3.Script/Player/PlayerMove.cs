@@ -338,7 +338,9 @@ public class PlayerMove : NetworkBehaviour {
         rightPushCount = 0;
         leftPushCount = 0;
     }
-
+    private void OnDisable() {
+        IsPlayerEnterTheDoor = false;
+    }
 
     //private void OnCollisionEnter2D(Collision2D collision)
     //{
