@@ -117,6 +117,7 @@ public class MainMenuManager : MonoBehaviour {
             case MenuType.PLAY_LOCAL:
                 PlayerPrefs.SetInt("localGame", 1);
                 SceneManager.LoadScene("Game_List");
+                LoadDataManager.instance.SetLoadData(Save.instance.SingleLoad());
                 break;
             case MenuType.PLAY_ONLINE:
                 PlayerPrefs.SetInt("localGame", 0);

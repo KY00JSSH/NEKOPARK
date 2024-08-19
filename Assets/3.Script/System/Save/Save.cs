@@ -67,6 +67,12 @@ public class Save : MonoBehaviour {
         MultiSaveData = new Dictionary<string, StageSaveData>();
     }
 
+    public StageSaveData SingleLoad() {
+        if (File.Exists(SingleplayerSaveJsonFilePath)) {
+            return JsonUtility.FromJson<StageSaveData>(File.ReadAllText(SingleplayerSaveJsonFilePath)); // 데이터 덮어쓰기
+        }
+        return SaveData = new StageSaveData();
+    }
 
     public void MakeSave() {
         if (isSingleMode) {
@@ -83,7 +89,7 @@ public class Save : MonoBehaviour {
         if (SaveData == null) {
             SaveData = new StageSaveData();
         }
-
+        
         File.WriteAllText(SingleplayerSaveJsonFilePath, JsonUtility.ToJson(SaveData));
     }
 
