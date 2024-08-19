@@ -67,8 +67,8 @@ public class Object_MovingWallController : MonoBehaviour {
         hitCollisionAll = GetOverlapBoxAll();
         CheckHitCollisionArrayAll();
 
-        Debug.Log("currentCollisionNum | " + currentCollisionNum);
-        Debug.Log("preCollisionNum | " + preCollisionNum);
+        //Debug.Log("currentCollisionNum | " + currentCollisionNum);
+        //Debug.Log("preCollisionNum | " + preCollisionNum);
         if (preCollisionNum != currentCollisionNum) {
             ChangeTransformPosition();
         }
