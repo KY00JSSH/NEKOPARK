@@ -136,15 +136,14 @@ public class AudioManager : MonoBehaviour
     {
         //사용시, AudioManager.instance.PlaySFX(AudioManager.Sfx.ClipName); 사용
 
-
         //TODO: [김수주] 오디오 에러로 임시 주석처리
-        //AudioClip clipToPlay = SfxClip[(int)sfx];
+        AudioClip clipToPlay = SfxClip[(int)sfx];
                 
         foreach(var sfxSource in sfxPlayer)
         {
             if(!sfxSource.isPlaying)
             {
-                //sfxSource.clip = clipToPlay;
+                sfxSource.clip = clipToPlay;
                 sfxSource.Play();
                 break;
             }
