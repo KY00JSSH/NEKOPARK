@@ -75,8 +75,12 @@ public class CameraController : MonoBehaviour
             Transform bgTransform = background.transform;
 
             // Scale 값에 따라 최소 및 최대 위치 설정
-            Camera_minPosition = new Vector2(-bgTransform.localScale.x / 2, -bgTransform.localScale.y / 2);
-            Camera_maxPosition = new Vector2(bgTransform.localScale.x / 2, bgTransform.localScale.y / 2);
+            Camera_minPosition = new Vector2(bgTransform.position.x - bgTransform.localScale.x / 2, bgTransform.position.y - bgTransform.localScale.y / 2);
+            Camera_maxPosition = new Vector2(bgTransform.position.x + bgTransform.localScale.x / 2, bgTransform.position.y + bgTransform.localScale.y / 2);
+
+            // 초기 카메라 위치를 BackGround의 Position을 기준으로 설정
+            Vector3 initialCameraPosition = new Vector3(bgTransform.position.x, bgTransform.position.y, Camera_Offset.z);
+            transform.position = initialCameraPosition;
 
             Debug.Log($"Camera_minPosition: {Camera_minPosition}, Camera_maxPosition: {Camera_maxPosition}");
         }
