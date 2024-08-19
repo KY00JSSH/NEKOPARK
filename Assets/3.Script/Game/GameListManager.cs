@@ -42,6 +42,7 @@ public class GameListManager : NetworkBehaviour
         LoadDataManager.instance.ClearStage(majorStageIndex, minorStageIndex);
         if (isLocalGame) {
             Save.instance.MakeSingleSave();
+            SceneManager.LoadScene("Game_List");
         }
         else {
             StageSaveData tempStageData = Save.instance.SaveData;
@@ -59,11 +60,13 @@ public class GameListManager : NetworkBehaviour
             }
             Save.instance.SaveData = tempStageData;
             Save.instance.MakeMultiSave();
+
+            var roomManager = NetworkManager.singleton as RoomManager;
+            foreach (RoomPlayer player in roomManager.roomSlots)
+                player.ReadyStateChanged(false, true);
+            roomManager.ServerChangeScene("Game_List");
         }
 
-        var roomManager = NetworkManager.singleton as RoomManager;
-        foreach (RoomPlayer player in roomManager.roomSlots)
-            player.ReadyStateChanged(false, true);
-        roomManager.ServerChangeScene("Game_List");
+        
     }
 }
