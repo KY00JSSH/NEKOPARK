@@ -36,6 +36,7 @@ public class GameListUIManager : MonoBehaviour {
 
     public void OpenGame(int index) {
         GameListManager.instance.SetMinorStageIndex(index);
+        Debug.Log("WHAT");
         if (GameListManager.instance.IsLocalGame) {
             AllCloseUI();
             AudioManager.instance.StopBGM();
@@ -49,11 +50,13 @@ public class GameListUIManager : MonoBehaviour {
 
     private void OpenGameScene() {
         var roomManager = NetworkManager.singleton as RoomManager;
-        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
+        //if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
 
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
-        roomManager.ServerChangeScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
+        Debug.Log("WOW");
+        //roomManager.ServerChangeScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
+        roomManager.ServerChangeScene(roomManager.Game_1_1);
     }
 
     private void OpenGameListScene() {

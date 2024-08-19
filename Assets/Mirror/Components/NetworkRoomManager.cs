@@ -55,6 +55,11 @@ namespace Mirror
         [Scene]
         public string GameplayScene;
 
+        [Scene] public string Game_1_1;
+        [Scene] public string Game_1_2;
+        [Scene] public string Game_1_3;
+        [Scene] public string Game_1_4;
+
         /// <summary>
         /// List of players that are in the Room
         /// </summary>
@@ -293,8 +298,7 @@ namespace Mirror
             // increment the index before adding the player, so first player starts at 1
             clientIndex++;
 
-            if (Utils.IsSceneActive(RoomScene))
-            {
+          
                 allPlayersReady = false;
 
                 //Debug.Log("NetworkRoomManager.OnServerAddPlayer playerPrefab: {roomPlayerPrefab.name}");
@@ -304,13 +308,7 @@ namespace Mirror
                     newRoomGameObject = Instantiate(roomPlayerPrefab.gameObject, Vector3.zero, Quaternion.identity);
 
                 NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
-            }
-            else
-            {
-                // Late joiners not supported...should've been kicked by OnServerDisconnect
-                Debug.Log($"Not in Room scene...disconnecting {conn}");
-                conn.Disconnect();
-            }
+           
         }
 
         [Server]

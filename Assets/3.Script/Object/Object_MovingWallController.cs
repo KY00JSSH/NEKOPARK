@@ -71,8 +71,6 @@ public class Object_MovingWallController : MonoBehaviour {
         Debug.Log("preCollisionNum | " + preCollisionNum);
         if (preCollisionNum != currentCollisionNum) {
             ChangeTransformPosition();
-            preCollisionNum = currentCollisionNum;
-            //Debug.Log("currentCollisionNum | " + currentCollisionNum);
         }
     }
 
@@ -155,6 +153,7 @@ public class Object_MovingWallController : MonoBehaviour {
 
         isMoving = false;
         currentPosition.y = PositionIWantToGo.y;
+        preCollisionNum = currentCollisionNum;
     }
 
     private IEnumerator MovingWallPositionChangeDown_Co(Vector2 PositionIWantToGo) {
@@ -175,6 +174,7 @@ public class Object_MovingWallController : MonoBehaviour {
 
         isMoving = false;
         currentPosition.y = PositionIWantToGo.y;
+        preCollisionNum = currentCollisionNum;
     }
 
 

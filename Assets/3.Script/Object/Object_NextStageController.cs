@@ -53,9 +53,17 @@ public class Object_NextStageController : MonoBehaviour
     private bool CheckAllPlayersInTheDoor() {
         foreach (GameObject each in allPlyersInGame) {
             PlayerMove eachPlayer = each.GetComponent<PlayerMove>();
-            if (!eachPlayer.IsPlayerEnterTheDoor) {
-                // 24 08 17 [김수주] 한 명이라도 플레이어가 문안으로 들어왔다는 bool값이 false면 stage 승리조건 x
-                return false;
+            if(eachPlayer == null) {
+                LocalPlayerMove localPlayerMove = each.GetComponent<LocalPlayerMove>();
+                if(!localPlayerMove.IsPlayerEnterTheDoor) {
+                    return false;
+                }
+            }
+            else{
+                if (!eachPlayer.IsPlayerEnterTheDoor) {
+                    // 24 08 17 [김수주] 한 명이라도 플레이어가 문안으로 들어왔다는 bool값이 false면 stage 승리조건 x
+                    return false;
+                }
             }
         }
         return true;

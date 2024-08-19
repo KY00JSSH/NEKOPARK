@@ -215,8 +215,8 @@ public class PlayerMove : NetworkBehaviour {
         // 24 08 17 김수주 : 문이 열렸을 때, 플레이어가 문에 닿고 있을 경우 키를 누를면 들어감 여부 변경
         if (Object_DoorController.IsDoorOpen) {
             if (collision.CompareTag("Door")) {
-
                 float verticalInput = Input.GetAxis("Vertical");
+
                 if (verticalInput > 0) {
                     //TODO: 플레이어 이미지 없어져야함 + 움직임 막아야함
                     if (!IsPlayerEnterTheDoor) {  // 중복 호출 방지

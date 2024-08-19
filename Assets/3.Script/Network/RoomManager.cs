@@ -38,4 +38,19 @@ public class RoomManager : NetworkRoomManager {
         if (lobbyManager != null)
             lobbyManager.MaxCountText.text = $"{currentConnected} / {maxConnected}";
     }
+
+    public override void OnServerSceneChanged(string sceneName) {
+        base.OnServerSceneChanged(sceneName);
+
+            Debug.Log("WOW CHANGE");
+        if(sceneName == "Game_1-1") {
+            RoomPlayer.MyRoomPlayer.Start();
+        }
+    }
+
+    public override void OnClientSceneChanged() {
+        base.OnClientSceneChanged();
+        Debug.Log("CLIENT CHANGE SCENE");
+    }
+
 }

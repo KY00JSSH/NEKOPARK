@@ -9,9 +9,7 @@ public class HostLoadListController : MonoBehaviour {
 
     private void Awake() {
         buttons = FindObjectsOfType<SaveDataButtonController>();
-    }
 
-    private void Start() {
         for (int i = 0; i < buttons.Length; i++) {
             buttons[i].gameObject.SetActive(false);
         }
@@ -34,6 +32,4 @@ public class HostLoadListController : MonoBehaviour {
             }
         }
     }
-
-
 }

@@ -4,6 +4,7 @@ public class LocalGameManager : MonoBehaviour {
     [SerializeField] private GameObject localPlayer;
 
     private void Start() {
-        Instantiate(localPlayer, gameObject.transform);
+        if (PlayerPrefs.GetInt("localGame") == 1)
+            Instantiate(localPlayer, gameObject.transform);
     }
 }

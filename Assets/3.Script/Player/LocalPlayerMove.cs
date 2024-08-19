@@ -191,7 +191,9 @@ public class LocalPlayerMove : MonoBehaviour {
         if (Object_DoorController.IsDoorOpen) {
             if (collision.CompareTag("Door")) {
 
+
                 float verticalInput = Input.GetAxis("Vertical");
+                Debug.Log("플레이어 + 문 부딪힘 수직키 확인| " + verticalInput);
                 if (verticalInput > 0) {
                     //TODO: 플레이어 이미지 없어져야함 + 움직임 막아야함
                     if (!IsPlayerEnterTheDoor) {  // 중복 호출 방지
@@ -313,7 +315,9 @@ public class LocalPlayerMove : MonoBehaviour {
         rightPushCount = 0;
         leftPushCount = 0;
     }
-
+    private void OnDisable() {
+        IsPlayerEnterTheDoor = false;
+    }
 
     //private void OnCollisionEnter2D(Collision2D collision)
     //{
