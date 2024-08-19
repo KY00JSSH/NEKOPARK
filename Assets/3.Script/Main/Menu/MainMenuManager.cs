@@ -72,6 +72,7 @@ public class MainMenuManager : MonoBehaviour {
                     SceneManager.LoadScene("Game_List");
                     break;
                 case MenuType.PLAY_ONLINE:
+                    PlayerPrefs.SetInt("localGame", 0);
                     ShowConfirm();
                     confirmManager.ConfirmMainTextChage(mainMenuController.GetSelectMenu());
                     break;
@@ -118,6 +119,7 @@ public class MainMenuManager : MonoBehaviour {
                 SceneManager.LoadScene("Game_List");
                 break;
             case MenuType.PLAY_ONLINE:
+                PlayerPrefs.SetInt("localGame", 0);
                 mainManager.OpenOnlineCanvas();
                 break;
             case MenuType.OPTION:

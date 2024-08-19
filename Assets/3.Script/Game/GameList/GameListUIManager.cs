@@ -48,11 +48,12 @@ public class GameListUIManager : MonoBehaviour {
 
     private void OpenGameScene() {
         var roomManager = NetworkManager.singleton as RoomManager;
-        if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
+        //if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
 
-        foreach (RoomPlayer player in roomManager.roomSlots)
-            player.ReadyStateChanged(false, true);
-        roomManager.ServerChangeScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
+        //foreach (RoomPlayer player in roomManager.roomSlots)
+        //    player.ReadyStateChanged(false, true);
+        roomManager.ServerChangeScene($"Game_{majorStageIndex + 1}-{minorStageIndex + 1}");
+        Debug.Log("WOW");
     }
 
     private void OpenGameListScene() {
