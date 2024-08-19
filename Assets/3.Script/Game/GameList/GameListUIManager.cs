@@ -66,8 +66,8 @@ public class GameListUIManager : MonoBehaviour {
         var roomManager = NetworkManager.singleton as RoomManager;
         //if (RoomManager.ConnectedPlayer < roomManager.minPlayers) return;
 
-        foreach (RoomPlayer player in roomManager.roomSlots)
-            player.ReadyStateChanged(false, true);
+        //foreach (RoomPlayer player in roomManager.roomSlots)
+        //    player.ReadyStateChanged(false, true);
 
         roomManager.ServerChangeScene($"Game_{GameListManager.instance.MajorStageIndex + 1}-{GameListManager.instance.MinorStageIndex + 1}");
         //roomManager.ServerChangeScene(roomManager.Game_1_1);

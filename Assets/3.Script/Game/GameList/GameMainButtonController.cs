@@ -11,10 +11,11 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
 
     private GameMainListController gameMainList;
 
-    private void Awake() {
+    private void Start() {
         button = GetComponent<Button>();
         images = GetComponentsInChildren<Image>();
         gameMainList = FindObjectOfType<GameMainListController>();
+        CloseCrown();
 
     }
 
