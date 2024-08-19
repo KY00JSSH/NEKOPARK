@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Mirror;
 
-public class GameListManager : MonoBehaviour
+public class GameListManager : NetworkBehaviour
 {
     public static GameListManager instance;
 
@@ -40,7 +41,6 @@ public class GameListManager : MonoBehaviour
     public void ClearAndOpenList() {
         LoadDataManager.instance.ClearStage(majorStageIndex, minorStageIndex);
         if (isLocalGame) {
-            SceneManager.LoadScene("Game_List");
             Save.instance.MakeSingleSave();
         }
         else {
@@ -60,6 +60,10 @@ public class GameListManager : MonoBehaviour
             Save.instance.SaveData = tempStageData;
             Save.instance.MakeMultiSave();
         }
-    }
 
+        var roomManager = NetworkManager.singleton as RoomManager;
+        foreach (RoomPlayer player in roomManager.roomSlots)
+            player.ReadyStateChanged(false, true);
+        roomManager.ServerChangeScene("Game_List");
+    }
 }

@@ -2,8 +2,16 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Mirror;
 
-public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
+public class GameMainButtonController : NetworkBehaviour, IPointerEnterHandler {
+    [SyncVar(hook =nameof(SetEnableImage_Hook))] 
+    public bool imageEnable;
+    
+    public void SetEnableImage_Hook (bool oldValue, bool newValue) {
+        images[0].enabled = newValue;
+    }
+    
     private Image[] images;
     private Button button;
 
@@ -13,6 +21,7 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
         button = GetComponent<Button>();
         images = GetComponentsInChildren<Image>();
         gameMainList = FindObjectOfType<GameMainListController>();
+
     }
 
     public void OpenCrown() {
@@ -27,7 +36,27 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
         images[0].enabled = true;
     }
 
-    public void DisEnableOutline() {
+    [Command (requiresAuthority =false)]
+    public void CmdEnableOutline() {
+        imageEnable = true;
+        RpcEnableOutline();
+    }
+    [ClientRpc]
+    public void RpcEnableOutline() {
+        Debug.Log("ENABLEED");
+        imageEnable = true;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdDisableOutline() {
+        imageEnable = false;
+    }
+    [ClientRpc]
+    public void RpcDisableOutline() {
+        imageEnable = false;
+    }
+
+    public void DisableOutline() {
         images[0].enabled = false;
     }
 

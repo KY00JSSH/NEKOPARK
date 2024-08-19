@@ -29,7 +29,9 @@ public class RoomPlayer : NetworkRoomPlayer {
         base.Start();
 
         playerColor = (PlayerColorType)PlayerPrefs.GetInt("HostColor");
-        FindObjectOfType<LobbyMenuManager>().SetPlayerIconColor();
+        var lobbyMenuManager = FindObjectOfType<LobbyMenuManager>();
+        if (lobbyMenuManager != null) lobbyMenuManager.SetPlayerIconColor();
+
         if (isServer) SpawnRoomPlayer();
         RoomManager.UpdateConnenctedPlayerCount();
     }

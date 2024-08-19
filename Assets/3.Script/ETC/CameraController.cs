@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private List<Transform> PlayersTransform;       //ÇÃ·¹ÀÌ¾îµéÀÇ Æ®·£½ºÆû
+    private List<Transform> PlayersTransform;       //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     
-    private Vector2 Camera_minPosition;             //¸Ê »óÀÇ Ä«¸Þ¶ó ÃÖ¼ÒÀ§Ä¡
-    private Vector2 Camera_maxPosition;             //¸Ê »óÀÇ Ä«¸Þ¶ó ÃÖ´ëÀ§Ä¡
-    private Vector3 Camera_Offset;                  //Ä«¸Þ¶ó ¿ÀÇÁ¼Â
+    private Vector2 Camera_minPosition;             //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½Ä¡
+    private Vector2 Camera_maxPosition;             //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½Ä¡
+    private Vector3 Camera_Offset;                  //Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     
-    private float Camera_MovingSmoothTime = 0.5f;   //Ä«¸Þ¶ó°¡ ºÎµå·´°Ô µû¶ó°¡´Âµ¥ °É¸®´Â ½Ã°£
-    public float Camera_FixedZoom = 7f;             //Ä«¸Þ¶ó ÁÜ°ª(¼öÁ¤°¡´ÉÇÏ°Ô)
+    private float Camera_MovingSmoothTime = 0.5f;   //Ä«ï¿½Þ¶ï¿½ ï¿½Îµå·´ï¿½ï¿½ ï¿½ï¿½ï¿½ó°¡´Âµï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    public float Camera_FixedZoom = 7f;             //Ä«ï¿½Þ¶ï¿½ ï¿½Ü°ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½)
 
     private Vector3 Velocity;
 
-    private Vector3 GetcenterPoint()                //ÇÃ·¹ÀÌ¾î ´Ù¼öÀÏ °æ¿ì, Ä«¸Þ¶ó Áß¾ÓÆ÷Áö¼Ç
+    private Vector3 GetcenterPoint()                //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ù¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, Ä«ï¿½Þ¶ï¿½ ï¿½ß¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         if (PlayersTransform.Count == 0)
         {            
@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
 
         if (PlayersTransform.Count == 1)
         {
-            //Debug.Log($"ÇÃ·¹ÀÌ¾î À§Ä¡: {PlayersTransform[0].position}");
+            //Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡: {PlayersTransform[0].position}");
             return PlayersTransform[0].position;
         }
 
@@ -32,9 +32,9 @@ public class CameraController : MonoBehaviour
         for(int i = 0; i < PlayersTransform.Count; i++)
         {
             bounds.Encapsulate(PlayersTransform[i].position);
-            //Debug.Log($"ÇÃ·¹ÀÌ¾î {i} À§Ä¡: {PlayersTransform[i].position}");
+            //Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ {i} ï¿½ï¿½Ä¡: {PlayersTransform[i].position}");
         }
-        //Debug.Log($"°è»êµÈ Áß½É À§Ä¡: {bounds.center}"); // Áß½É À§Ä¡ Ãâ·Â
+        //Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ß½ï¿½ ï¿½ï¿½Ä¡: {bounds.center}"); // ï¿½ß½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
         return bounds.center;
     }
 
@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        Camera.main.orthographicSize = Camera_FixedZoom;    //Ä«¸Þ¶ó ÁÜ°ª ÃÊ±âÈ­
+        Camera.main.orthographicSize = Camera_FixedZoom;    //Ä«ï¿½Þ¶ï¿½ ï¿½Ü°ï¿½ ï¿½Ê±ï¿½È­
 
         if(Camera_Offset == Vector3.zero)
         {
@@ -66,19 +66,19 @@ public class CameraController : MonoBehaviour
 
     private void SetCameraBounds()
     {
-        // BackGround ¿ÀºêÁ§Æ® Ã£±â
+        // BackGround ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ã£ï¿½ï¿½
         GameObject background = GameObject.Find("BackGround");
 
         if (background != null)
         {
-            // BackGroundÀÇ Transform ÄÄÆ÷³ÍÆ®¿¡¼­ Scale °ªÀ» °¡Á®¿È
+            // BackGroundï¿½ï¿½ Transform ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ Scale ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             Transform bgTransform = background.transform;
 
-            // Scale °ª¿¡ µû¶ó ÃÖ¼Ò ¹× ÃÖ´ë À§Ä¡ ¼³Á¤
+            // Scale ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
             Camera_minPosition = new Vector2(bgTransform.position.x - bgTransform.localScale.x / 2, bgTransform.position.y - bgTransform.localScale.y / 2);
             Camera_maxPosition = new Vector2(bgTransform.position.x + bgTransform.localScale.x / 2, bgTransform.position.y + bgTransform.localScale.y / 2);
 
-            // ÃÊ±â Ä«¸Þ¶ó À§Ä¡¸¦ BackGroundÀÇ PositionÀ» ±âÁØÀ¸·Î ¼³Á¤
+            // ï¿½Ê±ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ BackGroundï¿½ï¿½ Positionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             Vector3 initialCameraPosition = new Vector3(bgTransform.position.x, bgTransform.position.y, Camera_Offset.z);
             transform.position = initialCameraPosition;
 
@@ -86,14 +86,14 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("BackGround ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù. Camera_minPosition°ú Camera_maxPositionÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("BackGround ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. Camera_minPositionï¿½ï¿½ Camera_maxPositionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 
-    private void Move()                                //Ä«¸Þ¶ó ÀÌµ¿
+    private void Move()                                //Ä«ï¿½Þ¶ï¿½ ï¿½Ìµï¿½
     {
-        Vector3 playersCenterPoint = GetcenterPoint(); //ÇÃ·¹ÀÌ¾îµéÀÇ Áß°£ÁöÁ¡ °è»ê
-        //Debug.Log($"ÇÃ·¹ÀÌ¾î Áß½É À§Ä¡: {playersCenterPoint}");
+        Vector3 playersCenterPoint = GetcenterPoint(); //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        //Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ß½ï¿½ ï¿½ï¿½Ä¡: {playersCenterPoint}");
 
         Vector3 cameraPosition = playersCenterPoint + Camera_Offset;
 
@@ -102,8 +102,8 @@ public class CameraController : MonoBehaviour
         cameraPosition.y = 
             Mathf.Clamp(cameraPosition.y, Camera_minPosition.y, Camera_maxPosition.y);
 
-        //Debug.Log($"Ä«¸Þ¶ó ¸ñÇ¥ À§Ä¡: {cameraPosition}");
-        //Debug.Log($"Ä«¸Þ¶ó ¸ñÇ¥ À§Ä¡(Å¬·¥ÇÁ Àû¿ë): {cameraPosition}");
+        //Debug.Log($"Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ä¡: {cameraPosition}");
+        //Debug.Log($"Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ä¡(Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½): {cameraPosition}");
         transform.position =
             //Vector3.SmoothDamp(transform.position, cameraPosition, ref Velocity, Camera_MovingSmoothTime);
             Vector3.Lerp(transform.position, cameraPosition, Camera_MovingSmoothTime);
@@ -111,7 +111,7 @@ public class CameraController : MonoBehaviour
 
     private void FindAllPlayers()
     {
-        PlayersTransform.Clear();       //±âÁ¸ÀÇ ¸®½ºÆ®¸¦ ÃÊ±âÈ­
+        PlayersTransform.Clear();       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ê±ï¿½È­
 
         PlayerMove[] gamePlayers = FindObjectsOfType<PlayerMove>();
 
@@ -121,14 +121,14 @@ public class CameraController : MonoBehaviour
             {
                 PlayersTransform.Add(player.transform);
             }
-            Debug.Log($"{PlayersTransform.Count}¸íÀÇ ÇÃ·¹ÀÌ¾î¸¦ Ã£¾Ò½À´Ï´Ù.");
+            Debug.Log($"{PlayersTransform.Count}ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ Ã£ï¿½Ò½ï¿½ï¿½Ï´ï¿½.");
         }
         else
         {
             GameObject gameManager = GameObject.Find("GameManager");
             if (gameManager != null)
             {
-                // GameManagerÀÇ ¸ðµç ÀÚ½Ä ¿ÀºêÁ§Æ®¿¡¼­ "LocalPlayer(Clone)"À» Ã£±â
+                // GameManagerï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ "LocalPlayer(Clone)"ï¿½ï¿½ Ã£ï¿½ï¿½
                 Transform[] allTransforms = gameManager.GetComponentsInChildren<Transform>();
                 foreach (Transform child in allTransforms)
                 {
@@ -137,13 +137,13 @@ public class CameraController : MonoBehaviour
                         PlayersTransform.Add(child);
                     }
                 }
-                Debug.Log($"{PlayersTransform.Count}¸íÀÇ LocalPlayer(Clone)À» Ã£¾Ò½À´Ï´Ù.");
+                Debug.Log($"{PlayersTransform.Count}ï¿½ï¿½ï¿½ï¿½ LocalPlayer(Clone)ï¿½ï¿½ Ã£ï¿½Ò½ï¿½ï¿½Ï´ï¿½.");
             }
 
             if (PlayersTransform.Count == 0)
             {
                 PlayersTransform.Add(new GameObject("Placeholder").transform);
-                Debug.LogWarning("ÇÃ·¹ÀÌ¾î¸¦ Ã£Áö ¸øÇß½À´Ï´Ù. ÇÃ·¹ÀÌ½ºÈ¦´õ Ãß°¡");
+                Debug.LogWarning("ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½Ã·ï¿½ï¿½Ì½ï¿½È¦ï¿½ï¿½ ï¿½ß°ï¿½");
             }
         }        
     }
