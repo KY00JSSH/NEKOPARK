@@ -15,7 +15,6 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
         button = GetComponent<Button>();
         images = GetComponentsInChildren<Image>();
         gameMainList = FindObjectOfType<GameMainListController>();
-
     }
 
     public void OpenCrown() {
