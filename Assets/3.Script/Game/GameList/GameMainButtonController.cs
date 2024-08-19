@@ -4,13 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Mirror;
 
-public class GameMainButtonController : NetworkBehaviour, IPointerEnterHandler {
-    [SyncVar(hook =nameof(SetEnableImage_Hook))] 
-    public bool imageEnable;
-    
-    public void SetEnableImage_Hook (bool oldValue, bool newValue) {
-        images[0].enabled = newValue;
-    }
+public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
     
     private Image[] images;
     private Button button;
@@ -34,26 +28,6 @@ public class GameMainButtonController : NetworkBehaviour, IPointerEnterHandler {
 
     public void EnableOutline() {
         images[0].enabled = true;
-    }
-
-    [Command (requiresAuthority =false)]
-    public void CmdEnableOutline() {
-        imageEnable = true;
-        RpcEnableOutline();
-    }
-    [ClientRpc]
-    public void RpcEnableOutline() {
-        Debug.Log("ENABLEED");
-        imageEnable = true;
-    }
-
-    [Command(requiresAuthority = false)]
-    public void CmdDisableOutline() {
-        imageEnable = false;
-    }
-    [ClientRpc]
-    public void RpcDisableOutline() {
-        imageEnable = false;
     }
 
     public void DisableOutline() {

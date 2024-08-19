@@ -80,18 +80,10 @@ public class GameMainListController : MonoBehaviour {
     public void CheckHoverIndex(string name) {
         for (int i = 0; i < 3; i++) {
             if (buttons[i].name.Equals(name)) {
-                if (GameListManager.instance.IsLocalGame)
-                    buttons[i].EnableOutline();
-                else if (NetworkServer.active) {
-                    buttons[i].CmdEnableOutline();
-                }
+                buttons[i].EnableOutline();
             }
             else {
-                if (GameListManager.instance.IsLocalGame)
-                    buttons[i].DisableOutline();
-                else if (NetworkServer.active) {
-                    buttons[i].CmdDisableOutline();
-                }
+                buttons[i].DisableOutline();
             }
         }
     }
