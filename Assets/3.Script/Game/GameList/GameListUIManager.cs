@@ -115,7 +115,6 @@ public class GameListUIManager : MonoBehaviour {
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
         roomManager.ServerChangeScene($"Game_{majorStageIndex + 1}-{minorStageIndex + 1}");
-        TCPclient.Instance.SendRequest(RequestType.Start);
     }
 
     private void OpenGameListScene() {
@@ -125,6 +124,5 @@ public class GameListUIManager : MonoBehaviour {
         foreach (RoomPlayer player in roomManager.roomSlots)
             player.ReadyStateChanged(false, true);
         roomManager.ServerChangeScene(roomManager.GameListScene);
-        TCPclient.Instance.SendRequest(RequestType.Start);
     }
 }

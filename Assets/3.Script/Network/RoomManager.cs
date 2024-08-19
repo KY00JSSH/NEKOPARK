@@ -33,7 +33,9 @@ public class RoomManager : NetworkRoomManager {
         var networkManager = NetworkManager.singleton as RoomManager;
         int currentConnected = networkManager.roomSlots.Count;
         int maxConnected = networkManager.maxConnections;
-        
-        FindObjectOfType<LobbyMenuManager>().MaxCountText.text = $"{currentConnected} / {maxConnected}";
+
+        var lobbyManager = FindObjectOfType<LobbyMenuManager>();
+        if (lobbyManager != null)
+            lobbyManager.MaxCountText.text = $"{currentConnected} / {maxConnected}";
     }
 }
