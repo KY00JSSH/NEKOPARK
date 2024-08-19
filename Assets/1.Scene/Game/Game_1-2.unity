@@ -598,8 +598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e07736bc7fae9419799d2c0a567f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkGameCore: {fileID: 1149979962}
-  networkPlayer: {fileID: 0}
   localPlayer: {fileID: 8023733475220816051, guid: d18402e14cd73a343a65491aa91022e8, type: 3}
 --- !u!4 &970341635
 Transform:
@@ -1519,6 +1517,7 @@ GameObject:
   - component: {fileID: 4216621376098842722}
   - component: {fileID: 608050166}
   - component: {fileID: 4514563621903607070}
+  - component: {fileID: 4216621376098842736}
   m_Layer: 8
   m_Name: BoxPrefab
   m_TagString: Box
@@ -1552,6 +1551,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4216621376098842736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216621376098842734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 3748006599
+  _assetId: 0
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!224 &4216621376240687937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1658,6 +1674,7 @@ GameObject:
   - component: {fileID: 4216621376240687938}
   - component: {fileID: 1034664150}
   - component: {fileID: 4514563622296520254}
+  - component: {fileID: 4216621376240687952}
   m_Layer: 8
   m_Name: BoxPrefab (1)
   m_TagString: Box
@@ -1691,6 +1708,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4216621376240687952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4216621376240687950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 349962329
+  _assetId: 0
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!224 &4216621377179072776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2240,6 +2274,7 @@ GameObject:
   - component: {fileID: 5804629115341490888}
   - component: {fileID: 7641022660475840860}
   - component: {fileID: 6101442987329738676}
+  - component: {fileID: 5804629115341490887}
   m_Layer: 8
   m_Name: BoxPrefab (2)
   m_TagString: Box
@@ -2324,6 +2359,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5804629115341490887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5804629115341490884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 2434185027
+  _assetId: 0
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!50 &5804629115341490888
 Rigidbody2D:
   serializedVersion: 4

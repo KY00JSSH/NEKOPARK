@@ -21036,7 +21036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67aca6915bd2cf54d838329a806f8239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebuggingOverride: 1
+  DebuggingOverride: 0
   dontDestroyOnLoad: 1
   runInBackground: 1
   headlessStartMode: 1
