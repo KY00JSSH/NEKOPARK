@@ -16,14 +16,14 @@ public class GameDetailListController : MonoBehaviour {
         title.text = "01. HELLO NEKO PARK";
     }
 
-    private void FixedUpdate() {
-        if (LoadDataManager.instance != null && GameListUIManager.instance != null) {
-            if (GameListUIManager.instance.MajorStageIndex != -1) {
+    private void Update() {
+        if (LoadDataManager.instance != null && GameListManager.instance != null) {
+            if (GameListManager.instance.MajorStageIndex != -1) {
                 bool[] stageData = new bool[4];
                 int stageOpenCount = 0;
 
                 for (int i = 0; i < 4; i++) {
-                    stageData[i] = LoadDataManager.instance.StageData[GameListUIManager.instance.MajorStageIndex, i];
+                    stageData[i] = LoadDataManager.instance.StageData[GameListManager.instance.MajorStageIndex, i];
                     if (stageData[i] == true) {
                         stageOpenCount++;
                     }
@@ -32,6 +32,9 @@ public class GameDetailListController : MonoBehaviour {
                 for (int i = 0; i < 4; i++) {
                     if (i <= stageOpenCount) {
                         buttons[i].OpenStage();
+                        if (stageData[i] == true) {
+                            buttons[i].OpenCrown();
+                        }
                     }
                     else {
                         buttons[i].CloseStage();

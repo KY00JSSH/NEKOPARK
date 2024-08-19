@@ -44,7 +44,7 @@ public class Object_NextStageController : MonoBehaviour
                 Debug.LogWarning(" 스테이지 클리어 ");
                 IsStageClear = true;
 
-                GameListUIManager.instance.ClearAndOpenList();
+                GameListManager.instance.ClearAndOpenList();
                 //Debug.Log(Save.instance.SaveData.stage1[SubStageNum]);
             }
         }

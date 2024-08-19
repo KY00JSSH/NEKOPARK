@@ -27,7 +27,7 @@ public class GameDetailButtonController : MonoBehaviour, IPointerEnterHandler {
     }
 
     public void OpenStage() {
-        openCrown();
+        closeCrown();
         button.interactable = true;
 
         numOutline.effectColor = HexToRGB("FF864D");
@@ -50,7 +50,7 @@ public class GameDetailButtonController : MonoBehaviour, IPointerEnterHandler {
         return new Color32(r, g, b, 255);
     }
 
-    private void openCrown() {
+    public void OpenCrown() {
         crown.enabled = true;
     }
 

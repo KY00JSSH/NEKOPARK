@@ -145,7 +145,7 @@ public class LocalPlayerMove : MonoBehaviour {
         yield return new WaitForSeconds(delay);
         playerCollider.enabled = false;
         //playerRigidbody.isKinematic = true;
-        if (!GameListUIManager.instance.IsLocalGame) {
+        if (!GameListManager.instance.IsLocalGame) {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }

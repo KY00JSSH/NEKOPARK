@@ -65,11 +65,11 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Move() {
-        if (GameListUIManager.instance == null) {
+        if (GameListManager.instance == null) {
             if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
         }
         else {
-            if (!GameListUIManager.instance.IsLocalGame) {
+            if (!GameListManager.instance.IsLocalGame) {
                 if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
             }
         }
@@ -107,11 +107,11 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump() {
-        if (GameListUIManager.instance == null) {
+        if (GameListManager.instance == null) {
             if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
         }
         else {
-            if (!GameListUIManager.instance.IsLocalGame) {
+            if (!GameListManager.instance.IsLocalGame) {
                 if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
             }
         }
@@ -125,11 +125,11 @@ public class PlayerMove : NetworkBehaviour {
     }
 
     private void Jump_Limit() {
-        if (GameListUIManager.instance == null) {
+        if (GameListManager.instance == null) {
             if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
         }
         else {
-            if (!GameListUIManager.instance.IsLocalGame) {
+            if (!GameListManager.instance.IsLocalGame) {
                 if (!isOwned && !NetworkManager.singleton.DebuggingOverride) return;
             }
         }
@@ -170,7 +170,7 @@ public class PlayerMove : NetworkBehaviour {
         yield return new WaitForSeconds(delay);
         playerCollider.enabled = false;
         //playerRigidbody.isKinematic = true;
-        if (!GameListUIManager.instance.IsLocalGame) {
+        if (!GameListManager.instance.IsLocalGame) {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }
