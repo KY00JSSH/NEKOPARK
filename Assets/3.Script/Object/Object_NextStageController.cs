@@ -25,18 +25,6 @@ public class Object_NextStageController : MonoBehaviour
         Debug.LogWarning(allPlyersInGame.Length);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            if (Door_outer.transform.localScale == Vector3.zero && Door_inner.transform.localScale == Vector3.one)
-            {
-                //스테이지 넘어가는 로직
-                
-            }
-        }
-    }
-
     private void Update() {
         if (Object_DoorController.IsDoorOpen) {
             if (CheckAllPlayersInTheDoor()) {
@@ -75,7 +63,7 @@ public class Object_NextStageController : MonoBehaviour
                 }
             }
         }
-        return true;
+        return true;        
     }
 
     private void OnDisable() {

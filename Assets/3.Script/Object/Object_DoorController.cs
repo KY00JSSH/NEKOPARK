@@ -1,4 +1,4 @@
-using System.Collections;
+                            using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,7 +14,6 @@ public class Object_DoorController : MonoBehaviour
     [SerializeField] private Object_NextStageController Door_inner; //문을 연 후의 검은색 공간 콜라이더
 
     private Object_KeyController key;
-
     
     public static bool IsDoorOpen { get; private set; }            // 24 08 17 김수주 : 플레이어 전체 들어왔는지 확인하는 값 추가
     private void Awake()

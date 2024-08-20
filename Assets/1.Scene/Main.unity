@@ -5823,21 +5823,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 3a66a6be9aa536343b644e478edd75be, type: 2}
   BgmClip:
-  - {fileID: 8300000, guid: 52906863a30bb114e9bbca73620b0385, type: 3}
   - {fileID: 8300000, guid: b03e38fe50d440a4aa0a901196b9d3e5, type: 3}
   - {fileID: 8300000, guid: d0791698cfe388b47bb81c42c10b7d77, type: 3}
   - {fileID: 8300000, guid: 84b1cd7141e47b14abfb4f09ae4996fa, type: 3}
   - {fileID: 8300000, guid: 4741ba8ac83643848af53703b012c109, type: 3}
   SfxClip:
   - {fileID: 8300000, guid: 9e150325ac309074fac2a1691d27297a, type: 3}
-  - {fileID: 8300000, guid: ec5a78de88361344cab5799435690c64, type: 3}
   - {fileID: 8300000, guid: b6a611eb838a7264cbba246ed7570c7e, type: 3}
   - {fileID: 8300000, guid: cce4bb978ce978f478b55861fa9c0e42, type: 3}
-  - {fileID: 8300000, guid: a69dae627cb375c458fa1169dc2e0b8a, type: 3}
   - {fileID: 8300000, guid: ca6985a861eca6a479ae2a62744e4c07, type: 3}
-  - {fileID: 8300000, guid: 078b1ac58e6a70f499d16b28bfbd801a, type: 3}
-  - {fileID: 8300000, guid: f5539e83aef774140ac63e1e6dbba72e, type: 3}
-  - {fileID: 8300000, guid: ee57fcfec4717b84bb5739b3531907df, type: 3}
 --- !u!4 &482754030
 Transform:
   m_ObjectHideFlags: 0

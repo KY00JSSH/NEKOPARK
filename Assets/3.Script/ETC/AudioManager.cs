@@ -136,21 +136,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(Sfx sfx)
     {
-        //if (NetworkManager.singleton.isNetworkActive && sfx == Sfx.jump)
-        //{
-        //    UnityEngine.Debug.LogWarning("Attempted to play jump SFX in network lobby, skipping.");
-        //    return;
-        //}
-        //
-        //UnityEngine.Debug.LogError($"PlaySFX called for SFX: {sfx}");
-        //
-        //if (sfx == Sfx.jump)
-        //{
-        //    // 스택 트레이스 출력
-        //    StackTrace stackTrace = new StackTrace();
-        //    UnityEngine.Debug.Log($"PlaySFX called for jump at: {stackTrace}");
-        //}
-
         //사용시, AudioManager.instance.PlaySFX(AudioManager.Sfx.ClipName); 사용
 
         //TODO: [김수주] 오디오 에러로 임시 주석처리
