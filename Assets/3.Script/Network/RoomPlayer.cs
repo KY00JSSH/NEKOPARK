@@ -54,8 +54,11 @@ public class RoomPlayer : NetworkRoomPlayer {
         var player = Instantiate(RoomManager.singleton.spawnPrefabs[0], spawnPosition, Quaternion.identity);
         player.GetComponent<PlayerColor>().playerColor = PlayerColorType.nullColor;
         player.GetComponent<PlayerColor>().playerColor = playerColor;
-        
 
+        if (CheckSpawned()) {
+            Destroy(player);
+            Destroy(gameObject);
+        }
 
         var clickEffect = Instantiate(RoomManager.singleton.spawnPrefabs[1]);
         clickEffect.GetComponent<PlayerMouseCommunication>().effectColor = PlayerColorType.nullColor;
@@ -65,20 +68,14 @@ public class RoomPlayer : NetworkRoomPlayer {
         NetworkServer.Spawn(clickEffect, connectionToClient);
     }
 
-    private void CheckSpawned() {
+    private bool CheckSpawned() {
         var players = FindObjectsOfType<RoomPlayer>();
         int count = 0;
         foreach (var player in players) {
             if (player.isOwned) count++;
-            if (count > 1)
-                foreach (var target in players) {
-                    if (target.isOwned) {
-                        Destroy(target);
-                        break;
-                    }
-
-                }
+            if (count > 1) return true;
         }
+        return false;
     }
 
     private Vector3 GetSpawnPosition() {
