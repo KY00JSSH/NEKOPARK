@@ -11,7 +11,7 @@ public class GameMainButtonController : MonoBehaviour, IPointerEnterHandler {
 
     private GameMainListController gameMainList;
 
-    private void Start() {
+    private void Awake() {
         button = GetComponent<Button>();
         images = GetComponentsInChildren<Image>();
         gameMainList = FindObjectOfType<GameMainListController>();

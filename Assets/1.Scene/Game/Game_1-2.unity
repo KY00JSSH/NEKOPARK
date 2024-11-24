@@ -3179,7 +3179,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  requiredCount: 2
+  requiredCount: 1
 --- !u!50 &5694890451893288581
 Rigidbody2D:
   serializedVersion: 4

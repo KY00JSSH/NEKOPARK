@@ -20,14 +20,20 @@ public class Object_Button_Once : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     private void Start()
     {
         ButtonBox = GetComponent<BoxCollider2D>();
-        Player = FindObjectOfType<PlayerMove>();
-        LocalPlayer = FindObjectOfType<LocalPlayerMove>();
+        if (GameListManager.instance.IsLocalGame)
+        {
+            LocalPlayer = FindObjectOfType<LocalPlayerMove>();
+        }
+        else
+        {
+            Player = FindObjectOfType<PlayerMove>();
+        }
 
         PushedButton = transform.parent.GetChild(1);
         Button = transform;
@@ -45,9 +51,9 @@ public class Object_Button_Once : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            if(collision.bounds.Intersects(ButtonBox.bounds))
+            if (collision.bounds.Intersects(ButtonBox.bounds))
             {
                 Button.localScale = Vector3.zero;
                 PushedButton.localScale = Vector3.one;
@@ -55,23 +61,22 @@ public class Object_Button_Once : MonoBehaviour
                 Debug.Log("버튼을 눌렀습니다.");
                 isButtonPushed = true;
 
-                if (Player == null && LocalPlayer == null)
-                {
-                    Debug.LogError("Player 객체가 null 상태입니다. Die 메서드를 호출할 수 없습니다.");
-                    return;
-                }
-
-
                 if (DontPushTransform != null)
                 {
-                    Player.Die();
-                    LocalPlayer.Die();
+                    if (GameListManager.instance.IsLocalGame)
+                    {
+                        LocalPlayer.Die();
+                    }
+                    else
+                    {
+                        Player.Die();
+                    }
                 }
                 else
                 {
                     Debug.LogWarning("DontPushTransform이 null 상태입니다. Player.Die()가 호출되지 않았습니다.");
                 }
-            }  
+            }
         }
     }
 }
